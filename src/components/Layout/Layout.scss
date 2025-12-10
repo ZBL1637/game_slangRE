@@ -1,0 +1,61 @@
+@import '@/styles/variables';
+
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  position: relative; // Ensure absolute positioning works for children
+  
+  .layout-header {
+    flex: 0 0 auto;
+    margin-bottom: 1rem;
+    z-index: 20; // Ensure header is above content if needed
+
+    .header-panel {
+      padding: 0.5rem 1rem;
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include pixel-text;
+        font-size: 0.8rem;
+        color: $color-accent;
+      }
+      
+      .status-bar {
+        display: flex;
+        gap: 1rem;
+        color: $color-info;
+      }
+    }
+  }
+
+  .layout-main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden; // Prevent horizontal scrollbar
+    position: relative;
+    // padding-bottom: 4rem; // Removed extra padding since footer is gone/moved
+    /* 隐藏滚动条但保留功能 */
+    &::-webkit-scrollbar { width: 0px; background: transparent; }
+  }
+
+  .layout-footer {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none; // Allow clicks to pass through empty space
+    z-index: 100;
+
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      pointer-events: auto; // Re-enable clicks on buttons
+    }
+  }
+}

@@ -1,0 +1,101 @@
+@import '@/styles/variables';
+
+.achievements-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+
+  .achv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .pixel-title {
+      @include pixel-text;
+      color: $color-text-main;
+      margin: 0;
+    }
+  }
+
+  .achv-content {
+    flex: 1;
+    overflow-y: auto;
+    
+    .achv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 0.5rem;
+
+      .achv-card {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        transition: all 0.2s;
+        
+        .achv-icon {
+          width: 60px;
+          height: 60px;
+          background: rgba(0,0,0,0.3);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid transparent;
+        }
+
+        .achv-info {
+          flex: 1;
+          
+          .achv-name {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+          }
+          
+          .achv-desc {
+            font-size: 0.8rem;
+            color: $color-text-muted;
+            line-height: 1.3;
+          }
+
+          .achv-hint {
+            font-size: 0.7rem;
+            color: $color-info;
+            font-style: italic;
+            margin-top: 0.3rem;
+          }
+
+          .achv-status {
+            @include pixel-text;
+            font-size: 0.6rem;
+            color: $color-accent;
+            display: block;
+            margin-top: 0.5rem;
+          }
+        }
+
+        &.locked {
+          opacity: 0.6;
+          filter: grayscale(100%);
+          .achv-icon { border-color: #444; }
+        }
+
+        &.unlocked {
+          border-color: $color-accent;
+          background: rgba($color-accent, 0.1);
+          
+          .achv-icon {
+            border-color: $color-accent;
+            color: $color-accent;
+            animation: pulse 2s infinite;
+          }
+          
+          .achv-name { color: $color-accent; }
+        }
+      }
+    }
+  }
+}

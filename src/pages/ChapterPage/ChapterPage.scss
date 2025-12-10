@@ -1,0 +1,199 @@
+@import '@/styles/variables';
+
+.chapter-container {
+  height: 100%;
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+
+  .chapter-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+
+    .sidebar-title {
+      @include pixel-text;
+      color: $color-accent;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      border-bottom: 2px solid rgba($color-accent, 0.3);
+      padding-bottom: 0.5rem;
+    }
+
+    .chapter-quest-card {
+      background: rgba(0,0,0,0.3);
+      border: 1px dashed $color-info;
+      border-radius: 4px;
+      padding: 0.8rem;
+      margin-bottom: 1.5rem;
+
+      .quest-label {
+        font-size: 0.7rem;
+        color: $color-info;
+        font-weight: bold;
+        margin-bottom: 0.3rem;
+      }
+      
+      .quest-name {
+        color: #fff;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .quest-status {
+        @include pixel-text;
+        font-size: 0.7rem;
+        
+        &.active { color: $color-accent; animation: pulse 2s infinite; }
+        &.completed { color: $color-primary; }
+      }
+    }
+
+    .chapter-nav {
+      list-style: none;
+      padding: 0;
+      flex: 1;
+
+      li {
+        padding: 0.8rem;
+        cursor: pointer;
+        color: $color-text-muted;
+        border-left: 3px solid transparent;
+        transition: all 0.2s;
+        margin-bottom: 0.5rem;
+        
+        &:hover {
+          background: rgba($color-primary, 0.1);
+          color: $color-text-main;
+        }
+
+        &.active {
+          color: $color-primary;
+          border-left-color: $color-primary;
+          background: rgba($color-primary, 0.15);
+          font-weight: bold;
+        }
+      }
+    }
+
+    .sidebar-footer {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1rem;
+    }
+  }
+
+  .chapter-content {
+    flex: 1;
+    overflow: hidden; // Panel 本身不滚动，内部 div 滚动
+    display: flex;
+    flex-direction: column;
+
+    // 修复：确保 Panel 内部的内容容器也是 flex 布局，否则 flex: 1 的滚动区无效
+    .rpg-panel-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .content-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      padding-right: 2rem; // 给滚动条留空间
+      scroll-behavior: smooth;
+
+      .story-section {
+        margin-bottom: 4rem;
+        
+        .section-title {
+          @include pixel-text;
+          font-size: 2rem;
+          color: $color-accent;
+          margin-bottom: 0.5rem;
+          text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        }
+
+        .section-subtitle {
+          display: block;
+          font-size: 1rem;
+          color: $color-text-muted;
+          font-family: $font-main;
+          margin-top: 0.5rem;
+          font-style: italic;
+        }
+
+        .narrative-text, .text-content {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: $color-text-main;
+          margin-bottom: 2rem;
+          max-width: 800px;
+          
+          p { margin-bottom: 1.5rem; }
+        }
+
+        h2 {
+          @include pixel-text;
+          color: $color-info;
+          border-left: 4px solid $color-info;
+          padding-left: 1rem;
+          margin: 3rem 0 1.5rem 0;
+        }
+
+        .chart-container {
+          margin: 2rem 0;
+          padding: 1rem;
+          background: rgba(0,0,0,0.2);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 8px;
+        }
+
+        .interactive-placeholder {
+          border: 2px dashed $color-accent;
+          padding: 3rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+          color: $color-accent;
+          background: rgba($color-accent, 0.05);
+          border-radius: 8px;
+          margin: 2rem 0;
+
+          .placeholder-icon {
+            font-size: 3rem;
+          }
+        }
+
+        .intro-recap {
+          font-size: 0.9rem;
+          color: $color-text-muted;
+          cursor: pointer;
+          text-decoration: underline;
+          margin-top: 1rem;
+          &:hover { color: $color-primary; }
+        }
+      }
+
+      .chapter-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 4rem;
+        padding-bottom: 4rem;
+      }
+    }
+
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}

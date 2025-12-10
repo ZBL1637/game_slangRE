@@ -1,0 +1,94 @@
+// Colors - JRPG Theme
+$color-bg-dark: #1a1b26; // 背景深色
+$color-bg-panel: #2d3436; // 面板背景
+$color-primary: #00b894; // 主色 (绿色/生命值)
+$color-accent: #fdcb6e; // 金色 (高亮/边框)
+$color-danger: #ff7675; // 红色 (警告/错误)
+$color-info: #74b9ff; // 蓝色 (魔法/信息)
+$color-success: #55efc4; // 成功色 (亮绿)
+$color-warning: #ffeaa7; // 警告色 (亮黄)
+$color-text-main: #dfe6e9; // 主文本色
+$color-text-muted: #b2bec3; // 次要文本色
+$color-text-highlight: #ffffff; // 高亮文本色 (纯白)
+
+// Borders
+$border-gold: 2px solid $color-accent;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+
+// Shadows
+$shadow-panel: 0 4px 6px rgba(0, 0, 0, 0.3);
+$shadow-text: 2px 2px 0px rgba(0, 0, 0, 0.5); // 像素风文字阴影
+
+// Fonts
+$font-pixel: 'Press Start 2P', cursive; // 像素字体 (需要引入)
+$font-main: 'Inter', system-ui, sans-serif;
+
+// Mixins
+@mixin pixel-border {
+  box-shadow: 
+    -2px 0 0 0 $color-bg-dark,
+    2px 0 0 0 $color-bg-dark,
+    0 -2px 0 0 $color-bg-dark,
+    0 2px 0 0 $color-bg-dark;
+}
+
+@mixin rpg-panel {
+  background-color: rgba($color-bg-panel, 0.95);
+  border: $border-gold;
+  border-radius: $border-radius-sm;
+  box-shadow: $shadow-panel;
+  padding: 1rem;
+  color: $color-text-main;
+}
+
+@mixin rpg-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-primary;
+  color: $color-bg-dark;
+  border: 2px solid darken($color-primary, 10%);
+  border-radius: $border-radius-sm;
+  padding: 0.5rem 1rem;
+  font-family: $font-main;
+  font-weight: bold;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+
+  &:hover:not(:disabled) {
+    background-color: lighten($color-primary, 10%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 darken($color-primary, 20%);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  
+  &:disabled {
+    background-color: $color-text-muted;
+    border-color: darken($color-text-muted, 10%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+@mixin pixel-text {
+  // text-shadow: $shadow-text;
+  font-family: $font-pixel;
+  line-height: 1.5;
+}
+
+// Layout
+$game-frame-width: 1280px;
+$game-frame-height: 720px;

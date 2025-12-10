@@ -1,0 +1,174 @@
+@import '@/styles/variables';
+
+.world-map-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+
+  .map-header {
+    display: none;
+  }
+
+  .map-viewport {
+    width: 85%; // Reduce width to 85%
+    margin: 0 auto; // Center horizontally
+    // Maintain 16:9 aspect ratio based on width
+    aspect-ratio: 16 / 9;
+    
+    background-color: #2b3a2a; 
+    background-image: url('@/assets/images/world-map.png'), url('@/assets/images/world-map.svg');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: $border-radius-md;
+    border: $border-gold;
+    position: relative;
+    overflow: hidden; 
+    
+    // 模拟地图节点
+      .map-node {
+        position: absolute; // Ensure absolute positioning works with inline styles
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        z-index: 10; // Ensure nodes are above background
+        
+        // Anchor the node so the icon center is at the coordinates
+        // Horizontally center: -50%
+        // Vertically center icon (64px height): shift up by 32px
+        transform: translate(-50%, 0); 
+        margin-top: -32px;
+
+        // Hover effect removed as requested
+        // &:hover {
+        //   transform: translate(-50%, -5px); 
+        //   z-index: 20;
+        // }
+
+      .node-icon {
+        width: 64px;
+        height: 64px;
+        background: rgba(0,0,0,0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        border: 2px solid transparent;
+        transition: all 0.2s;
+        margin-bottom: 0.3rem;
+        flex-shrink: 0;
+      }
+      
+      .node-label {
+        @include pixel-text;
+        font-size: 0.8rem;
+        text-align: center;
+        text-shadow: 1px 1px 0 #000;
+        color: #fff;
+        margin-bottom: 0.2rem;
+      }
+
+      .node-desc {
+        font-size: 0.7rem;
+        color: #ddd;
+        text-align: center;
+        line-height: 1.2;
+        display: none; // Hide desc by default to save space
+      }
+
+      .node-details {
+        display: none; // Hidden by default
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        margin-top: 0.5rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 0.5rem;
+        animation: fade-in-up 0.3s ease-out;
+
+        .node-stats {
+          display: flex;
+          gap: 0.5rem;
+          font-size: 0.7rem;
+          color: $color-info;
+          font-family: $font-pixel;
+        }
+
+        .node-actions {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          
+          button {
+             width: 100%;
+             font-size: 0.7rem;
+             padding: 0.3rem;
+          }
+        }
+      }
+
+      // 状态样式
+      &.status-locked {
+        opacity: 0.7;
+        filter: grayscale(0.8);
+        .node-icon { background: #333; }
+      }
+      
+      &.status-unlocked {
+        .node-icon { 
+          background: $color-primary;
+          border-color: #fff;
+        }
+      }
+      
+      &.status-completed {
+        .node-icon {
+          background: $color-accent;
+          border-color: #fff;
+        }
+      }
+
+      // 选中态 (展开)
+      &.selected {
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.85);
+        border: 1px solid $color-accent;
+        min-width: 200px;
+        
+        .node-desc { display: block; }
+        .node-details { display: flex; }
+        
+        .node-icon {
+          box-shadow: 0 0 15px $color-accent;
+          border-color: $color-accent;
+        }
+        .node-label { color: $color-accent; }
+      }
+      
+      // Hover effect removed
+      // &:hover:not(.status-locked):not(.selected) {
+      //   transform: translate(-50%, -60%); // Move up slightly
+      //   background: rgba(0,0,0,0.8);
+      // }
+    }
+  }
+
+  .region-details-panel {
+    display: none; // Hide old panel
+  }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba($color-primary, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba($color-primary, 0); }
+  100% { box-shadow: 0 0 0 0 rgba($color-primary, 0); }
+}

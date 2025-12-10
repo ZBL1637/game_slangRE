@@ -1,0 +1,143 @@
+@import '@/styles/variables';
+
+.rpg-title-card-container {
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  
+  .rpg-title-card-content {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // Removed border, background, and box-shadow
+    border: none;
+    background: transparent;
+    box-shadow: none;
+
+    // Icon Header
+    .icon-header {
+      margin-bottom: 1.5rem;
+      position: relative;
+      
+      .icon-glow {
+        position: absolute;
+        inset: -10px;
+        background: $color-accent;
+        filter: blur(20px);
+        opacity: 0.3;
+        border-radius: 50%;
+      }
+      
+      .icons {
+        position: relative;
+        display: flex;
+        gap: 1rem;
+        
+        .icon-sword {
+          color: $color-text-muted;
+          transform: rotate(-45deg);
+        }
+        
+        .icon-msg {
+          color: $color-accent;
+        }
+      }
+    }
+
+    // Main Title
+    .main-title {
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 10;
+      line-height: 1.2;
+      
+      .title-part-1 {
+        font-family: serif; // Use serif for contrast
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: $color-text-main;
+        letter-spacing: 1px;
+        
+        .highlight-blue {
+          color: $color-info;
+          margin: 0 0.3rem;
+          border-bottom: 2px solid rgba($color-text-muted, 0.5);
+        }
+      }
+      
+      .arrow {
+        font-family: $font-pixel;
+        color: rgba($color-accent, 0.5);
+        font-size: 1.2rem;
+        margin: 0 1rem;
+        vertical-align: middle;
+      }
+      
+      .title-part-2 {
+        display: block; // On mobile maybe block
+        @media (min-width: 768px) {
+           display: inline;
+        }
+        font-family: serif;
+        font-size: 3.5rem;
+        font-weight: bold;
+        background: linear-gradient(to bottom, #fef3c7, #fde68a, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba($color-accent, 0.6);
+      }
+    }
+
+    // Subtitle
+    .title-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: -0.5rem; // Pull closer to title
+      position: relative;
+      
+      // Subtle glow background
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 20px;
+        background: rgba($color-info, 0.15);
+        filter: blur(15px);
+        z-index: -1;
+      }
+
+      .no-label {
+        font-family: monospace;
+        color: rgba($color-info, 0.5);
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+      }
+
+      .subtitle-text {
+        font-family: "KaiTi", "STKaiti", serif; // Use Kaiti as in screenshot
+        font-size: 1.5rem;
+        color: $color-info; // Cyan blue
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px rgba($color-info, 0.5);
+      }
+
+      .slashes {
+        font-family: monospace;
+        color: rgba($color-info, 0.3);
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+      }
+    }
+  }
+}

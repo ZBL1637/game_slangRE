@@ -1,0 +1,105 @@
+@import '@/styles/variables';
+
+.frequency-chart-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background-color: rgba($color-bg-panel, 0.5);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($color-text-muted, 0.2);
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .chart-wrapper {
+    height: 16rem; // h-64
+    width: 100%;
+    // Ensure no negative margins or weird overflow
+    overflow: hidden; 
+    
+    @media (min-width: 768px) {
+      height: 20rem; // h-80
+    }
+
+    h4 {
+      color: $color-text-muted;
+      font-size: 0.875rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .danmaku-wall {
+    background-color: rgba($color-bg-dark, 0.8);
+    border-radius: $border-radius-md;
+    padding: 1rem;
+    height: 16rem;
+    border: 1px solid rgba($color-text-muted, 0.2);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+      height: 20rem;
+    }
+
+    .wall-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba($color-text-muted, 0.2);
+
+      .term-name {
+        color: $color-text-main;
+        font-weight: bold;
+      }
+
+      .term-tag {
+        color: $color-text-muted;
+        font-size: 0.75rem;
+        margin-left: auto;
+      }
+    }
+
+    .danmaku-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+      position: relative;
+
+      .danmaku-item {
+        background-color: rgba($color-bg-panel, 0.8);
+        color: $color-primary;
+        padding: 0.5rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        width: fit-content;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        white-space: nowrap;
+        animation: slideInUp 0.5s ease-out;
+      }
+
+      .overlay-gradient {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(to top, rgba($color-bg-dark, 0.2), transparent);
+      }
+    }
+  }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}

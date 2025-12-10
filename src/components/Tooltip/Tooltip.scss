@@ -1,0 +1,67 @@
+@import '@/styles/variables';
+
+.rpg-tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 1px dashed $color-accent; // 默认给 tooltip 触发词加虚线
+  
+  .rpg-tooltip-popup {
+    position: absolute;
+    z-index: 1000;
+    width: max-content;
+    max-width: 300px;
+    background-color: rgba($color-bg-dark, 0.95);
+    border: 1px solid $color-accent;
+    border-radius: $border-radius-sm;
+    padding: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    animation: fadeIn 0.2s ease-out;
+    
+    .tooltip-content {
+      color: #fff;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    
+    .tooltip-arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+
+    &.position-top {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      
+      .tooltip-arrow {
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 6px 6px 0 6px;
+        border-color: $color-accent transparent transparent transparent;
+      }
+    }
+    
+    &.position-bottom {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      
+      .tooltip-arrow {
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 0 6px 6px 6px;
+        border-color: transparent transparent $color-accent transparent;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(0); }
+  to { opacity: 1; } // transform 由具体类定义
+}

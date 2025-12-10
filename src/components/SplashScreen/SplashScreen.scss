@@ -1,0 +1,108 @@
+@import '../../styles/variables';
+
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background-color: $color-bg-dark;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s ease-in;
+
+  &.exiting {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  .splash-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .splash-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo-container {
+    opacity: 0;
+    animation: logo-reveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.5s;
+    transform: scale(0.8);
+    // 稍微调整 RPGTitleCard 的样式以适应 Splash
+    .rpg-title-card-container {
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+  }
+
+  .loading-text {
+    margin-top: 3rem;
+    font-family: $font-pixel;
+    color: $color-primary;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: blink-text 1s steps(2, start) infinite 1.5s, fade-in 0.5s ease-out forwards 1.5s;
+    text-shadow: 0 0 5px rgba($color-primary, 0.5);
+  }
+
+  .scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba($color-primary, 0.5);
+    box-shadow: 0 0 10px $color-primary, 0 0 20px $color-primary;
+    animation: scan 3s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes logo-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes scan {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+@keyframes blink-text {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

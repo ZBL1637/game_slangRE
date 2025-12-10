@@ -1,0 +1,239 @@
+@import '@/styles/variables';
+
+.log-sorting-quiz {
+  max-width: 56rem; // max-w-4xl
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .timeline-area {
+    @include rpg-panel;
+    background-color: rgba($color-bg-dark, 0.8);
+    min-height: 120px;
+    padding: 1.5rem;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      
+      h4 {
+        color: $color-text-muted;
+        font-size: 0.875rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 0;
+      }
+
+      .count {
+        color: $color-primary;
+      }
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .empty-state {
+        color: $color-text-muted;
+        text-align: center;
+        padding: 1rem;
+        border: 1px dashed rgba($color-text-muted, 0.3);
+        border-radius: $border-radius-sm;
+        font-style: italic;
+      }
+
+      .timeline-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: slideIn 0.3s ease-out;
+
+        .time-label {
+          color: $color-text-muted;
+          font-family: monospace;
+          font-size: 0.75rem;
+          width: 3rem;
+          text-align: right;
+        }
+
+        .item-button {
+          flex: 1;
+          text-align: left;
+          background-color: rgba($color-bg-panel, 0.5);
+          border: 1px solid rgba($color-text-muted, 0.3);
+          padding: 0.75rem;
+          border-radius: $border-radius-sm;
+          color: $color-text-main;
+          font-size: 0.875rem;
+          cursor: pointer;
+          transition: all 0.2s;
+          position: relative;
+          
+          &:hover:not(:disabled) {
+            background-color: rgba($color-danger, 0.2);
+            border-color: rgba($color-danger, 0.5);
+
+            .remove-hint {
+              opacity: 1;
+            }
+          }
+
+          &:disabled {
+            cursor: default;
+          }
+
+          .remove-hint {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            color: $color-danger;
+            font-size: 0.75rem;
+            transition: opacity 0.2s;
+          }
+        }
+      }
+    }
+  }
+
+  .available-snippets {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .snippet-button {
+      background-color: rgba($color-bg-panel, 0.5);
+      border: 1px solid rgba($color-text-muted, 0.3);
+      padding: 1rem;
+      border-radius: $border-radius-md;
+      text-align: left;
+      color: $color-text-main; // text-slate-300
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: rgba($color-primary, 0.2);
+        border-color: $color-primary;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  .action-bar {
+    display: flex;
+    justify-content: center;
+
+    .verify-btn {
+      @include rpg-button;
+      padding: 0.75rem 3rem;
+    }
+  }
+
+  .result-area {
+    padding: 1.5rem;
+    border-radius: $border-radius-xl;
+    border: 1px solid transparent;
+    animation: zoomIn 0.3s ease-out;
+
+    &.success {
+      background-color: rgba($color-success, 0.1);
+      border-color: rgba($color-success, 0.5);
+      
+      h3 { color: $color-success; }
+      .icon { color: $color-success; }
+    }
+
+    &.failure {
+      background-color: rgba($color-danger, 0.1);
+      border-color: rgba($color-danger, 0.5);
+
+      h3 { color: $color-danger; }
+      .icon { color: $color-danger; }
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+
+      h3 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+
+    .retry-section {
+      color: $color-text-main;
+      
+      p { margin-bottom: 1rem; }
+
+      .retry-btn {
+        @include rpg-button;
+        background: rgba($color-bg-panel, 0.8);
+        border-color: $color-text-muted;
+        
+        &:hover {
+          background: rgba($color-bg-panel, 1);
+          border-color: $color-primary;
+        }
+      }
+    }
+
+    .explanation-section {
+      .title {
+        font-weight: bold;
+        color: $color-text-highlight;
+        margin-bottom: 0.5rem;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        li {
+          display: flex;
+          gap: 0.5rem;
+          color: $color-text-main;
+          font-size: 0.875rem;
+
+          .bullet-icon {
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+            color: $color-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-1rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

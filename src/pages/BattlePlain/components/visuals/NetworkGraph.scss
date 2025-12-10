@@ -1,0 +1,19 @@
+@import '@/styles/variables';
+
+.network-graph-container {
+  width: 100%;
+  
+  .svg-wrapper {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    
+    svg {
+      width: 100%;
+      height: auto;
+      overflow: hidden; // Prevent nodes from spilling out
+      background-color: rgba($color-bg-panel, 0.2); // Optional: Subtle background to show boundary
+      border-radius: $border-radius-lg;
+    }
+  }
+}

@@ -1,0 +1,109 @@
+@import '@/styles/variables';
+
+.translation-quiz {
+  @include rpg-panel;
+  background-color: rgba($color-bg-dark, 0.8);
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  
+  h3 {
+    text-align: center;
+    color: $color-primary;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+  }
+
+  .quiz-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    
+    .option-item {
+      padding: 1rem;
+      border-radius: $border-radius-md;
+      border: 2px solid rgba($color-text-muted, 0.3);
+      background-color: rgba($color-bg-panel, 0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+      color: $color-text-main;
+      
+      &:hover:not(.disabled) {
+        border-color: $color-primary;
+        background-color: rgba($color-primary, 0.1);
+      }
+
+      &.selected {
+        border-color: $color-info;
+        background-color: rgba($color-info, 0.1);
+      }
+
+      &.correct {
+        border-color: $color-success;
+        background-color: rgba($color-success, 0.1);
+      }
+
+      &.incorrect {
+        border-color: $color-danger;
+        background-color: rgba($color-danger, 0.1);
+      }
+      
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
+  }
+
+  .result-feedback {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: $border-radius-md;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+
+    &.success {
+      background-color: rgba($color-success, 0.1);
+      border: 1px solid rgba($color-success, 0.3);
+      color: $color-success;
+    }
+
+    &.error {
+      background-color: rgba($color-danger, 0.1);
+      border: 1px solid rgba($color-danger, 0.3);
+      color: $color-danger;
+    }
+
+    .feedback-text {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .explanation {
+      font-size: 0.9rem;
+      color: $color-text-main;
+    }
+  }
+
+  .quiz-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+
+    .submit-btn {
+      @include rpg-button;
+      min-width: 120px;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,50 @@
+@import '@/styles/variables';
+
+.game-frame-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden; // 防止滚动条
+}
+
+.game-frame-screen {
+  width: 100%;
+  height: 100%;
+  background-color: $color-bg-dark;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.1)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+.screen-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; // 内部滚动
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}

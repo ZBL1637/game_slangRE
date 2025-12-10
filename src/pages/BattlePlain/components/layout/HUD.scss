@@ -1,0 +1,189 @@
+@import '@/styles/variables';
+
+.battle-hud {
+  width: 100%;
+  height: 100%;
+  max-width: none; 
+  margin: 0;
+  pointer-events: none;
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2rem;
+
+  .status-bars {
+    // Remove flex layout to allow absolute positioning of children
+    
+    .status-group {
+      position: absolute;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 20rem; // Reduced width slightly for better centering
+      top: 50%; // Center vertically
+      transform: translateY(-50%); // Adjust for exact center
+
+      &.player {
+        left: 2rem; // Left side
+
+        .label { color: $color-success; }
+        .bar-container.hp .bar { background-color: rgba($color-success, 0.8); }
+        .label.mp { color: $color-info; }
+        .bar-container.mp .bar { background-color: $color-info; }
+      }
+
+      &.target {
+        right: 2rem; // Right side
+        text-align: right;
+        align-items: flex-end;
+
+        .label { 
+            color: $color-danger;
+            justify-content: flex-end;
+        }
+        .bar-container.hp { 
+            border-color: rgba($color-danger, 0.5);
+            .bar { background-color: $color-danger; }
+        }
+        .label.threat { color: $color-warning; }
+        .bar-container.threat {
+            justify-content: flex-end;
+            .bar { background-color: $color-warning; }
+        }
+      }
+
+      .label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: bold;
+      }
+
+      .bar-container {
+        height: 1rem;
+        background-color: rgba($color-bg-dark, 0.8);
+        border-radius: 9999px;
+        overflow: hidden;
+        border: 1px solid rgba($color-text-muted, 0.3);
+        position: relative;
+        width: 100%;
+
+        &.mp, &.threat {
+            height: 0.5rem;
+            border: none;
+        }
+
+        .bar {
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+      }
+    }
+  }
+
+  .skill-bar {
+    display: none; // Remove skill bar
+    // display: flex;
+    // justify-content: center;
+    // gap: 0.5rem;
+    // margin-top: 1rem;
+    // position: absolute;
+    // bottom: 2rem;
+    // left: 2rem;
+
+    .skill-slot {
+      position: relative;
+      
+      .slot-box {
+        width: 3rem;
+        height: 3rem;
+        background-color: $color-bg-dark;
+        border: 2px solid rgba($color-text-muted, 0.5);
+        border-radius: $border-radius-sm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-text-muted;
+        position: relative;
+        overflow: hidden;
+
+        .cd-overlay {
+          position: absolute;
+          inset: 0;
+          background-color: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $color-text-highlight;
+          font-size: 0.875rem;
+          font-weight: bold;
+        }
+      }
+
+      .key-hint {
+        position: absolute;
+        bottom: -0.75rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.625rem;
+        font-weight: bold;
+        background-color: rgba($color-bg-panel, 0.8);
+        padding: 0 0.25rem;
+        border-radius: 2px;
+        color: $color-text-main;
+      }
+    }
+  }
+
+  .aoe-warning {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16rem;
+    height: 16rem;
+    border: 2px solid rgba($color-danger, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    opacity: 0.5;
+    z-index: -1;
+
+    .inner-circle {
+      width: 14rem;
+      height: 14rem;
+      border: 1px solid rgba($color-danger, 0.5);
+      border-radius: 50%;
+      background-color: rgba($color-danger, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        color: $color-danger;
+        font-size: 0.75rem;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        animation: bounce 1s infinite;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.95); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}

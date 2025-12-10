@@ -1,0 +1,119 @@
+@import '@/styles/variables';
+
+.quest-log-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+
+  .quest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .pixel-title {
+      @include pixel-text;
+      color: $color-text-main;
+      margin: 0;
+    }
+  }
+
+  .quest-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    overflow: hidden;
+
+    .quest-panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      
+      .section-title {
+        @include pixel-text;
+        font-size: 1rem;
+        color: $color-accent;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba($color-accent, 0.3);
+        padding-bottom: 0.5rem;
+      }
+
+      .quest-list {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        
+        .empty-state {
+          color: $color-text-muted;
+          font-style: italic;
+          text-align: center;
+          margin-top: 2rem;
+        }
+
+        .quest-item {
+          background: rgba(0,0,0,0.2);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 4px;
+          padding: 1rem;
+          margin-bottom: 0.8rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          transition: all 0.2s;
+          
+          &:hover {
+            background: rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.2);
+          }
+
+          .quest-info {
+            .quest-title {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              font-size: 1rem;
+              color: #fff;
+              margin-bottom: 0.5rem;
+              
+              .tag {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.4rem;
+                border-radius: 2px;
+                color: #fff;
+                font-weight: bold;
+                
+                &.main { background: $color-primary; }
+                &.side { background: $color-info; }
+                &.explore { background: $color-accent; color: #000; }
+              }
+            }
+            
+            .quest-desc {
+              font-size: 0.9rem;
+              color: $color-text-muted;
+              line-height: 1.4;
+            }
+          }
+
+          .quest-reward, .quest-status {
+            font-family: $font-pixel;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            margin-left: 1rem;
+          }
+
+          .quest-reward { color: $color-accent; }
+          .quest-status { color: $color-primary; }
+
+          // Completed styles
+          &.completed {
+            opacity: 0.7;
+            .quest-title { text-decoration: line-through; color: $color-text-muted; }
+          }
+        }
+      }
+    }
+  }
+}

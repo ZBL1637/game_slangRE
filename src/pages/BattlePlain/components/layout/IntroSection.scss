@@ -1,0 +1,256 @@
+@import '@/styles/variables';
+
+.intro-section {
+  width: 100%;
+  height: 100%; // Ensure section itself fills parent
+  display: flex;
+  flex-direction: column;
+  // Removed global padding/background settings as they are now handled per section
+  
+  // Part 1: Battle Scene Visuals
+  .battle-scene {
+    position: relative;
+    width: 100%;
+    // Occupy full container height to cover entire "game frame"
+    height: 100%; 
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; // Changed from center to flex-start
+    padding-top: 3rem; // Reduce top padding
+    overflow: hidden;
+    
+    // Background Image
+    background-image: url('@/assets/images/2background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    // Dark Overlay
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4); // Lighter overlay for the scene
+      z-index: 1;
+    }
+
+    .title-area {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      margin-bottom: 0; // Remove bottom margin
+      animation: fadeInDown 1s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 0; // Remove gap completely
+
+      .chapter-index {
+        color: $color-primary;
+        font-size: 0.75rem; // Smaller
+        font-weight: bold;
+        letter-spacing: 0.3em;
+        margin-bottom: -1.5rem; // Pull VERY close to title (overlapping margin)
+        position: relative;
+        z-index: 2; // Ensure it stays on top
+        text-transform: uppercase;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      }
+
+      h2 {
+        font-size: 2.5rem; // Smaller
+        @media (min-width: 768px) { font-size: 3.5rem; }
+        font-weight: 900;
+        color: $color-text-highlight;
+        margin-bottom: -0.5rem; // Pull subtitle closer
+        letter-spacing: -0.05em;
+        text-shadow: 0 0 20px rgba($color-primary, 0.6), 2px 2px 0px rgba(0,0,0,0.8);
+        line-height: 1; // Very tight line height
+      }
+
+      .subtitle {
+        font-size: 1rem; // Smaller
+        color: $color-text-muted;
+        font-style: italic;
+        font-weight: 300;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      }
+    }
+    
+    // HUD is absolutely positioned inside this container via its own styles
+
+    .dialogue-box {
+      @include rpg-panel;
+      background-color: rgba($color-bg-dark, 0.95);
+      backdrop-filter: blur(8px);
+      width: 90%; // Responsive width
+      max-width: 42rem;
+      // Position at bottom
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      border: 2px solid $color-accent;
+      animation: fadeIn 1s ease-out;
+      z-index: 10; // Ensure clickable
+      display: flex;
+      flex-direction: column;
+
+      .npc-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba($color-text-muted, 0.2);
+        width: 100%; // Ensure header takes full width
+
+        .avatar {
+          width: 4rem;
+          height: 4rem;
+          background-color: rgba($color-bg-panel, 0.5);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid rgba($color-warning, 0.5);
+          
+          .icon { color: $color-warning; }
+        }
+
+        .info {
+          h3 {
+            color: $color-warning;
+            font-weight: bold;
+            font-size: 1.125rem;
+            margin: 0;
+          }
+          p {
+            color: $color-text-muted;
+            font-size: 0.75rem;
+            margin: 0;
+          }
+        }
+      }
+
+      .dialogue-content {
+        min-height: auto; // Remove fixed min-height
+        width: 100%; // Ensure content takes full width
+
+        .narration-step {
+          animation: fadeIn 0.5s ease-out;
+          
+          .text {
+            color: $color-text-main;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+          }
+          
+          .shout {
+            color: $color-text-highlight;
+            font-size: 1.25rem;
+            font-weight: bold;
+            font-family: monospace;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            display: block;
+          }
+
+          .action-area {
+            .respond-btn {
+              @include rpg-button;
+              width: 100%;
+              background: rgba($color-bg-panel, 0.8);
+              border-color: $color-text-muted;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0.5rem;
+
+              &:hover {
+                background: rgba($color-bg-panel, 1);
+                border-color: $color-primary;
+              }
+            }
+          }
+        }
+
+        .choice-step {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          animation: fadeIn 0.3s ease-out;
+
+          .choice-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            border-radius: $border-radius-md;
+            background-color: rgba($color-bg-panel, 0.5);
+            border: 1px solid rgba($color-text-muted, 0.3);
+            transition: all 0.2s;
+            cursor: pointer;
+            color: $color-text-main;
+
+            &:hover {
+              background-color: rgba($color-bg-panel, 0.8);
+              border-color: $color-primary;
+              
+              .arrow { color: $color-primary; }
+            }
+
+            .arrow {
+              color: $color-text-muted;
+              margin-right: 0.75rem;
+              transition: color 0.2s;
+            }
+          }
+        }
+
+        .result-step {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          animation: fadeIn 0.5s ease-out;
+
+          .response-text {
+            color: $color-text-main;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            border-left: 4px solid $color-warning;
+            padding-left: 1rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background-color: rgba($color-warning, 0.05);
+            border-radius: 0 $border-radius-sm $border-radius-sm 0;
+          }
+
+          .start-btn {
+            @include rpg-button;
+            width: 100%;
+          }
+        }
+      }
+    }
+  } // End of .battle-scene
+} // End of .intro-section
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-2rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(2rem); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,89 @@
+@import '@/styles/variables';
+
+.rpg-btn {
+  position: relative;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: transparent;
+  font-family: $font-pixel;
+  color: $color-text-main;
+  padding: 0; // 由内部 span 控制
+  transition: all 0.2s;
+  
+  // 核心样式：像一个菜单项条目
+  .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center; // 水平居中
+    width: 100%; // 确保宽度填满以支持居中
+    padding: 0.5rem 1rem;
+    background-color: rgba($color-primary, 0.2);
+    border: 2px solid transparent;
+    border-radius: $border-radius-sm;
+    transition: all 0.2s;
+    position: relative; // 为 absolute arrow 做定位参考
+    
+    .pixel-arrow {
+      position: absolute; // 绝对定位，不占流空间
+      left: 0.5rem; // 固定在左侧
+      opacity: 0;
+      color: $color-accent;
+      transition: opacity 0.2s;
+      font-size: 0.8em;
+    }
+  }
+
+  // Hover 状态
+  &:hover:not(:disabled) {
+    .btn-content {
+      background-color: rgba($color-primary, 0.4);
+      border-color: $color-accent;
+      transform: scale(1.05);
+      color: #fff;
+      box-shadow: 0 0 8px rgba($color-accent, 0.4); // Add glow effect
+
+      .pixel-arrow {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Active 状态
+  &:active:not(:disabled) {
+    .btn-content {
+      transform: scale(0.98);
+      background-color: rgba($color-primary, 0.6);
+      box-shadow: none; // Remove glow on press
+    }
+  }
+
+  // Disabled 状态
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: grayscale(100%);
+  }
+
+  // Variants
+  &.rpg-btn-primary .btn-content {
+    background-color: $color-primary;
+    color: #fff;
+    &:hover { background-color: lighten($color-primary, 10%); }
+  }
+
+  &.rpg-btn-secondary .btn-content {
+    background-color: $color-bg-panel;
+    border: 1px solid $color-text-muted;
+  }
+
+  &.rpg-btn-danger .btn-content {
+    background-color: rgba($color-danger, 0.8);
+    &:hover { background-color: $color-danger; }
+  }
+
+  // Sizes
+  &.rpg-btn-sm { font-size: 0.8rem; }
+  &.rpg-btn-md { font-size: 1rem; }
+  &.rpg-btn-lg { font-size: 1.2rem; }
+}

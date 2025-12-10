@@ -1,0 +1,321 @@
+@import '@/styles/variables';
+
+.battle-plain-page {
+  // Game Window Frame Style (Consistent with TutorialVillage/WorldMap)
+  width: 85%;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  height: auto; // Let aspect-ratio define height
+  
+  border: $border-gold;
+  border-radius: $border-radius-md;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  // Internal Content Styling
+  background-color: darken($color-bg-dark, 5%);
+  color: $color-text-main;
+  overflow-y: auto; // Allow scrolling INSIDE the frame
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
+
+  // Custom Scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: $color-bg-dark;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $color-bg-panel;
+    border-radius: 4px;
+    border: 1px solid $color-text-muted;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: lighten($color-bg-panel, 10%);
+  }
+  
+  // Intro section handles its own full-screen layout
+  
+  .main-content {
+    max-width: 80rem; // container
+    margin: 0 auto;
+    padding: 6rem 1rem; // py-24 px-4
+    display: flex;
+    flex-direction: column;
+    gap: 8rem; // space-y-32
+    
+    section {
+      animation: fadeIn 1s ease-out;
+    }
+
+    // Part A: Skill Tree
+    .skill-tree-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      .intro-text {
+        text-align: center;
+        max-width: 48rem;
+        margin: 0 auto;
+        
+        h2 {
+          font-size: 2rem;
+          font-weight: bold;
+          color: $color-text-highlight;
+          margin-bottom: 1rem;
+        }
+
+        .divider {
+          height: 4px;
+          width: 5rem;
+          background-color: $color-primary;
+          margin: 0 auto 1rem;
+          border-radius: 2px;
+        }
+
+        p {
+          color: $color-text-muted;
+          line-height: 1.6;
+        }
+      }
+
+      .caption-box {
+        max-width: 42rem;
+        margin: 0 auto;
+        background-color: rgba($color-bg-panel, 0.5);
+        padding: 1.5rem;
+        border-radius: $border-radius-lg;
+        border: 1px solid rgba($color-text-muted, 0.2);
+        text-align: center;
+
+        .main-caption {
+          color: $color-text-main;
+          margin-bottom: 1rem;
+        }
+
+        .details {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          font-size: 0.875rem;
+          color: $color-text-muted;
+
+          @media (min-width: 768px) {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+      }
+    }
+
+    // Part B: Frequency & Network
+    .data-vis-section {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+
+      .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .header {
+          text-align: center;
+          max-width: 48rem;
+          margin: 0 auto;
+
+          h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: $color-text-highlight;
+            margin-bottom: 0.5rem;
+          }
+          
+          p { color: $color-text-muted; }
+        }
+      }
+
+      .network-layout {
+        display: grid;
+        gap: 2rem;
+        
+        @media (min-width: 1024px) {
+          grid-template-columns: 2fr 1fr;
+          align-items: center;
+        }
+
+        .case-study {
+          background-color: $color-bg-dark;
+          padding: 1.5rem;
+          border-radius: $border-radius-xl;
+          border: 1px solid rgba($color-text-muted, 0.2);
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          font-size: 0.875rem;
+          color: $color-text-muted;
+
+          .case-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+
+            .dot {
+              width: 0.5rem;
+              height: 0.5rem;
+              border-radius: 50%;
+              margin-top: 0.5rem;
+              flex-shrink: 0;
+
+              &.rose { background-color: $color-danger; }
+              &.blue { background-color: $color-info; }
+            }
+          }
+
+          .footer {
+            font-style: italic;
+            color: darken($color-text-muted, 10%);
+            padding-top: 1rem;
+            border-top: 1px solid rgba($color-text-muted, 0.1);
+          }
+        }
+      }
+    }
+
+    // Part C: Interactive Tasks
+    .interactive-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6rem;
+
+      .quiz-block {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        transition: opacity 1s, filter 1s;
+
+        &.locked {
+          opacity: 0.5;
+          pointer-events: none;
+          filter: blur(4px);
+        }
+
+        .quiz-header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+          margin-bottom: 2rem;
+
+          .tag {
+            background-color: rgba($color-primary, 0.2);
+            color: $color-primary;
+            padding: 0.25rem 0.75rem;
+            border-radius: $border-radius-sm;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid rgba($color-primary, 0.3);
+          }
+
+          h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: $color-text-highlight;
+            margin: 0;
+          }
+        }
+
+        .instruction {
+          text-align: center;
+          color: $color-text-muted;
+          max-width: 36rem;
+          margin: -1rem auto 2rem;
+        }
+      }
+
+      .achievement-toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 50;
+        animation: slideInRight 0.7s ease-out;
+        
+        .toast-content {
+          background-color: $color-bg-panel;
+          color: $color-text-main;
+          padding: 1rem;
+          border-radius: $border-radius-lg;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba($color-warning, 0.5);
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          max-width: 20rem;
+
+          .icon-box {
+            background-color: rgba($color-warning, 0.2);
+            padding: 0.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $color-warning;
+          }
+
+          .text-box {
+            h4 {
+              color: $color-warning;
+              font-size: 0.875rem;
+              font-weight: bold;
+              margin: 0;
+            }
+            .title {
+              font-weight: bold;
+              margin: 0;
+            }
+            .reward {
+              font-size: 0.75rem;
+              color: $color-text-muted;
+              margin-top: 0.25rem;
+            }
+          }
+        }
+      }
+    }
+    
+    .skip-option {
+       text-align: center;
+       opacity: 0.5;
+       transition: opacity 0.3s;
+       
+       &:hover { opacity: 1; }
+       
+       p {
+         font-size: 0.75rem;
+         color: $color-text-muted;
+         margin-bottom: 1rem;
+       }
+       
+       button {
+         background: none;
+         border: none;
+         color: $color-text-muted;
+         font-size: 0.75rem;
+         text-decoration: underline;
+         cursor: pointer;
+       }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
