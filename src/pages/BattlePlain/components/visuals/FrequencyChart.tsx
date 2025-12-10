@@ -41,7 +41,7 @@ export const FrequencyChart: React.FC<FrequencyChartProps> = ({ data }) => {
               contentStyle={{ backgroundColor: '#2d3436', border: 'none', borderRadius: '8px', color: '#fff' }}
             />
             <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={24} cursor="pointer">
-               {data.map((entry, index) => (
+               {data.map((_entry, index) => (
                 <Cell 
                     key={`cell-${index}`} 
                     fill={index === activeIndex ? '#00b894' : '#636e72'} 

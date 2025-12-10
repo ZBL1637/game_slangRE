@@ -9,7 +9,7 @@ import './TitlePage.scss';
 
 const TitlePage: React.FC = () => {
   const navigate = useNavigate();
-  const { state, resetProgress, unlockAchievement } = usePlayer();
+  const { state, resetProgress } = usePlayer();
   const [displayStats, setDisplayStats] = useState({ terms: 0, games: 0, cats: 0 });
   const [currentSubtitleIndex, setCurrentSubtitleIndex] = useState(0);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);

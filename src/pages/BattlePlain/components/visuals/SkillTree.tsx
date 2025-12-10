@@ -57,13 +57,13 @@ export const SkillTree: React.FC<SkillTreeProps> = ({ data }) => {
       .attr("fill", d => d.children ? "#00b894" : "#b2bec3") // Primary Green / Text Muted
       .attr("r", d => d.children ? 4 : 3)
       .attr("cursor", "pointer")
-      .on("mouseover", function(event, d) {
+      .on("mouseover", function(_event, d) {
         d3.select(this).attr("r", 6).attr("fill", "#fdcb6e"); // Accent Gold
         if(d.data.description) {
             setSelectedNode(d.data);
         }
       })
-      .on("mouseout", function(event, d) {
+      .on("mouseout", function(_event, d) {
         d3.select(this).attr("r", d.children ? 4 : 3).attr("fill", d.children ? "#00b894" : "#b2bec3");
       });
 

@@ -17,7 +17,7 @@ import './TutorialVillage.scss';
 
 const TutorialVillage: React.FC = () => {
   const navigate = useNavigate();
-  const { state: playerStats, addExp, unlockAchievement, unlockChapter } = usePlayer();
+  const { addExp, unlockAchievement, unlockChapter } = usePlayer();
   
   const [phase, setPhase] = useState<TutorialPhase>(TutorialPhase.ENTERING);
   const [dialogueQueue, setDialogueQueue] = useState<Dialogue[]>([]);

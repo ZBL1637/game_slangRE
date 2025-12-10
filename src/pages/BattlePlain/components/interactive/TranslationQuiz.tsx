@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { QuizQuestion } from '../../types';
-import { CheckCircle2, XCircle } from 'lucide-react';
 import './TranslationQuiz.scss';
 
 interface TranslationQuizProps {

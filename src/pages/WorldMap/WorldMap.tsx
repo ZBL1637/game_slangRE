@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { Panel } from '@/components/Panel/Panel';
-import { Button } from '@/components/Button/Button';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayer } from '@/context/PlayerContext';
 import './WorldMap.scss';

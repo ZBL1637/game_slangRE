@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GameFrame } from '@/components/GameFrame/GameFrame';
-import { Button } from '@/components/Button/Button';
 import { HUDBar } from '@/components/HUDBar/HUDBar'; // 使用新组件
 import { usePlayer } from '@/context/PlayerContext';
 import './Layout.scss';

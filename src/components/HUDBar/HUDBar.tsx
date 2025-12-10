@@ -21,7 +21,6 @@ export const HUDBar: React.FC<HUDBarProps> = ({
   title,
   onBack 
 }) => {
-  const { state } = usePlayer();
   const navigate = useNavigate();
   const expPercentage = Math.min(100, (currentExp / maxExp) * 100);
 
@@ -39,16 +38,16 @@ export const HUDBar: React.FC<HUDBarProps> = ({
           </div>
           
           <div className="hud-center">
-             <Button size="sm" variant="ghost" onClick={() => navigate('/world-map')}>
+             <Button size="sm" onClick={() => navigate('/world-map')}>
                <span style={{ marginRight: '4px' }}>🗺️</span> 地图
              </Button>
-             <Button size="sm" variant="ghost" onClick={() => navigate('/quests')}>
+             <Button size="sm" onClick={() => navigate('/quests')}>
                <span style={{ marginRight: '4px' }}>📜</span> 任务
              </Button>
-             <Button size="sm" variant="ghost" onClick={() => navigate('/dictionary')}>
+             <Button size="sm" onClick={() => navigate('/dictionary')}>
                <span style={{ marginRight: '4px' }}>📖</span> 图鉴
              </Button>
-             <Button size="sm" variant="ghost" onClick={() => navigate('/achievements')}>
+             <Button size="sm" onClick={() => navigate('/achievements')}>
                <span style={{ marginRight: '4px' }}>🏆</span> 成就
              </Button>
           </div>
