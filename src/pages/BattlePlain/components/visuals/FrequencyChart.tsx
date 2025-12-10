@@ -25,7 +25,7 @@ export const FrequencyChart: React.FC<FrequencyChartProps> = ({ data }) => {
             margin={{ top: 5, right: 10, left: 10, bottom: 5 }} // Minimal margins
             onClick={(state) => {
               if (state && state.activeTooltipIndex !== undefined) {
-                setActiveIndex(state.activeTooltipIndex);
+                setActiveIndex(state.activeTooltipIndex as number);
               }
             }}
           >

@@ -31,7 +31,7 @@ export const SkillTree: React.FC<SkillTreeProps> = ({ data }) => {
     const root = d3.hierarchy<SlangNode>(data).sort((a, b) => d3.ascending(a.data.name, b.data.name));
     tree(root);
 
-    const linkGenerator = d3.linkRadial<d3.HierarchyPointNode<SlangNode>, d3.HierarchyPointNode<SlangNode>>()
+    const linkGenerator = d3.linkRadial<d3.HierarchyLink<SlangNode>, d3.HierarchyPointNode<SlangNode>>()
       .angle(d => d.x)
       .radius(d => d.y);
 
@@ -51,7 +51,7 @@ export const SkillTree: React.FC<SkillTreeProps> = ({ data }) => {
       .selectAll("g")
       .data(root.descendants())
       .join("g")
-      .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`);
+      .attr("transform", d => `rotate(${(d.x || 0) * 180 / Math.PI - 90}) translate(${d.y || 0},0)`);
 
     node.append("circle")
       .attr("fill", d => d.children ? "#00b894" : "#b2bec3") // Primary Green / Text Muted
@@ -69,9 +69,9 @@ export const SkillTree: React.FC<SkillTreeProps> = ({ data }) => {
 
     node.append("text")
       .attr("dy", "0.31em")
-      .attr("x", d => d.x < Math.PI === !d.children ? 6 : -6)
-      .attr("text-anchor", d => d.x < Math.PI === !d.children ? "start" : "end")
-      .attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null)
+      .attr("x", d => (d.x || 0) < Math.PI === !d.children ? 6 : -6)
+      .attr("text-anchor", d => (d.x || 0) < Math.PI === !d.children ? "start" : "end")
+      .attr("transform", d => (d.x || 0) >= Math.PI ? "rotate(180)" : null)
       .text(d => d.data.name)
       .attr("fill", d => d.depth === 0 ? "#fff" : d.depth === 1 ? "#55efc4" : "#dfe6e9") // White / Light Green / Text Main
       .attr("font-weight", "bold")

@@ -40,6 +40,9 @@ export interface QuizQuestion {
   options: { id: string; text: string; isCorrect: boolean }[];
   correctFeedback: string;
   wrongFeedback: string;
+  wrongHint1?: string;
+  wrongHint2?: string;
+  wrongHint3?: string;
 }
 
 export interface LogSnippet {

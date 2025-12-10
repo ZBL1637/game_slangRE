@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Panel } from '@/components/Panel/Panel';
 import { Icon } from '@/components/Icon/Icon';
 import { Button } from '@/components/Button/Button';
-import { usePlayer } from '@/context/PlayerContext';
 import './HUDBar.scss';
 
 interface HUDBarProps {
