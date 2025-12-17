@@ -91,20 +91,11 @@ export const AIQueryPanel: React.FC<AIQueryPanelProps> = ({
       setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
       const msg = (err as Error)?.message || '';
-      if (msg.includes('AI 查询暂未在在线版启用')) {
-        const sysMsg: Message = {
-          id: `system-${Date.now()}`,
-          type: 'system',
-          content: '在线版暂未开启 AI 查询功能，已为你回退到本地词库解释（无需网络）。'
-        };
-        setMessages(prev => [...prev, sysMsg]);
-      }
-
       if (msg.includes('VITE_DEEPSEEK_API_KEY') || msg.includes('DeepSeek API Key')) {
         const sysMsg: Message = {
           id: `system-${Date.now()}`,
           type: 'system',
-          content: '未检测到 DeepSeek API Key。本地开发请在项目根目录创建 .env.local 并设置 VITE_DEEPSEEK_API_KEY，然后重启开发服务器。'
+          content: '未检测到 DeepSeek API Key。请在 src/services/aiQuery.ts 中填入 HARDCODED_KEY，或配置 VITE_DEEPSEEK_API_KEY 环境变量。'
         };
         setMessages(prev => [...prev, sysMsg]);
       }
@@ -113,7 +104,7 @@ export const AIQueryPanel: React.FC<AIQueryPanelProps> = ({
         const sysMsg: Message = {
           id: `system-${Date.now()}`,
           type: 'system',
-          content: '网络请求失败（可能被浏览器 CORS 拦截）。开发环境请使用本地代理（已内置 /api/deepseek 代理）；生产环境建议改为后端转发接口，避免在浏览器中暴露 API Key。'
+          content: '网络请求失败。可能是因为浏览器 CORS 限制（在线版直接调用 API 可能会被拦截）。请检查浏览器控制台 Network 面板，或考虑使用后端代理。'
         };
         setMessages(prev => [...prev, sysMsg]);
       }

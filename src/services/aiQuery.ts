@@ -113,14 +113,17 @@ async function readDeepSeekError(res: Response): Promise<string> {
  */
 export async function queryDeepSeek(term: string, signal?: AbortSignal): Promise<AiQueryResult> {
   const env = import.meta.env as any
-  if (import.meta.env.PROD) {
-    throw new Error('AI 查询暂未在在线版启用')
-  }
-  const defaultUrl = import.meta.env.DEV ? '/api/deepseek' : 'https://api.deepseek.com/v1/chat/completions'
+
+  // ⚠️ 警告：直接将 Key 写在代码中会导致 Key 泄露！
+  // 如果你确定要这么做，请将下方的 '' 替换为你的 DeepSeek API Key
+  const HARDCODED_KEY = ''
+
+  const defaultUrl = 'https://api.deepseek.com/v1/chat/completions'
   const url = env?.VITE_DEEPSEEK_API_URL || defaultUrl
-  const apiKey = env?.VITE_DEEPSEEK_API_KEY
+  const apiKey = HARDCODED_KEY || env?.VITE_DEEPSEEK_API_KEY
+
   if (!apiKey) {
-    throw new Error('缺少 VITE_DEEPSEEK_API_KEY（请在 .env.local 中设置，并重启开发服务器）')
+    throw new Error('缺少 DeepSeek API Key。请在 src/services/aiQuery.ts 中填入 HARDCODED_KEY，或配置 VITE_DEEPSEEK_API_KEY 环境变量。')
   }
 
   const model = env?.VITE_DEEPSEEK_MODEL || 'deepseek-chat'
