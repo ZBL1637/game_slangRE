@@ -8,35 +8,6 @@ export type AiQueryResult = {
   synonyms: string[]
 }
 
-const DEEPSEEK_API_KEY_STORAGE_KEY = 'deepseek_api_key'
-
-export function getStoredDeepSeekApiKey(): string | null {
-  try {
-    const v = localStorage.getItem(DEEPSEEK_API_KEY_STORAGE_KEY)
-    return v?.trim() ? v.trim() : null
-  } catch {
-    return null
-  }
-}
-
-export function setStoredDeepSeekApiKey(apiKey: string): void {
-  const normalized = String(apiKey || '').trim()
-  if (!normalized) return
-  try {
-    localStorage.setItem(DEEPSEEK_API_KEY_STORAGE_KEY, normalized)
-  } catch {
-    return
-  }
-}
-
-export function clearStoredDeepSeekApiKey(): void {
-  try {
-    localStorage.removeItem(DEEPSEEK_API_KEY_STORAGE_KEY)
-  } catch {
-    return
-  }
-}
-
 /**
  * 根据浏览器语言环境粗略判断当前语言（用于生成中英文提示词）。
  */
@@ -142,11 +113,14 @@ async function readDeepSeekError(res: Response): Promise<string> {
  */
 export async function queryDeepSeek(term: string, signal?: AbortSignal): Promise<AiQueryResult> {
   const env = import.meta.env as any
+  if (import.meta.env.PROD) {
+    throw new Error('AI 查询暂未在在线版启用')
+  }
   const defaultUrl = import.meta.env.DEV ? '/api/deepseek' : 'https://api.deepseek.com/v1/chat/completions'
   const url = env?.VITE_DEEPSEEK_API_URL || defaultUrl
-  const apiKey = env?.VITE_DEEPSEEK_API_KEY || getStoredDeepSeekApiKey()
+  const apiKey = env?.VITE_DEEPSEEK_API_KEY
   if (!apiKey) {
-    throw new Error('缺少 DeepSeek API Key（请设置 VITE_DEEPSEEK_API_KEY，或在页面内输入后保存）')
+    throw new Error('缺少 VITE_DEEPSEEK_API_KEY（请在 .env.local 中设置，并重启开发服务器）')
   }
 
   const model = env?.VITE_DEEPSEEK_MODEL || 'deepseek-chat'
