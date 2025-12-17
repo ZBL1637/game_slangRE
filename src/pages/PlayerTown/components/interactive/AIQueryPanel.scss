@@ -292,6 +292,100 @@ $text-secondary: rgba(255, 255, 255, 0.7);
       }
     }
 
+    .api-key-bar {
+      padding: 0.75rem 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.18);
+
+      .api-key-text {
+        font-size: 0.75rem;
+        color: $text-secondary;
+        line-height: 1.4;
+        flex: 1;
+      }
+
+      .api-key-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+
+        input {
+          width: min(280px, 45vw);
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 0.5rem;
+          padding: 0.5rem 0.75rem;
+          color: $text-primary;
+          font-size: 0.8125rem;
+          outline: none;
+
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+
+        button {
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          background: rgba(255, 255, 255, 0.08);
+          color: $text-primary;
+          padding: 0.5rem 0.75rem;
+          border-radius: 0.5rem;
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+
+          &:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.28);
+          }
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+
+        .save-btn {
+          background: rgba(127, 0, 86, 0.22);
+          border-color: rgba(127, 0, 86, 0.35);
+
+          &:hover:not(:disabled) {
+            background: rgba(127, 0, 86, 0.32);
+            border-color: rgba(127, 0, 86, 0.55);
+          }
+        }
+
+        .clear-btn {
+          background: rgba(239, 68, 68, 0.16);
+          border-color: rgba(239, 68, 68, 0.28);
+
+          &:hover:not(:disabled) {
+            background: rgba(239, 68, 68, 0.24);
+            border-color: rgba(239, 68, 68, 0.42);
+          }
+        }
+      }
+
+      &.missing-key {
+        border-top-color: rgba(251, 191, 36, 0.25);
+      }
+
+      &.has-key {
+        border-top-color: rgba(34, 197, 94, 0.25);
+      }
+    }
+
     // 输入区域
     .input-area {
       padding: 1rem 1.5rem;

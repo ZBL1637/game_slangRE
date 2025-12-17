@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Search, Send, Bot, User, Sparkles, BookOpen } from 'lucide-react';
 import { FLOATING_TERMS, SCRIPT } from '../../data';
-import { queryDeepSeek, AiQueryResult } from '@/services/aiQuery';
+import { queryDeepSeek, AiQueryResult, clearStoredDeepSeekApiKey, getStoredDeepSeekApiKey, setStoredDeepSeekApiKey } from '@/services/aiQuery';
 import './AIQueryPanel.scss';
 
 interface AIQueryPanelProps {
@@ -30,6 +30,12 @@ export const AIQueryPanel: React.FC<AIQueryPanelProps> = ({
   onClose
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const [apiKeyDraft, setApiKeyDraft] = useState('');
+  const [apiKeyVisible, setApiKeyVisible] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState<boolean>(() => {
+    const env = import.meta.env as any;
+    return Boolean(env?.VITE_DEEPSEEK_API_KEY || getStoredDeepSeekApiKey());
+  });
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -54,6 +60,36 @@ export const AIQueryPanel: React.FC<AIQueryPanelProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
+
+  const refreshHasApiKey = () => {
+    const env = import.meta.env as any;
+    setHasApiKey(Boolean(env?.VITE_DEEPSEEK_API_KEY || getStoredDeepSeekApiKey()));
+  };
+
+  const handleSaveApiKey = () => {
+    const normalized = apiKeyDraft.trim();
+    if (!normalized) return;
+    setStoredDeepSeekApiKey(normalized);
+    setApiKeyDraft('');
+    refreshHasApiKey();
+    const sysMsg: Message = {
+      id: `system-${Date.now()}`,
+      type: 'system',
+      content: '已保存 DeepSeek API Key（仅保存在当前浏览器本地）。'
+    };
+    setMessages(prev => [...prev, sysMsg]);
+  };
+
+  const handleClearApiKey = () => {
+    clearStoredDeepSeekApiKey();
+    refreshHasApiKey();
+    const sysMsg: Message = {
+      id: `system-${Date.now()}`,
+      type: 'system',
+      content: '已清除本地保存的 DeepSeek API Key。'
+    };
+    setMessages(prev => [...prev, sysMsg]);
+  };
 
   // 处理查询
   const handleQuery = async (term: string) => {
@@ -91,13 +127,14 @@ export const AIQueryPanel: React.FC<AIQueryPanelProps> = ({
       setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
       const msg = (err as Error)?.message || '';
-      if (msg.includes('VITE_DEEPSEEK_API_KEY')) {
+      if (msg.includes('DeepSeek API Key') || msg.includes('VITE_DEEPSEEK_API_KEY')) {
         const sysMsg: Message = {
           id: `system-${Date.now()}`,
           type: 'system',
-          content: '未检测到 DeepSeek API Key。请在项目根目录（package.json 所在目录）创建 .env.local，设置 VITE_DEEPSEEK_API_KEY，然后重启开发服务器；如果你使用的是 npm run preview，请重新执行 npm run build 后再预览。'
+          content: '未检测到 DeepSeek API Key。GitHub Pages 部署环境无法读取 .env，请在下方输入你的 Key 并保存（仅存本地浏览器）；本地开发也可继续使用 .env.local 的 VITE_DEEPSEEK_API_KEY。'
         };
         setMessages(prev => [...prev, sysMsg]);
+        refreshHasApiKey();
       }
 
       if (msg.includes('Failed to fetch') || msg.toLowerCase().includes('networkerror') || msg.toLowerCase().includes('cors')) {
@@ -281,6 +318,38 @@ export const AIQueryPanel: React.FC<AIQueryPanelProps> = ({
             </div>
           </div>
         )}
+
+        {/* API Key 配置 */}
+        <div className={`api-key-bar ${hasApiKey ? 'has-key' : 'missing-key'}`} onClick={e => e.stopPropagation()}>
+          <div className="api-key-text">
+            {hasApiKey ? 'DeepSeek API Key 已配置（本机浏览器）' : 'GitHub Pages 无法读取 .env：请输入 DeepSeek API Key（仅存本地）'}
+          </div>
+          <div className="api-key-controls">
+            {!hasApiKey ? (
+              <>
+                <input
+                  value={apiKeyDraft}
+                  onChange={e => setApiKeyDraft(e.target.value)}
+                  placeholder="sk-..."
+                  type={apiKeyVisible ? 'text' : 'password'}
+                  autoComplete="off"
+                  spellCheck={false}
+                  disabled={isTyping}
+                />
+                <button type="button" className="toggle-btn" onClick={() => setApiKeyVisible(v => !v)} disabled={isTyping}>
+                  {apiKeyVisible ? '隐藏' : '显示'}
+                </button>
+                <button type="button" className="save-btn" onClick={handleSaveApiKey} disabled={!apiKeyDraft.trim() || isTyping}>
+                  保存
+                </button>
+              </>
+            ) : (
+              <button type="button" className="clear-btn" onClick={handleClearApiKey} disabled={isTyping}>
+                清除
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* 输入区域 */}
         <form className="input-area" onSubmit={handleSubmit}>
