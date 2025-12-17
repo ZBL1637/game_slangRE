@@ -116,7 +116,7 @@ export async function queryDeepSeek(term: string, signal?: AbortSignal): Promise
 
   // ⚠️ 警告：直接将 Key 写在代码中会导致 Key 泄露！
   // 如果你确定要这么做，请将下方的 '' 替换为你的 DeepSeek API Key
-  const HARDCODED_KEY = ''
+  const HARDCODED_KEY = 'sk-c19e575e2b8045e5932bcce9f2e5e538'
 
   const defaultUrl = 'https://api.deepseek.com/v1/chat/completions'
   const url = env?.VITE_DEEPSEEK_API_URL || defaultUrl
