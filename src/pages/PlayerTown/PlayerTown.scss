@@ -1,0 +1,263 @@
+// ============================================================================
+// 第三章：玩家生态城镇 - 主样式（像素艺术风格）
+// ============================================================================
+
+// 变量 - RPG像素艺术风格配色
+$primary-color: #8B4513; // 棕色
+$secondary-color: #DAA520; // 金色
+$accent-purple: #9B59B6;
+$accent-blue: #3498DB;
+$bg-dark: #1a1410;
+$bg-gradient: linear-gradient(180deg, #2c1810 0%, #1a1410 50%, #0f0a08 100%);
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.8);
+$text-muted: rgba(255, 255, 255, 0.5);
+
+// 动画
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(218, 165, 32, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(218, 165, 32, 0.8); }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pixelBorder {
+  0%, 100% { border-color: $secondary-color; }
+  50% { border-color: lighten($secondary-color, 20%); }
+}
+
+// 通用动画类
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+// 主容器
+.player-town-page {
+  min-height: 100vh;
+  background: $bg-gradient;
+  color: $text-primary;
+  position: relative;
+  overflow: hidden;
+
+  // 像素艺术背景纹理
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139, 69, 19, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .main-content {
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// 进度提示
+.progress-hint {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(26, 20, 16, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 2px solid $secondary-color;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 100;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+
+  span {
+    font-size: 0.875rem;
+    color: $text-secondary;
+  }
+
+  .complete-hint {
+    color: #22c55e;
+    font-weight: 600;
+  }
+}
+
+// 成就通知
+.achievement-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: scaleIn 0.3s ease-out;
+
+  .toast-content {
+    background: linear-gradient(135deg, #2c1810, #1a1410);
+    border: 3px solid #fbbf24;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.4);
+    animation: pixelBorder 2s ease-in-out infinite;
+
+    .icon-box {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $bg-dark;
+      border: 3px solid #fff;
+    }
+
+    .text-box {
+      h4 {
+        font-size: 0.75rem;
+        color: #fbbf24;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 0.25rem;
+      }
+
+      .title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 0.25rem;
+      }
+
+      .reward {
+        font-size: 0.875rem;
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+// 技能获得通知
+.skill-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideInFromBottom 0.5s ease-out;
+
+  .toast-content {
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(218, 165, 32, 0.95));
+    border: 2px solid $text-primary;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 40px rgba(139, 69, 19, 0.5);
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .text-box {
+      h4 {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.25rem;
+      }
+
+      .title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 0.125rem;
+      }
+
+      .desc {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+}
+
+// 结尾覆盖层
+.outro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 10, 8, 0.95);
+  z-index: 200;
+}

@@ -1,0 +1,350 @@
+@import '@/styles/variables';
+
+.card-placement-minigame {
+  min-height: 400px;
+
+  .game-instruction {
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    p {
+      color: $color-text-main;
+      margin: 0.5rem 0;
+    }
+    
+    .hint {
+      font-size: 0.875rem;
+      color: $color-text-muted;
+      font-style: italic;
+    }
+  }
+
+  .battlefield {
+    background: linear-gradient(180deg, rgba(#1a1a2e, 0.8) 0%, rgba(#16213e, 0.8) 100%);
+    border: 2px solid rgba($color-text-muted, 0.3);
+    border-radius: $border-radius-lg;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    
+    .boss-area {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px dashed rgba($color-danger, 0.3);
+      
+      .boss-icon {
+        font-size: 3rem;
+        animation: bossIdle 2s infinite;
+      }
+      
+      span {
+        display: block;
+        color: $color-danger;
+        font-weight: bold;
+        margin-top: 0.5rem;
+      }
+    }
+    
+    .slots-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      
+      .slot {
+        background-color: rgba($color-bg-panel, 0.3);
+        border: 2px dashed rgba($color-text-muted, 0.5);
+        border-radius: $border-radius-md;
+        padding: 1rem;
+        min-height: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        cursor: pointer;
+        
+        .slot-label {
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin-bottom: 0.5rem;
+        }
+        
+        .slot-placeholder {
+          color: rgba($color-text-muted, 0.5);
+          font-size: 0.875rem;
+        }
+        
+        .placed-card {
+          background-color: rgba($color-bg-panel, 0.8);
+          border: 2px solid $color-primary;
+          border-radius: $border-radius-sm;
+          padding: 0.75rem 1.5rem;
+          text-align: center;
+          
+          .card-name {
+            display: block;
+            color: $color-text-main;
+            font-weight: bold;
+          }
+          
+          .remove-hint {
+            display: block;
+            font-size: 0.625rem;
+            color: $color-text-muted;
+            margin-top: 0.25rem;
+          }
+          
+          &.tank {
+            border-color: $color-info;
+          }
+          
+          &.healer {
+            border-color: $color-success;
+          }
+          
+          &.dps {
+            border-color: $color-danger;
+          }
+        }
+        
+        &.droppable {
+          border-color: $color-primary;
+          background-color: rgba($color-primary, 0.1);
+        }
+        
+        &.filled {
+          border-style: solid;
+        }
+      }
+    }
+  }
+
+  .cards-pool {
+    margin-bottom: 2rem;
+    
+    h4 {
+      color: $color-text-main;
+      margin: 0 0 1rem;
+      text-align: center;
+    }
+    
+    .cards-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      
+      .role-card {
+        background-color: rgba($color-bg-panel, 0.5);
+        border: 2px solid rgba($color-text-muted, 0.3);
+        border-radius: $border-radius-md;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        .card-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.5rem;
+          
+          .role-icon {
+            font-size: 1.25rem;
+          }
+          
+          .card-name {
+            font-weight: bold;
+            color: $color-text-main;
+          }
+        }
+        
+        .card-desc {
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin: 0;
+        }
+        
+        &.tank {
+          border-color: rgba($color-info, 0.5);
+          
+          &:hover, &.selected {
+            border-color: $color-info;
+            background-color: rgba($color-info, 0.1);
+          }
+        }
+        
+        &.healer {
+          border-color: rgba($color-success, 0.5);
+          
+          &:hover, &.selected {
+            border-color: $color-success;
+            background-color: rgba($color-success, 0.1);
+          }
+        }
+        
+        &.dps {
+          border-color: rgba($color-danger, 0.5);
+          
+          &:hover, &.selected {
+            border-color: $color-danger;
+            background-color: rgba($color-danger, 0.1);
+          }
+        }
+        
+        &.selected {
+          transform: scale(1.05);
+          box-shadow: 0 0 15px rgba($color-primary, 0.3);
+        }
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: $border-radius-sm;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &.reset-btn {
+        background-color: rgba($color-text-muted, 0.2);
+        color: $color-text-main;
+        
+        &:hover {
+          background-color: rgba($color-text-muted, 0.3);
+        }
+      }
+      
+      &.check-btn {
+        background-color: $color-primary;
+        color: white;
+        
+        &:hover:not(:disabled) {
+          background-color: lighten($color-primary, 10%);
+        }
+        
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  // 结果屏幕
+  .result-screen {
+    text-align: center;
+    padding: 2rem;
+    
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      
+      &.success {
+        animation: bounce 1s infinite;
+      }
+      
+      &.failed {
+        animation: shake 0.5s;
+      }
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .feedback-list {
+      background-color: rgba($color-bg-panel, 0.5);
+      border-radius: $border-radius-md;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+      
+      p {
+        margin: 0.5rem 0;
+        font-size: 0.875rem;
+        
+        &.correct {
+          color: $color-success;
+        }
+        
+        &.wrong {
+          color: $color-danger;
+        }
+      }
+    }
+    
+    .unlocked-terms {
+      margin: 1.5rem 0;
+      
+      p {
+        color: $color-text-muted;
+        margin-bottom: 0.75rem;
+      }
+      
+      .term-list {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        
+        .term {
+          padding: 0.5rem 1rem;
+          background-color: rgba($color-warning, 0.2);
+          color: $color-warning;
+          border-radius: $border-radius-md;
+          font-weight: bold;
+        }
+      }
+    }
+    
+    .continue-btn, .retry-btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: $border-radius-md;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .continue-btn {
+      background-color: $color-primary;
+      color: white;
+      
+      &:hover {
+        background-color: lighten($color-primary, 10%);
+      }
+    }
+    
+    .retry-btn {
+      background-color: rgba($color-text-muted, 0.2);
+      color: $color-text-main;
+      
+      &:hover {
+        background-color: rgba($color-text-muted, 0.3);
+      }
+    }
+  }
+}
+
+@keyframes bossIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}

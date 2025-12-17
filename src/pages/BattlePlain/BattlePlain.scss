@@ -1,0 +1,376 @@
+@import '@/styles/variables';
+
+// 像素艺术风格变量
+$pixel-border-color: #6b5b95;
+$pixel-glow-purple: #9b59b6;
+$pixel-glow-cyan: #00d4ff;
+$pixel-bg-dark: #1a1a2e;
+$pixel-bg-panel: #16213e;
+
+.battle-plain-page {
+  // 游戏窗口框架样式 - 像素艺术风格
+  width: 85%;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  
+  // 像素边框效果
+  border: 4px solid $pixel-border-color;
+  box-shadow: 
+    0 0 0 2px #1a1a2e,
+    0 0 0 4px $pixel-border-color,
+    0 0 20px rgba($pixel-glow-purple, 0.3),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+  
+  background-color: $pixel-bg-dark;
+  color: $color-text-main;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  // 扫描线效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.1) 2px,
+      rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.3;
+  }
+
+  .global-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    pointer-events: none;
+    
+    // 添加渐变叠加
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba($pixel-bg-dark, 0.2) 0%,
+        rgba($pixel-bg-dark, 0.1) 50%,
+        rgba($pixel-bg-dark, 0.4) 100%
+      );
+    }
+  }
+
+  .battle-plain-scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+
+    // 像素风格滚动条
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+    &::-webkit-scrollbar-track {
+      background: $pixel-bg-dark;
+      border-left: 2px solid $pixel-border-color;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, $pixel-glow-purple, darken($pixel-glow-purple, 20%));
+      border: 2px solid $pixel-border-color;
+      
+      &:hover {
+        background: linear-gradient(to bottom, lighten($pixel-glow-purple, 10%), $pixel-glow-purple);
+      }
+    }
+  }
+  
+  .main-content {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 4rem 1rem 8rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    
+    section {
+      animation: pixelFadeIn 0.8s ease-out;
+    }
+  }
+
+  // 跳过选项 - 像素风格
+  .timeline-skip-option {
+    text-align: center;
+    opacity: 0.8;
+    transition: all 0.3s;
+    
+    width: 80%;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    padding: 1rem;
+
+    // 像素边框样式
+    background: rgba($pixel-bg-panel, 0.95);
+    border: 3px solid #ef4444;
+    box-shadow: 
+      0 0 0 1px $pixel-bg-dark,
+      0 0 15px rgba(#ef4444, 0.3),
+      inset 0 0 20px rgba(0, 0, 0, 0.5);
+    
+    &:hover { 
+      opacity: 1;
+      box-shadow: 
+        0 0 0 1px $pixel-bg-dark,
+        0 0 25px rgba(#ef4444, 0.5),
+        inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    p {
+      font-size: 0.875rem;
+      color: #ef4444;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px rgba(#ef4444, 0.5);
+      font-family: 'Press Start 2P', monospace, sans-serif;
+    }
+    
+    button {
+      background: none;
+      border: none;
+      color: lighten(#ef4444, 10%);
+      font-size: 0.875rem;
+      text-decoration: underline;
+      cursor: pointer;
+      text-shadow: 0 0 10px rgba(#ef4444, 0.5);
+      transition: all 0.3s;
+      
+      &:hover {
+        color: white;
+        text-shadow: 0 0 15px rgba(white, 0.8);
+      }
+    }
+
+    @media (max-width: 768px) {
+      width: 90%;
+      padding: 0.75rem;
+      
+      p, button {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      width: 95%;
+      padding: 0.5rem;
+      margin-top: 1.5rem;
+    }
+  }
+
+  // 成就通知 - 像素风格
+  .achievement-toast {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    animation: pixelSlideInRight 0.7s ease-out;
+    pointer-events: none;
+    
+    .toast-content {
+      background: linear-gradient(135deg, $pixel-bg-panel, darken($pixel-bg-panel, 10%));
+      color: $color-text-main;
+      padding: 1rem;
+      box-shadow: 
+        0 0 0 3px $pixel-border-color,
+        0 0 20px rgba($color-warning, 0.4),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba($color-warning, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 20rem;
+
+      .icon-box {
+        background: linear-gradient(135deg, rgba($color-warning, 0.3), rgba($color-warning, 0.1));
+        padding: 0.75rem;
+        border: 2px solid $color-warning;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-warning;
+        animation: pixelPulse 2s infinite;
+      }
+
+      .text-box {
+        h4 {
+          color: $color-warning;
+          font-size: 0.875rem;
+          font-weight: bold;
+          margin: 0;
+          text-shadow: 0 0 10px rgba($color-warning, 0.5);
+        }
+        .title {
+          font-weight: bold;
+          margin: 0;
+        }
+        .reward {
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin-top: 0.25rem;
+        }
+      }
+    }
+  }
+
+  // 技能通知 - 像素风格
+  .skill-toast {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1000;
+    animation: pixelSlideInLeft 0.7s ease-out;
+    pointer-events: none;
+    
+    .toast-content {
+      background: linear-gradient(135deg, $pixel-bg-panel, darken($pixel-bg-panel, 10%));
+      color: $color-text-main;
+      padding: 1rem;
+      box-shadow: 
+        0 0 0 3px $pixel-border-color,
+        0 0 20px rgba($pixel-glow-cyan, 0.4),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba($pixel-glow-cyan, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 20rem;
+
+      .icon-box {
+        background: linear-gradient(135deg, rgba($pixel-glow-cyan, 0.3), rgba($pixel-glow-cyan, 0.1));
+        padding: 0.75rem;
+        border: 2px solid $pixel-glow-cyan;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $pixel-glow-cyan;
+        animation: pixelPulse 2s infinite;
+      }
+
+      .text-box {
+        h4 {
+          color: $pixel-glow-cyan;
+          font-size: 0.875rem;
+          font-weight: bold;
+          margin: 0;
+          text-shadow: 0 0 10px rgba($pixel-glow-cyan, 0.5);
+        }
+        .title {
+          font-weight: bold;
+          margin: 0;
+        }
+        .desc {
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin-top: 0.25rem;
+        }
+      }
+    }
+  }
+
+  // 结尾覆盖层
+  .outro-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    animation: pixelFadeIn 0.5s ease-out;
+  }
+}
+
+// 像素风格动画
+@keyframes pixelFadeIn {
+  from { 
+    opacity: 0;
+    filter: brightness(2);
+  }
+  to { 
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+@keyframes pixelSlideInRight {
+  from { 
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to { 
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes pixelSlideInLeft {
+  from { 
+    transform: translateX(-100%);
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to { 
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes pixelPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 10px currentColor;
+  }
+  50% { 
+    transform: scale(1.1);
+    box-shadow: 0 0 20px currentColor;
+  }
+}
+
+@keyframes pixelGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba($pixel-glow-purple, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba($pixel-glow-purple, 0.6);
+  }
+}
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 1;
+  }
+}

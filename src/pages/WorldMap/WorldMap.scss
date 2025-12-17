@@ -1,0 +1,184 @@
+@import '@/styles/variables';
+
+.world-map-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+
+  .map-header {
+    display: none;
+  }
+
+  .map-viewport {
+    width: 85%; // Reduce width to 85%
+    margin: 0 auto; // Center horizontally
+    // Maintain 16:9 aspect ratio based on width
+    aspect-ratio: 16 / 9;
+    
+    background-color: #2b3a2a; 
+    background-image: url('@/assets/images/world-map.png'), url('@/assets/images/world-map.svg');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: $border-radius-md;
+    border: $border-gold;
+    position: relative;
+    overflow: hidden; 
+    
+    // 模拟地图节点
+      .map-node {
+        position: absolute; // Ensure absolute positioning works with inline styles
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        z-index: 10; // Ensure nodes are above background
+        
+        // Anchor the node so the icon center is at the coordinates
+        transform: translate(-50%, -50%); 
+        
+      .node-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(0,0,0,0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        border: 2px solid rgba(255,255,255,0.3);
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      
+      // Active Target Highlight
+      &.active-target {
+        z-index: 50;
+        
+        .node-icon {
+            border-color: #facc15;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+            transform: scale(1.1);
+            background: rgba(0,0,0,0.8);
+        }
+      }
+
+      // Interaction Prompt
+      .interaction-prompt {
+          position: absolute;
+          top: -40px;
+          background: #fff;
+          color: #000;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-weight: bold;
+          font-size: 0.8rem;
+          white-space: nowrap;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          display: flex;
+          gap: 6px;
+          align-items: center;
+          animation: bounce 1s infinite;
+          
+          &.locked {
+              background: #444;
+              color: #aaa;
+          }
+
+          .key {
+              background: #000;
+              color: #fff;
+              padding: 2px 4px;
+              border-radius: 2px;
+              font-size: 0.7rem;
+              font-family: monospace;
+          }
+      }
+
+      // 状态样式
+      &.status-locked {
+        opacity: 0.7;
+        filter: grayscale(0.8);
+        .node-icon { background: #333; }
+      }
+      
+      &.status-unlocked {
+        .node-icon { 
+          background: rgba($color-primary, 0.8);
+          border-color: #fff;
+        }
+      }
+      
+      &.status-completed {
+        .node-icon {
+          background: rgba($color-accent, 0.8);
+          border-color: #ffd700;
+        }
+      }
+    }
+  }
+
+  // UI Overlay
+  .map-ui-overlay {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      pointer-events: none;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      
+      .control-hint {
+          background: rgba(0,0,0,0.7);
+          color: #fff;
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          border: 1px solid #444;
+      }
+
+      .region-info-card {
+          background: #EADDcf;
+          border: 4px solid #5e412f;
+          padding: 1rem;
+          width: 240px;
+          border-radius: 4px;
+          box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+          color: #3e2723;
+          
+          h3 {
+              margin: 0 0 0.5rem 0;
+              font-size: 1.1rem;
+              color: #5d4037;
+              border-bottom: 2px solid #a1887f;
+              padding-bottom: 4px;
+          }
+
+          .meta {
+              display: flex;
+              gap: 12px;
+              font-size: 0.8rem;
+              font-weight: bold;
+              margin-bottom: 0.5rem;
+              color: #795548;
+          }
+
+          p {
+              font-size: 0.85rem;
+              line-height: 1.4;
+              margin: 0;
+          }
+      }
+  }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}

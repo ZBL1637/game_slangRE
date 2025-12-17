@@ -1,0 +1,229 @@
+// ============================================================================
+// PlayerDisplay - 玩家显示样式（统一开场动画配色）
+// ============================================================================
+@import '../../../../styles/variables';
+
+$primary-color: $color-primary;
+$secondary-color: $color-info;
+$accent-color: $color-accent;
+$danger-color: $color-danger;
+$background-dark: $color-bg-dark;
+$background-medium: rgba($color-bg-panel, 1);
+$text-primary: $color-text-main;
+$text-secondary: $color-text-muted;
+
+@keyframes avatarGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba($primary-color, 0.5); }
+  50% { box-shadow: 0 0 40px rgba($primary-color, 0.8); }
+}
+
+.player-display {
+  grid-column: 1;
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem;
+
+  .player-entity {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba($background-medium, 0.8);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba($primary-color, 0.3);
+
+    &.animating {
+      animation: avatarGlow 0.5s ease-in-out;
+    }
+
+    .player-avatar {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .avatar-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba($primary-color, 0.3), transparent);
+        border-radius: 50%;
+      }
+
+      .avatar-icon {
+        font-size: 3rem;
+        z-index: 1;
+      }
+
+      .shield-indicator {
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        background: rgba($secondary-color, 0.9);
+        padding: 0.25rem 0.5rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+
+        .shield-icon {
+          font-size: 0.9rem;
+        }
+
+        .shield-value {
+          color: white;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .player-info {
+      min-width: 200px;
+
+      .player-name {
+        margin-bottom: 0.75rem;
+
+        .name-text {
+          font-size: 1.25rem;
+          font-weight: bold;
+          color: $text-primary;
+        }
+      }
+
+      .hp-bar-container {
+        .hp-bar {
+          position: relative;
+          height: 20px;
+          background: rgba($text-secondary, 0.2);
+          border-radius: 0.5rem;
+          overflow: hidden;
+
+          &.healthy .hp-fill {
+            background: linear-gradient(90deg, $primary-color, lighten($primary-color, 10%));
+          }
+
+          &.warning .hp-fill {
+            background: linear-gradient(90deg, $accent-color, lighten($accent-color, 10%));
+          }
+
+          &.danger .hp-fill {
+            background: linear-gradient(90deg, $danger-color, lighten($danger-color, 10%));
+          }
+
+          .hp-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+          }
+
+          .hp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+
+      .status-effects {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+
+        .effect-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.25rem 0.5rem;
+          border-radius: 1rem;
+          font-size: 0.75rem;
+
+          &.crit_boost {
+            background: rgba($accent-color, 0.2);
+          }
+
+          &.shield {
+            background: rgba($secondary-color, 0.2);
+          }
+
+          &.damage_convert {
+            background: rgba($secondary-color, 0.2);
+          }
+
+          .effect-icon {
+            font-size: 0.9rem;
+          }
+
+          .effect-turns {
+            color: $text-secondary;
+          }
+        }
+      }
+
+      .crit-boost-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background: rgba($accent-color, 0.2);
+        border-radius: 0.5rem;
+        width: fit-content;
+
+        .boost-icon {
+          font-size: 1rem;
+        }
+
+        .boost-text {
+          font-size: 0.85rem;
+          color: $accent-color;
+          font-weight: bold;
+        }
+      }
+
+      .convert-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background: rgba($secondary-color, 0.2);
+        border-radius: 0.5rem;
+        width: fit-content;
+
+        .convert-icon {
+          font-size: 1rem;
+        }
+
+        .convert-text {
+          font-size: 0.85rem;
+          color: $secondary-color;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .player-display {
+    .player-entity {
+      flex-direction: column;
+      text-align: center;
+      padding: 1rem;
+
+      .player-info {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+  }
+}

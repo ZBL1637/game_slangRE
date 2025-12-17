@@ -1,0 +1,619 @@
+@import '@/styles/variables';
+
+.outro-section {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+  cursor: pointer;
+
+  // 背景特效层
+  .background-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    // 添加一个半透明遮罩，确保背景图不会太抢眼，且内容可读
+    background: rgba(15, 23, 42, 0.4); 
+
+    .time-vortex {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150vmax;
+      height: 150vmax;
+      background: radial-gradient(circle, rgba($color-primary, 0.05) 0%, transparent 60%);
+      transform: translate(-50%, -50%);
+      animation: vortexRotate 60s linear infinite;
+    }
+
+    .time-particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba($color-primary, 0.6);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba($color-primary, 0.8);
+      animation: floatParticle linear infinite;
+    }
+  }
+  
+  .outro-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 9rem;
+    overflow-y: auto;
+    
+    .chapter-recap {
+      margin-bottom: 2rem;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+      
+      .chapter-tag {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: rgba($color-success, 0.1);
+        color: $color-success;
+        border: 1px solid rgba($color-success, 0.3);
+        border-radius: 2rem;
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0 15px rgba($color-success, 0.2);
+        animation: glowPulse 3s infinite;
+      }
+      
+      h2 {
+        font-size: clamp(2.25rem, 4vw, 3.5rem);
+        background: linear-gradient(to right, #fff, lighten($color-primary, 20%));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 0 0.5rem;
+        text-shadow: 0 0 30px rgba($color-primary, 0.3);
+        letter-spacing: 0.05em;
+      }
+      
+      .subtitle {
+        color: $color-text-muted;
+        font-size: 1.1rem;
+        margin: 0;
+        opacity: 0.8;
+      }
+    }
+    
+    // 对话框样式重构 - 类似IntroSection的DialogBox
+    .narration-wrapper {
+      width: 90%;
+      max-width: 900px;
+      display: flex;
+      align-items: flex-end;
+      gap: 0; // Close gap
+      z-index: 10;
+      margin-top: auto;
+      pointer-events: none; // Allow clicks to pass through around it
+
+      .character-portrait {
+        flex-shrink: 0;
+        width: 200px; // Larger portrait
+        height: auto;
+        margin-right: -40px; // Overlap with text box
+        margin-bottom: -10px;
+        z-index: 1;
+        animation: slideInLeft 0.5s ease-out;
+        filter: drop-shadow(0 0 15px rgba($color-primary, 0.4));
+        
+        img {
+          width: 100%;
+          height: auto;
+          display: block;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      .narration-box {
+        pointer-events: auto;
+        flex-grow: 1;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(12px);
+        padding: 2rem 2.5rem;
+        border-radius: $border-radius-lg;
+        border: 2px solid rgba($color-text-muted, 0.3);
+        border-top: 2px solid rgba($color-text-muted, 0.5);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        text-align: left;
+        position: relative;
+        z-index: 0;
+        transition: all 0.3s ease;
+        
+        .speaker-name {
+          position: absolute;
+          top: -16px;
+          left: 40px; // Shift right to clear portrait overlap
+          background: linear-gradient(135deg, $color-primary, darken($color-primary, 10%));
+          color: #fff;
+          padding: 4px 20px;
+          border-radius: 20px;
+          font-size: 0.9rem;
+          font-weight: 800;
+          letter-spacing: 0.05em;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+          border: 2px solid darken($color-bg-dark, 5%);
+          
+          &::after {
+            display: none;
+          }
+        }
+        
+        .narration-text {
+          font-size: 1.2rem;
+          color: $color-text-main;
+          line-height: 1.6;
+          margin: 0.5rem 0 0 0; // Space for name tag
+          animation: fadeIn 0.5s ease-out;
+          width: 100%;
+          padding-left: 20px; // Space from portrait overlap
+        }
+        
+        .click-hint {
+          position: absolute;
+          bottom: 1rem;
+          right: 2rem;
+          font-size: 0.75rem;
+          color: $color-primary;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          animation: pulse 2s infinite;
+          font-weight: bold;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .character-portrait {
+          width: 140px;
+          margin-right: -24px;
+          margin-bottom: -6px;
+        }
+
+        .narration-box {
+          padding: 1.25rem 1.25rem;
+          min-height: 120px;
+
+          .speaker-name {
+            left: 24px;
+          }
+
+          .narration-text {
+            font-size: 1rem;
+            padding-left: 12px;
+          }
+        }
+      }
+    }
+    
+    .rewards-summary {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: $border-radius-xl;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      max-width: 800px;
+      width: 90%;
+      
+      h3 {
+        color: $color-text-highlight;
+        font-size: 1.5rem;
+        margin: 0 0 2rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+      
+      .rewards-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        
+        @media (min-width: 600px) {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .reward-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 1.5rem 1rem;
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: $border-radius-lg;
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+          
+          @for $i from 1 through 4 {
+            &:nth-child(#{$i}) {
+              animation-delay: #{$i * 0.1}s;
+            }
+          }
+          
+          &:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+          }
+          
+          .reward-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+          }
+          
+          .reward-label {
+            font-size: 0.8rem;
+            color: $color-text-muted;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+          
+          .reward-value {
+            font-size: 1rem;
+            color: $color-text-highlight;
+            font-weight: bold;
+          }
+          
+          &.skill {
+            background: linear-gradient(135deg, rgba($color-info, 0.1) 0%, rgba($color-info, 0.05) 100%);
+            border: 1px solid rgba($color-info, 0.3);
+            box-shadow: 0 0 20px rgba($color-info, 0.1);
+            
+            .reward-icon {
+              animation: floatIcon 3s ease-in-out infinite;
+            }
+            
+            .reward-value {
+              color: $color-info;
+            }
+          }
+        }
+      }
+    }
+    
+    .next-chapter-preview {
+      position: relative;
+      background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba(0, 0, 0, 0.4) 100%);
+      border: 1px solid rgba($color-primary, 0.4);
+      border-radius: $border-radius-lg;
+      padding: 2rem;
+      margin-bottom: 1rem;
+      width: 90%;
+      max-width: 600px;
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+      overflow: hidden;
+      text-align: center;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.5;
+        z-index: 0;
+      }
+      
+      .preview-label {
+        position: relative;
+        display: block;
+        font-size: 0.75rem;
+        color: $color-primary;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        margin-bottom: 0.75rem;
+        font-weight: bold;
+      }
+      
+      h3 {
+        position: relative;
+        color: #fff;
+        font-size: 1.5rem;
+        margin: 0 0 0.75rem;
+      }
+      
+      p {
+        position: relative;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+        margin: 0;
+        font-style: italic;
+      }
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+      pointer-events: auto;
+
+      .restart-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.8rem 2rem;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.8);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.5);
+          color: #fff;
+          transform: translateY(-2px);
+        }
+      }
+
+      .continue-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 3rem;
+        background: $color-primary;
+        color: white;
+        border: none;
+        border-radius: 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 20px rgba($color-primary, 0.4);
+        
+        &:hover {
+          background: lighten($color-primary, 8%);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 30px rgba($color-primary, 0.6);
+        }
+        
+        &:active {
+          transform: translateY(-1px);
+        }
+      }
+
+      .next-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 3rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.14);
+          border-color: rgba(255, 255, 255, 0.45);
+          transform: translateY(-3px);
+        }
+
+        &:active {
+          transform: translateY(-1px);
+        }
+      }
+
+      @media (max-width: 768px) {
+        width: 100%;
+        gap: 0.75rem;
+
+        .restart-btn,
+        .continue-btn,
+        .next-btn {
+          width: 100%;
+          justify-content: center;
+          padding: 0.9rem 1.5rem;
+        }
+      }
+    }
+  }
+  // 成就通知
+  .outro-achievement-toast {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000; // 提高层级
+    animation: slideInRight 0.7s ease-out;
+    pointer-events: none;
+    
+    .toast-content {
+      background-color: rgba($color-bg-panel, 0.95);
+      color: $color-text-main;
+      padding: 1rem;
+      border-radius: $border-radius-lg;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba($color-warning, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: min(20rem, calc(100% - 3rem));
+
+      .icon-box {
+        background-color: rgba($color-warning, 0.2);
+        padding: 0.75rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-warning;
+      }
+
+      .text-box {
+        h4 {
+          color: $color-warning;
+          font-size: 0.875rem;
+          font-weight: bold;
+          margin: 0;
+          text-align: left;
+        }
+        .title {
+          font-weight: bold;
+          margin: 0;
+          text-align: left;
+          font-size: 1rem;
+          color: white;
+        }
+        .reward {
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin-top: 0.25rem;
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  // 技能通知
+  .outro-skill-toast {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 1000; // 提高层级
+    animation: slideInLeft 0.7s ease-out;
+    pointer-events: none;
+    
+    .toast-content {
+      background-color: rgba($color-bg-panel, 0.95);
+      color: $color-text-main;
+      padding: 1rem;
+      border-radius: $border-radius-lg;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba($color-info, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: min(20rem, calc(100% - 3rem));
+
+      .icon-box {
+        background-color: rgba($color-info, 0.2);
+        padding: 0.75rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-info;
+      }
+
+      .text-box {
+        h4 {
+          color: $color-info;
+          font-size: 0.875rem;
+          font-weight: bold;
+          margin: 0;
+          text-align: left;
+        }
+        .title {
+          font-weight: bold;
+          margin: 0;
+          text-align: left;
+          font-size: 1rem;
+          color: white;
+        }
+        .desc {
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin-top: 0.25rem;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+// Keyframes
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba($color-success, 0.2); }
+  50% { box-shadow: 0 0 25px rgba($color-success, 0.5); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes floatParticle {
+  from { transform: translateY(0) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  to { transform: translateY(-100px) rotate(180deg); opacity: 0; }
+}
+
+@keyframes vortexRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}

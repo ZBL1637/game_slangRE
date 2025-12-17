@@ -1,0 +1,410 @@
+@import '@/styles/variables';
+
+.skill-unlock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // background-color: rgba(0, 0, 0, 0.9); // Old dark background
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.5s ease-out;
+
+  .overlay-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.85); // Dark overlay to make text pop
+    backdrop-filter: blur(4px);
+    z-index: 0;
+  }
+}
+
+.skill-unlock-content {
+  position: relative;
+  z-index: 1; // Above backdrop
+  text-align: center;
+  max-width: 600px;
+  width: 90%; // Responsive width
+  padding: 2rem;
+
+  // 罗盘合成阶段
+  .compass-phase {
+    // ... (keep existing styles)
+    .compass-animation {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 2rem;
+      
+      .fragment {
+        position: absolute;
+        font-size: 2rem;
+        animation: fragmentMerge 2.5s ease-in-out forwards;
+        
+        &.fragment-1 {
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        
+        &.fragment-2 {
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+          animation-delay: 0.2s;
+        }
+        
+        &.fragment-3 {
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          animation-delay: 0.4s;
+        }
+        
+        &.fragment-4 {
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          animation-delay: 0.6s;
+        }
+      }
+      
+      .compass-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        .compass-glow {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 150px;
+          height: 150px;
+          background: radial-gradient(circle, rgba($color-info, 0.4) 0%, transparent 70%);
+          border-radius: 50%;
+          animation: compassGlow 2s ease-in-out forwards;
+          opacity: 0;
+        }
+        
+        .compass-icon {
+          font-size: 4rem;
+          opacity: 0;
+          animation: compassAppear 1s ease-out 1.5s forwards;
+        }
+      }
+    }
+    
+    h2 {
+      color: $color-info;
+      font-size: 1.5rem;
+      animation: pulse 1s infinite;
+    }
+  }
+
+  // NPC对话阶段
+  .npc-phase {
+    animation: fadeIn 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    
+    .npc-dialogue {
+      position: relative;
+      background-color: rgba($color-bg-panel, 0.95);
+      border: 2px solid rgba($color-info, 0.4);
+      border-radius: $border-radius-lg;
+      padding: 3.5rem 2.5rem 2.5rem; 
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-align: left;
+      z-index: 1;
+      margin-top: 150px; 
+
+      .npc-portrait-container {
+        position: absolute;
+        bottom: 100%;       // 位于对话框上方
+        left: 0;            // 对齐左侧
+        width: auto;
+        height: auto;
+        margin-bottom: -50px; // 下沉效果
+        z-index: 2;         // 在名字标签(3)后面，但在对话框(1)前面
+        animation: slideUp 0.5s ease-out;
+        pointer-events: none;
+
+        .npc-portrait {
+          position: static;
+          width: 240px;     // 调整宽度
+          height: auto;
+          transform: translateX(-10%); // 稍微向左偏移一点
+          filter: drop-shadow(0 0 15px rgba($color-info, 0.4));
+        }
+      }
+      
+      .npc-name-tag {
+        position: absolute;
+        top: -16px;
+        left: 30px; // Align with text
+        background: $color-info;
+        color: $color-bg-dark;
+        padding: 6px 20px;
+        border-radius: 20px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        z-index: 3; // Ensure above portrait overlap
+      }
+      
+      .dialogue-text {
+        color: $color-text-main;
+        line-height: 1.8;
+        margin: 0;
+        font-size: 1.15rem;
+      }
+    }
+  }
+
+  // 技能获得阶段
+  .skill-phase {
+    animation: fadeIn 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    
+    .skill-animation {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0;
+      
+      .skill-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba($color-info, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: skillGlow 2s infinite;
+      }
+      
+      .skill-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, $color-info 0%, lighten($color-info, 20%) 100%);
+        border: 2px solid white;
+        border-radius: 12px; // Rounded square badge
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        animation: skillPulse 2s infinite;
+        
+        svg {
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+    
+    .skill-info {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      
+      .skill-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 1rem;
+        background-color: rgba($color-info, 0.2);
+        color: $color-info;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0;
+        
+        // Small tail triangle on right
+        &::after {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 6px solid $color-info;
+            margin-left: 2px;
+        }
+      }
+      
+      .skill-name {
+        font-size: 2.5rem;
+        color: $color-text-highlight;
+        margin: 0.5rem 0;
+        font-weight: 800;
+        text-shadow: 
+          0 0 10px rgba($color-info, 0.6),
+          2px 2px 0px #0B1220; // Pixel shadow
+      }
+      
+      .skill-desc {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        margin: 0;
+        max-width: 400px;
+        line-height: 1.5;
+      }
+      
+      .skill-effect {
+        margin-top: 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background-color: rgba(#1B2E4A, 0.8);
+        border: 2px solid #050A12; // Dark border
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); // Inner highlight
+        border-radius: $border-radius-md;
+        padding: 1rem 1.5rem;
+        min-width: 320px;
+        
+        .effect-icon {
+          font-size: 1.5rem;
+          color: white;
+          background: rgba(255,255,255,0.1);
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+        }
+        
+        .effect-text {
+          text-align: left;
+          flex: 1;
+          
+          .effect-label {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+          }
+          
+          .effect-value {
+            display: block;
+            font-size: 1rem;
+            color: white;
+            font-weight: bold;
+            
+            // Highlight specific text
+            strong {
+                color: $color-info;
+            }
+          }
+        }
+      }
+    }
+    
+    .unlock-btn {
+      margin-top: 1rem;
+      padding: 1rem 4rem;
+      background: linear-gradient(to bottom, lighten($color-info, 10%), $color-info);
+      color: white;
+      border: 2px solid darken($color-info, 20%);
+      border-radius: 8px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.1s;
+      box-shadow: 
+        0 4px 0 darken($color-info, 20%),
+        0 8px 20px rgba(0,0,0,0.4);
+      position: relative;
+      top: 0;
+      
+      &:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 0 darken($color-info, 20%),
+          0 10px 25px rgba(0,0,0,0.5);
+      }
+      
+      &:active {
+        transform: translateY(4px);
+        box-shadow: 
+          0 0 0 darken($color-info, 20%),
+          inset 0 2px 5px rgba(0,0,0,0.2);
+      }
+    }
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fragmentMerge {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { 
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes compassGlow {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes compassAppear {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes skillGlow {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes skillPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}

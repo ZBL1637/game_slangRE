@@ -1,0 +1,369 @@
+// IntroSection 样式 - 像素艺术风格
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$pixel-border: #4a3f6b;
+$glow-purple: rgba(139, 92, 246, 0.5);
+$glow-cyan: rgba(6, 182, 212, 0.5);
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes npcFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes bookGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px $glow-purple);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px $glow-cyan) drop-shadow(0 0 40px $glow-purple);
+  }
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.intro-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+
+  // 扫描线效果
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba($secondary-color, 0.3), transparent);
+    animation: scanline 4s linear infinite;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  // 入场屏幕 - 像素风格
+  .entrance-screen {
+    text-align: center;
+
+    .entrance-text {
+      p {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1rem;
+        color: $text-secondary;
+        letter-spacing: 0.3em;
+        margin: 1rem 0;
+        text-shadow: 0 0 10px $glow-purple;
+
+        &:first-child {
+          font-size: 1.5rem;
+          color: $secondary-color;
+          text-shadow: 0 0 20px $glow-cyan, 0 4px 0 darken($secondary-color, 30%);
+        }
+      }
+    }
+  }
+
+  // 标题屏幕 - 像素风格
+  .title-screen {
+    text-align: center;
+
+    .title-content {
+      .chapter-index {
+        display: block;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.8rem;
+        color: $secondary-color;
+        letter-spacing: 0.3em;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px $glow-cyan;
+      }
+
+      h1 {
+        font-family: 'Microsoft YaHei', sans-serif;
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 0;
+        color: $text-primary;
+        text-shadow: 
+          0 0 20px $glow-purple,
+          0 0 40px $glow-cyan,
+          0 6px 0 darken($primary-color, 30%);
+        letter-spacing: 0.1em;
+      }
+
+      .subtitle {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.9rem;
+        color: $text-secondary;
+        margin-top: 1.5rem;
+        text-shadow: 0 0 10px $glow-purple;
+      }
+    }
+  }
+
+  // 叙述屏幕 - 像素对话框风格
+  .narration-screen {
+    max-width: 800px;
+    text-align: center;
+
+    .narration-box {
+      background: rgba($background-dark, 0.98);
+      padding: 3rem;
+      border: 4px solid $pixel-border;
+      box-shadow: 
+        inset 0 0 0 2px rgba($secondary-color, 0.3),
+        0 0 40px rgba($primary-color, 0.2),
+        0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+        border: 2px solid rgba($secondary-color, 0.2);
+        pointer-events: none;
+      }
+
+      .narration-text {
+        font-size: 1.1rem;
+        line-height: 2.2;
+        color: $text-primary;
+        animation: textReveal 0.5s ease-out;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $secondary-color;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      animation: pulse 2s infinite;
+      text-shadow: 0 0 10px $glow-cyan;
+    }
+  }
+
+  // NPC对话屏幕 - 像素风格带NPC图片
+  .npc-screen {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .npc-container {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-end;
+      width: 100%;
+
+      .npc-avatar {
+        position: relative;
+        flex-shrink: 0;
+        animation: npcFloat 3s ease-in-out infinite;
+
+        .avatar-glow {
+          position: absolute;
+          width: 200px;
+          height: 200px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: radial-gradient(circle, rgba($primary-color, 0.4), transparent 70%);
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+
+        .npc-icon {
+          display: none; // 隐藏emoji图标
+        }
+
+        // NPC图片
+        &::after {
+          content: '';
+          display: block;
+          width: 200px;
+          height: 300px;
+          background-image: url('/src/assets/images/npc_translation_master.png');
+          background-size: contain;
+          background-position: center bottom;
+          background-repeat: no-repeat;
+          animation: bookGlow 3s ease-in-out infinite;
+          position: relative;
+          z-index: 1;
+        }
+      }
+
+      .dialogue-box {
+        flex: 1;
+        background: rgba($background-dark, 0.98);
+        padding: 2rem;
+        border: 4px solid $pixel-border;
+        box-shadow: 
+          inset 0 0 0 2px rgba($secondary-color, 0.3),
+          0 0 40px rgba($primary-color, 0.2),
+          0 10px 30px rgba(0, 0, 0, 0.5);
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: -12px;
+          top: 40px;
+          width: 0;
+          height: 0;
+          border: 12px solid transparent;
+          border-right-color: $pixel-border;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: -6px;
+          top: 44px;
+          width: 0;
+          height: 0;
+          border: 8px solid transparent;
+          border-right-color: rgba($background-dark, 0.98);
+        }
+
+        .npc-header {
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid rgba($pixel-border, 0.5);
+
+          h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: $secondary-color;
+            margin: 0;
+            text-shadow: 0 0 10px $glow-cyan;
+          }
+
+          .npc-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: $text-secondary;
+            margin-top: 0.5rem;
+            display: block;
+          }
+        }
+
+        .dialogue-content {
+          p {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: $text-primary;
+            animation: textReveal 0.3s ease-out;
+          }
+        }
+
+        .click-hint {
+          display: block;
+          margin-top: 1.5rem;
+          color: $secondary-color;
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.6rem;
+          text-align: right;
+          animation: pulse 2s infinite;
+          text-shadow: 0 0 10px $glow-cyan;
+        }
+
+        .start-btn {
+          display: block;
+          margin-top: 1.5rem;
+          margin-left: auto;
+          background: linear-gradient(180deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+          color: white;
+          border: 3px solid darken($primary-color, 20%);
+          padding: 1rem 2rem;
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.7rem;
+          box-shadow: 
+            inset 0 2px 0 rgba(255,255,255,0.2),
+            inset 0 -2px 0 rgba(0,0,0,0.2),
+            0 4px 0 darken($primary-color, 25%),
+            0 0 20px rgba($primary-color, 0.3);
+          position: relative;
+          top: 0;
+          transition: all 0.1s ease;
+
+          &:hover {
+            top: 2px;
+            box-shadow: 
+              inset 0 2px 0 rgba(255,255,255,0.2),
+              inset 0 -2px 0 rgba(0,0,0,0.2),
+              0 2px 0 darken($primary-color, 25%),
+              0 0 30px rgba($primary-color, 0.5);
+          }
+
+          &:active {
+            top: 4px;
+            box-shadow: 
+              inset 0 2px 0 rgba(0,0,0,0.2),
+              0 0 0 darken($primary-color, 25%);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .intro-section {
+    .title-screen .title-content h1 {
+      font-size: 2rem;
+    }
+
+    .npc-screen .npc-container {
+      flex-direction: column;
+      align-items: center;
+
+      .npc-avatar::after {
+        width: 150px;
+        height: 220px;
+      }
+
+      .dialogue-box {
+        &::before, &::after {
+          display: none;
+        }
+      }
+    }
+
+    .narration-screen .narration-box {
+      padding: 1.5rem;
+    }
+  }
+}

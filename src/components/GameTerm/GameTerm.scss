@@ -1,0 +1,69 @@
+@import '@/styles/variables';
+
+.game-term {
+  color: $color-accent;
+  font-weight: bold;
+  cursor: help;
+  transition: all 0.2s;
+  
+  // 默认样式（由 Tooltip 组件的 .rpg-tooltip-container 处理虚线，这里处理颜色）
+  
+  &.active:hover {
+    color: lighten($color-accent, 10%);
+    background-color: rgba($color-accent, 0.1);
+    border-radius: 2px;
+  }
+}
+
+.game-term-highlight {
+  color: $color-accent;
+  font-weight: bold;
+  // 新手模式关闭时，只有颜色区别，没有下划线和 hover 背景
+}
+
+.game-term-missing {
+  color: $color-danger;
+  text-decoration: line-through;
+}
+
+// Tooltip 内部样式
+.term-tooltip-content {
+  min-width: 200px;
+  
+  .term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 0.3rem;
+    
+    .term-title {
+      @include pixel-text;
+      color: $color-accent;
+      font-size: 0.9rem;
+    }
+    
+    .term-game {
+      font-size: 0.7rem;
+      background: $color-primary;
+      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+      color: #fff;
+    }
+  }
+  
+  .term-def {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #ddd;
+    margin-bottom: 0.5rem;
+  }
+  
+  .term-hint {
+    font-size: 0.7rem;
+    color: $color-text-muted;
+    font-style: italic;
+    text-align: right;
+  }
+}

@@ -1,0 +1,140 @@
+// ============================================================================
+// FinalChapter - 主样式文件（像素艺术风格）
+// ============================================================================
+@import '../../styles/variables';
+
+$pixel-primary: #8B0000;
+$pixel-secondary: #4B0082;
+$pixel-accent-cyan: #00FFFF;
+$pixel-accent-red: #FF4444;
+$pixel-bg-dark: #0a0a12;
+$pixel-text: #FFFFFF;
+$pixel-border: #333344;
+
+@keyframes dataFloat {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes codeRain {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.final-chapter {
+  width: 100%;
+  min-height: 100vh;
+  background: $pixel-bg-dark;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('@/assets/images/final_chapter_bg.png') center center / cover no-repeat;
+    opacity: 0.6;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to bottom, transparent, rgba($pixel-accent-cyan, 0.3), transparent);
+    animation: scanline 4s linear infinite;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .chapter-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba($pixel-primary, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba($pixel-primary, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .data-storm {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .data-particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: $pixel-accent-red;
+        animation: dataFloat 8s linear infinite;
+        box-shadow: 0 0 10px $pixel-accent-red;
+        
+        &:nth-child(odd) {
+          background: $pixel-accent-cyan;
+          box-shadow: 0 0 10px $pixel-accent-cyan;
+        }
+      }
+    }
+
+    .code-rain {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.15;
+
+      .code-column {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        animation: codeRain 10s linear infinite;
+
+        span {
+          color: $pixel-accent-cyan;
+          font-family: monospace;
+          font-size: 12px;
+          line-height: 1.5;
+          text-shadow: 0 0 5px $pixel-accent-cyan;
+        }
+      }
+    }
+  }
+
+  .chapter-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

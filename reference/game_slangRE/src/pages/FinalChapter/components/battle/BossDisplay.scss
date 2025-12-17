@@ -1,0 +1,350 @@
+// ============================================================================
+// BossDisplay - Boss显示样式（统一开场动画配色）
+// ============================================================================
+@import '../../../../styles/variables';
+
+$primary-color: $color-primary;
+$secondary-color: $color-info;
+$accent-color: $color-accent;
+$background-dark: $color-bg-dark;
+$background-medium: rgba($color-bg-panel, 1);
+$text-primary: $color-text-main;
+$text-secondary: $color-text-muted;
+
+@keyframes streamRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes coreGlow {
+  0%, 100% { box-shadow: 0 0 30px $primary-color; }
+  50% { box-shadow: 0 0 60px $primary-color; }
+}
+
+@keyframes shieldPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes chargeGlow {
+  0%, 100% { box-shadow: 0 0 20px $accent-color; }
+  50% { box-shadow: 0 0 50px $accent-color; }
+}
+
+@keyframes stunStar {
+  0% { transform: rotate(0deg) translateY(-40px); }
+  100% { transform: rotate(360deg) translateY(-40px); }
+}
+
+.boss-display {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+
+  .boss-entity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+
+    &.stunned {
+      .boss-visual .boss-core {
+        filter: grayscale(0.5);
+      }
+    }
+
+    &.charging {
+      .boss-visual .boss-core {
+        animation: chargeGlow 1s ease-in-out infinite;
+      }
+    }
+
+    .boss-visual {
+      position: relative;
+      width: 180px;
+      height: 180px;
+
+      .data-streams {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        animation: streamRotate 20s linear infinite;
+
+        .stream {
+          position: absolute;
+          width: 3px;
+          height: 40px;
+          background: linear-gradient(to bottom, $primary-color, transparent);
+          left: 50%;
+          top: 0;
+          transform-origin: center 90px;
+        }
+      }
+
+      .boss-core {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, $background-medium, $background-dark);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: coreGlow 3s ease-in-out infinite;
+
+        .core-glow {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba($primary-color, 0.3), transparent);
+        }
+
+        .boss-icon {
+          font-size: 3rem;
+          z-index: 1;
+        }
+      }
+
+      // 护盾效果
+      .shield-effect {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 140px;
+        height: 140px;
+        animation: shieldPulse 2s ease-in-out infinite;
+
+        .shield-ring {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 3px solid rgba($secondary-color, 0.6);
+          border-radius: 50%;
+        }
+
+        .shield-particles {
+          .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: $secondary-color;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            animation: shieldPulse 1s ease-in-out infinite;
+          }
+        }
+      }
+
+      // 充能效果
+      .charge-effect {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 160px;
+        height: 160px;
+
+        .charge-ring {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 4px solid $accent-color;
+          border-radius: 50%;
+          animation: shieldPulse 0.5s ease-in-out infinite;
+        }
+
+        .charge-progress {
+          position: absolute;
+          bottom: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: $accent-color;
+          color: $background-dark;
+          padding: 0.25rem 0.75rem;
+          border-radius: 1rem;
+          font-weight: bold;
+        }
+      }
+
+      // 眩晕效果
+      .stun-effect {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .stun-stars {
+          span {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: stunStar 2s linear infinite;
+
+            @for $i from 1 through 5 {
+              &:nth-child(#{$i}) {
+                animation-delay: #{$i * 0.4}s;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .boss-info {
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+
+      .boss-name {
+        margin-bottom: 1rem;
+
+        .name-text {
+          display: block;
+          font-size: 1.75rem;
+          font-weight: bold;
+          color: $primary-color;
+        }
+
+        .name-english {
+          font-size: 0.9rem;
+          color: $text-secondary;
+        }
+      }
+
+      .hp-bar-container {
+        .hp-bar {
+          position: relative;
+          height: 24px;
+          background: rgba($primary-color, 0.2);
+          border-radius: 0.5rem;
+          overflow: hidden;
+
+          .hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, $primary-color, darken($primary-color, 10%));
+            transition: width 0.5s ease;
+          }
+
+          .hp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+
+      .status-effects {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+
+        .effect-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          background: rgba($secondary-color, 0.2);
+          padding: 0.25rem 0.5rem;
+          border-radius: 1rem;
+
+          .effect-icon {
+            font-size: 1rem;
+          }
+
+          .effect-turns {
+            font-size: 0.75rem;
+            color: $text-secondary;
+          }
+        }
+      }
+    }
+  }
+
+  // 小怪显示
+  .minions-container {
+    margin-top: 2rem;
+    text-align: center;
+
+    .minions-label {
+      font-size: 0.9rem;
+      color: $text-secondary;
+      margin-bottom: 0.75rem;
+    }
+
+    .minions-list {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+
+      .minion-entity {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        .minion-icon {
+          font-size: 2rem;
+        }
+
+        .minion-hp-bar {
+          width: 60px;
+          height: 8px;
+          background: rgba($accent-color, 0.2);
+          border-radius: 0.25rem;
+          overflow: hidden;
+
+          .hp-fill {
+            height: 100%;
+            background: $accent-color;
+            transition: width 0.3s ease;
+          }
+        }
+
+        .minion-hp-text {
+          font-size: 0.75rem;
+          color: $text-secondary;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .boss-display {
+    padding: 1rem;
+
+    .boss-entity {
+      .boss-visual {
+        width: 140px;
+        height: 140px;
+
+        .boss-core {
+          width: 80px;
+          height: 80px;
+
+          .boss-icon {
+            font-size: 2.5rem;
+          }
+        }
+      }
+
+      .boss-info {
+        .boss-name .name-text {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

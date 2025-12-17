@@ -1,0 +1,942 @@
+API提供商：DeepSeek
+API Key：sk-c19e575e2b8045e5932bcce9f2e5e538
+API URL：https://api.deepseek.com/v1/chat/completions
+模型：deepseek-chat
+
+================================================================================
+                    AI智能查询功能 - 完整代码
+                    来源: https://github.com/ZBL1637/game_slang_dic
+================================================================================
+
+================================================================================
+一、HTML结构部分
+================================================================================
+
+<!-- 第二个Section: AI智能查询 -->
+<div class="search-section" id="search-section">
+    <div class="section-intro">
+        <p data-i18n="ai.intro">我们引入前沿的大语言模型与知识图谱技术，构建了新一代智能语义分析系统。该系统能够深度解析游戏术语的语义结构、情感倾向及使用场景，并揭示其背后的文化动因与社群特征，为游戏内容优化、社区精细化运营及玩家体验提升提供数据支持。</p>
+    </div>
+    <div class="search-interface">
+        <h3 class="search-title" data-i18n="ai.title">🤖 AI智能查询</h3>
+        <p class="search-subtitle" data-i18n="ai.subtitle">输入游戏术语，AI为您提供详细解释和使用场景</p>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="请输入游戏黑话，如：躺平、卷王、开黑..." id="searchInput" data-i18n-attr="placeholder:ai.placeholder">
+            <button class="search-btn" id="searchBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- AI加载动画 -->
+        <div class="ai-loading" id="aiLoading">
+            <div class="ai-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <p class="loading-text" data-i18n="ai.loading">AI正在分析中...</p>
+            <div class="loading-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- AI查询结果 -->
+        <div class="ai-results" id="aiResults"></div>
+
+        <!-- 热门词汇推荐 -->
+        <div class="popular-words" id="popularWords">
+            <h4 class="popular-title" data-i18n="ai.popular">🔥 热门推荐</h4>
+            <div class="popular-grid" id="popularGrid">
+                <!-- 动态生成的热门词汇将在这里显示 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+================================================================================
+二、CSS样式部分
+================================================================================
+
+/* 第二个Section: AI智能查询 */
+.search-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 1s ease-out;
+}
+
+.search-section.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.search-interface {
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out 0.2s;
+}
+
+.search-section.animate-in .search-interface {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.search-title {
+    color: var(--primary-purple);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px var(--primary-purple);
+}
+
+.search-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.search-container {
+    position: relative;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-box {
+    width: 100%;
+    padding: 20px 60px 20px 25px;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--primary-purple);
+    border-radius: 50px;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(127, 0, 86, 0.2);
+}
+
+.search-box:focus {
+    box-shadow: 0 0 30px rgba(127, 0, 86, 0.4);
+    border-color: var(--light-purple);
+}
+
+.search-box::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(45deg, var(--primary-purple), var(--light-purple));
+    border: none;
+    border-radius: 50%;
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(127, 0, 86, 0.3);
+}
+
+.search-btn:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 0 25px rgba(127, 0, 86, 0.5);
+}
+
+.search-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+}
+
+/* AI加载动画 */
+.ai-loading {
+    display: none;
+    text-align: center;
+    margin: 40px 0;
+    padding: 30px;
+    background: rgba(127, 0, 86, 0.05);
+    border: 1px solid rgba(127, 0, 86, 0.2);
+    border-radius: 20px;
+}
+
+.ai-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+}
+
+.spinner-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-top: 3px solid var(--primary-purple);
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+}
+
+.spinner-ring:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    top: 10px;
+    left: 10px;
+    border-top-color: var(--light-purple);
+    animation-duration: 1s;
+    animation-direction: reverse;
+}
+
+.spinner-ring:nth-child(3) {
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    left: 20px;
+    border-top-color: var(--accent-pink);
+    animation-duration: 0.8s;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--primary-purple);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--primary-purple);
+}
+
+.loading-progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(127, 0, 86, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-purple), var(--light-purple));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--primary-purple);
+}
+
+/* AI查询结果 */
+.ai-results {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.ai-result-container {
+    background: rgba(127, 0, 86, 0.05);
+    border: 1px solid rgba(127, 0, 86, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.ai-result-container.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ai-term-title {
+    font-size: 28px;
+    color: var(--primary-purple);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    text-shadow: 0 0 10px var(--primary-purple);
+}
+
+.ai-term-icon {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, var(--primary-purple), var(--light-purple));
+    border-radius: 8px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: bold;
+}
+
+.ai-definition {
+    background: rgba(127, 0, 86, 0.1);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-purple);
+}
+
+.ai-definition-title {
+    font-weight: bold;
+    color: var(--white);
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.ai-definition-text {
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.ai-section {
+    margin-bottom: 20px;
+}
+
+.ai-section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--white);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.ai-section-icon {
+    margin-right: 8px;
+    opacity: 0.8;
+}
+
+.ai-section-content {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(127, 0, 86, 0.2);
+}
+
+.ai-examples {
+    background: rgba(255, 255, 0, 0.1);
+    border-left: 3px solid #ffff00;
+}
+
+.ai-error {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff6b6b;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border-left: 4px solid #ff6b6b;
+}
+
+/* 热门词汇推荐 */
+.example-tag {
+    background: rgba(127, 0, 86, 0.1);
+    color: var(--primary-purple);
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(127, 0, 86, 0.3);
+    font-weight: 500;
+    display: inline-block;
+    margin: 5px;
+}
+
+.example-tag:hover {
+    background: var(--primary-purple);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(127, 0, 86, 0.3);
+}
+
+/* 热门词汇样式 */
+.popular-words {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(127, 0, 86, 0.08);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(127, 0, 86, 0.2);
+}
+
+.popular-title {
+    color: var(--primary-purple);
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--primary-purple);
+}
+
+.popular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.popular-item {
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(127, 0, 86, 0.1);
+    border: 1px solid rgba(127, 0, 86, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.popular-item:hover {
+    background: rgba(127, 0, 86, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(127, 0, 86, 0.3);
+}
+
+.popular-term {
+    color: var(--primary-purple);
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.popular-definition {
+    color: #ccc;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.popular-game {
+    color: #888;
+    font-size: 12px;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* AI智能查询响应式样式 */
+@media (max-width: 768px) {
+    .search-section {
+        padding: 40px 15px;
+        min-height: auto;
+    }
+    
+    .search-interface {
+        width: 95%;
+    }
+    
+    .search-title {
+        font-size: 1.8rem;
+    }
+    
+    .search-subtitle {
+        font-size: 14px;
+    }
+    
+    .search-box {
+        padding: 15px 50px 15px 20px;
+        font-size: 16px;
+    }
+    
+    .search-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .ai-result-container {
+        padding: 20px;
+    }
+    
+    .ai-term-title {
+        font-size: 22px;
+    }
+    
+    .popular-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+================================================================================
+三、JavaScript代码部分
+================================================================================
+
+// AI智能查询功能
+const AI_API_KEY = 'sk-c19e575e2b8045e5932bcce9f2e5e538';  // DeepSeek API Key
+const AI_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+// 工具函数 - 安全查询选择器
+const Utils = {
+    safeQuerySelector: function(selector) {
+        return document.querySelector(selector);
+    }
+};
+
+function initAISearchFunction() {
+    const searchInput = Utils.safeQuerySelector('#searchInput');
+    const searchBtn = Utils.safeQuerySelector('#searchBtn');
+    const aiLoading = Utils.safeQuerySelector('#aiLoading');
+    const aiResults = Utils.safeQuerySelector('#aiResults');
+    const popularWords = Utils.safeQuerySelector('#popularWords');
+    const progressBar = Utils.safeQuerySelector('#progressBar');
+
+    if (!searchInput || !searchBtn || !aiLoading || !aiResults) {
+        console.warn('AI search elements not found');
+        return;
+    }
+
+    // 回车搜索
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            aiSearchTerm();
+        }
+    });
+
+    // 搜索按钮点击
+    searchBtn.addEventListener('click', aiSearchTerm);
+
+    function showAILoading(show) {
+        if (show) {
+            aiLoading.style.display = 'block';
+            aiResults.innerHTML = '';
+            if (popularWords) popularWords.style.display = 'none';
+
+            // 进度条动画
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                if (progressBar) progressBar.style.width = progress + '%';
+            }, 200);
+
+            // 存储interval以便清除
+            aiLoading.progressInterval = progressInterval;
+        } else {
+            aiLoading.style.display = 'none';
+            if (popularWords) popularWords.style.display = 'block';
+
+            // 清除进度条动画
+            if (aiLoading.progressInterval) {
+                clearInterval(aiLoading.progressInterval);
+                if (progressBar) progressBar.style.width = '100%';
+                setTimeout(() => {
+                    if (progressBar) progressBar.style.width = '0%';
+                }, 500);
+            }
+        }
+    }
+
+    function displayAIResult(data) {
+        const synonymsText = data.synonyms && data.synonyms.length > 0
+            ? data.synonyms.join('、')
+            : '暂无';
+
+        const html = `
+            <div class="ai-result-container">
+                <div class="ai-term-title">
+                    <div class="ai-term-icon">🎯</div>
+                    ${data.term}
+                </div>
+
+                <div class="ai-definition">
+                    <div class="ai-definition-title">📝 含义解释</div>
+                    <div class="ai-definition-text">${data.definition}</div>
+                </div>
+
+                <div class="ai-section">
+                    <div class="ai-section-title">
+                        <span class="ai-section-icon">💡</span>
+                        使用场景
+                    </div>
+                    <div class="ai-section-content">${data.usage}</div>
+                </div>
+
+                <div class="ai-section">
+                    <div class="ai-section-title">
+                        <span class="ai-section-icon">💬</span>
+                        使用例句
+                    </div>
+                    <div class="ai-section-content ai-examples">
+                        ${data.examples.map((example, index) =>
+                            `${index + 1}. ${example}`
+                        ).join('<br>')}
+                    </div>
+                </div>
+
+                <div class="ai-section">
+                    <div class="ai-section-title">
+                        <span class="ai-section-icon">🎮</span>
+                        游戏背景
+                    </div>
+                    <div class="ai-section-content">${data.context}</div>
+                </div>
+
+                <div style="display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                    <div style="background: rgba(117, 42, 238, 0.1); padding: 10px 15px; border-radius: 8px; flex: 1; min-width: 120px; border: 1px solid rgba(117, 42, 238, 0.3);">
+                        <strong style="color: var(--primary-green);">流行程度:</strong> <span style="color: rgba(255, 255, 255, 0.9);">${data.level}</span>
+                    </div>
+                    <div style="background: rgba(117, 42, 238, 0.1); padding: 10px 15px; border-radius: 8px; flex: 1; min-width: 120px; border: 1px solid rgba(117, 42, 238, 0.3);">
+                        <strong style="color: var(--primary-green);">同义词:</strong> <span style="color: rgba(255, 255, 255, 0.9);">${synonymsText}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        aiResults.innerHTML = html;
+
+        // 添加显示动画
+        setTimeout(() => {
+            const container = aiResults.querySelector('.ai-result-container');
+            if (container) {
+                container.classList.add('show');
+            }
+        }, 100);
+    }
+
+    function displayAIError(message) {
+        const html = `
+            <div class="ai-result-container show">
+                <div class="ai-error">
+                    ❌ ${message}
+                </div>
+            </div>
+        `;
+        aiResults.innerHTML = html;
+    }
+}
+
+// 根据语言构建 AI 搜索提示词
+function buildAISearchPrompt(query) {
+    const isEnglish = (typeof i18n !== 'undefined' && i18n.getLang && i18n.getLang() === 'en');
+    if (isEnglish) {
+        return `You are an expert in gaming terminology. Explain the gaming slang "${query}" in English.
+Reply with ONLY a valid JSON object (no extra text) using the exact schema below:
+
+{
+  "term": "${query}",
+  "definition": "50–100 words, precise meaning",
+  "usage": "30–60 words describing how and when it is used",
+  "examples": [
+    "Example sentence 1",
+    "Example sentence 2",
+    "Example sentence 3"
+  ],
+  "context": "20–40 words about game genres or communities",
+  "level": "Common / Niche / Specific game",
+  "synonyms": ["synonym1", "synonym2"]
+}
+
+Requirements:
+- Answer strictly in English.
+- Return only JSON with the above fields.
+- If it is not gaming slang, clearly state this in "definition".
+- Provide at least 2 example sentences.`;
+    }
+
+    // 中文提示词（保持原有结构与约束）
+    return `请详细解释游戏黑话"${query}"的含义和使用场景。请按照以下JSON格式回复，确保回复是有效的JSON格式：
+
+{
+  "term": "${query}",
+  "definition": "详细定义（50-100字）",
+  "usage": "使用场景和方式（30-60字）",
+  "examples": [
+    "使用例句1",
+    "使用例句2",
+    "使用例句3"
+  ],
+  "context": "出现的游戏类型或社区背景（20-40字）",
+  "level": "流行程度：通用/小众/特定游戏",
+  "synonyms": ["同义词1", "同义词2"]
+}
+
+请确保：
+1. 回复必须是有效的JSON格式
+2. 所有字段都必须填写
+3. 如果该词不是游戏黑话，请在definition中说明
+4. examples数组至少包含2个例句`;
+}
+
+// AI搜索函数
+function aiSearchTerm(term = null) {
+    const searchInput = Utils.safeQuerySelector('#searchInput');
+    const searchBtn = Utils.safeQuerySelector('#searchBtn');
+    const aiLoading = Utils.safeQuerySelector('#aiLoading');
+    const aiResults = Utils.safeQuerySelector('#aiResults');
+    const isEnglish = (typeof i18n !== 'undefined' && i18n.getLang && i18n.getLang() === 'en');
+
+    const query = term || searchInput.value.trim();
+    if (!query) {
+        alert(isEnglish ? 'Please enter a gaming term' : '请输入要查询的游戏黑话');
+        return;
+    }
+
+    if (term) {
+        searchInput.value = term;
+    }
+
+    // 显示加载动画
+    if (aiLoading) {
+        aiLoading.style.display = 'block';
+        aiResults.innerHTML = '';
+
+        // 进度条动画
+        const progressBar = Utils.safeQuerySelector('#progressBar');
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress > 90) progress = 90;
+            if (progressBar) progressBar.style.width = progress + '%';
+        }, 200);
+
+        aiLoading.progressInterval = progressInterval;
+    }
+
+    if (searchBtn) searchBtn.disabled = true;
+
+    const prompt = buildAISearchPrompt(query);
+
+    fetch(AI_API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${AI_API_KEY}`
+        },
+        body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 1000
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.choices && data.choices[0]) {
+            try {
+                const content = data.choices[0].message.content;
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    const result = JSON.parse(jsonMatch[0]);
+                    displayAIResult(result);
+                } else {
+                    throw new Error(isEnglish ? 'Unable to parse returned JSON' : '无法解析返回的JSON数据');
+                }
+            } catch (e) {
+                console.error('解析错误:', e);
+                displayAIError(isEnglish ? 'Failed to parse response. Please retry.' : '解析返回数据时出错，请重试');
+            }
+        } else {
+            displayAIError(isEnglish ? 'Invalid API response format' : 'API返回数据格式错误');
+        }
+    })
+    .catch(error => {
+        console.error('请求错误:', error);
+        displayAIError(isEnglish ? 'Request failed. Check network or try again later.' : '查询失败，请检查网络连接或稍后重试');
+    })
+    .finally(() => {
+        // 隐藏加载动画
+        if (aiLoading) {
+            aiLoading.style.display = 'none';
+
+            // 清除进度条动画
+            if (aiLoading.progressInterval) {
+                clearInterval(aiLoading.progressInterval);
+                const progressBar = Utils.safeQuerySelector('#progressBar');
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        progressBar.style.width = '0%';
+                    }, 500);
+                }
+            }
+        }
+
+        if (searchBtn) searchBtn.disabled = false;
+    });
+}
+
+// 全局显示AI结果函数
+function displayAIResult(data) {
+    const aiResults = Utils.safeQuerySelector('#aiResults');
+    if (!aiResults) return;
+    const isEnglish = (typeof i18n !== 'undefined' && i18n.getLang && i18n.getLang() === 'en');
+
+    const synonymsText = data.synonyms && data.synonyms.length > 0
+        ? data.synonyms.join(isEnglish ? ', ' : '、')
+        : (isEnglish ? 'None' : '暂无');
+
+    const labels = isEnglish ? {
+        definition: '📝 Definition',
+        usage: 'Usage',
+        examples: 'Examples',
+        context: 'Game Context',
+        level: 'Popularity',
+        synonyms: 'Synonyms'
+    } : {
+        definition: '📝 含义解释',
+        usage: '使用场景',
+        examples: '使用例句',
+        context: '游戏背景',
+        level: '流行程度:',
+        synonyms: '同义词:'
+    };
+
+    const html = `
+        <div class="ai-result-container">
+            <div class="ai-term-title">
+                <div class="ai-term-icon">🎯</div>
+                ${data.term}
+            </div>
+
+            <div class="ai-definition">
+                <div class="ai-definition-title">${labels.definition}</div>
+                <div class="ai-definition-text">${data.definition}</div>
+            </div>
+
+            <div class="ai-section">
+                <div class="ai-section-title">
+                    <span class="ai-section-icon">💡</span>
+                    ${labels.usage}
+                </div>
+                <div class="ai-section-content">${data.usage}</div>
+            </div>
+
+            <div class="ai-section">
+                <div class="ai-section-title">
+                    <span class="ai-section-icon">💬</span>
+                    ${labels.examples}
+                </div>
+                <div class="ai-section-content ai-examples">
+                    ${data.examples.map((example, index) =>
+                        `${index + 1}. ${example}`
+                    ).join('<br>')}
+                </div>
+            </div>
+
+            <div class="ai-section">
+                <div class="ai-section-title">
+                    <span class="ai-section-icon">🎮</span>
+                    ${labels.context}
+                </div>
+                <div class="ai-section-content">${data.context}</div>
+            </div>
+
+            <div style="display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="background: rgba(117, 42, 238, 0.1); padding: 10px 15px; border-radius: 8px; flex: 1; min-width: 120px; border: 1px solid rgba(117, 42, 238, 0.3);">
+                    <strong style="color: var(--primary-green);">${labels.level}</strong> <span style="color: rgba(255, 255, 255, 0.9);">${data.level}</span>
+                </div>
+                <div style="background: rgba(117, 42, 238, 0.1); padding: 10px 15px; border-radius: 8px; flex: 1; min-width: 120px; border: 1px solid rgba(117, 42, 238, 0.3);">
+                    <strong style="color: var(--primary-green);">${labels.synonyms}</strong> <span style="color: rgba(255, 255, 255, 0.9);">${synonymsText}</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    aiResults.innerHTML = html;
+    
+    // 添加显示动画
+    setTimeout(() => {
+        const container = aiResults.querySelector('.ai-result-container');
+        if (container) {
+            container.classList.add('show');
+        }
+    }, 100);
+}
+
+// 全局显示AI错误函数
+function displayAIError(message) {
+    const aiResults = Utils.safeQuerySelector('#aiResults');
+    if (!aiResults) return;
+    
+    const html = `
+        <div class="ai-result-container show">
+            <div class="ai-error">
+                ❌ ${message}
+            </div>
+        </div>
+    `;
+    aiResults.innerHTML = html;
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    initAISearchFunction(); // 初始化搜索功能
+});
+
+
+================================================================================
+四、国际化文本（i18n.js中的相关部分）
+================================================================================
+
+// AI查询相关的国际化文本
+const aiI18n = {
+    title: { zh: '🤖 AI智能查询', en: '🤖 AI Semantic Search' },
+    subtitle: { zh: '输入游戏术语，AI为您提供详细解释和使用场景', en: 'Enter a gaming term; AI explains meaning and usage.' },
+    loading: { zh: 'AI正在分析中...', en: 'AI is analyzing...' },
+    placeholder: { zh: '请输入游戏黑话，如：躺平、卷王、开黑...', en: 'Enter gaming slang, e.g., GG, nerf, meta...' },
+    popular: { zh: '🔥 热门推荐', en: '🔥 Popular Terms' },
+    intro: { 
+        zh: '我们引入前沿的大语言模型与知识图谱技术，构建了新一代智能语义分析系统。该系统能够深度解析游戏术语的语义结构、情感倾向及使用场景，并揭示其背后的文化动因与社群特征，为游戏内容优化、社区精细化运营及玩家体验提升提供数据支持。', 
+        en: 'We leverage cutting-edge large language models and knowledge graph technology to build a next-generation intelligent semantic analysis system. This system deeply parses the semantic structure, sentiment, and usage context of gaming terms, revealing the cultural drivers and community characteristics behind them.' 
+    }
+};
+
+
+================================================================================
+五、CSS变量定义（需要在页面中定义）
+================================================================================
+
+:root {
+    --primary-purple: #7f0056;
+    --light-purple: #a855f7;
+    --accent-pink: #ec4899;
+    --primary-green: #00ff88;
+    --white: #ffffff;
+}
+
+
+================================================================================
+使用说明
+================================================================================
+
+1. API配置：
+   - 当前使用的是 DeepSeek API
+   - API Key: sk-c19e575e2b8045e5932bcce9f2e5e538
+   - API URL: https://api.deepseek.com/v1/chat/completions
+   - 模型: deepseek-chat
+
+2. 如需更换为其他API（如OpenAI）：
+   - 修改 AI_API_KEY 为你的API Key
+   - 修改 AI_API_URL 为对应的API端点
+   - 根据需要调整 model 参数
+
+3. 功能特点：
+   - 支持中英文双语查询
+   - 自动进度条动画
+   - 结构化JSON响应解析
+   - 错误处理和用户提示
+   - 响应式设计
+
+================================================================================

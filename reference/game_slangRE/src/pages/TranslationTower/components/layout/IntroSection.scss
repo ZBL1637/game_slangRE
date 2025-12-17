@@ -1,0 +1,215 @@
+// IntroSection 样式
+$primary-color: #8b5cf6;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+.intro-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  // 入场屏幕
+  .entrance-screen {
+    text-align: center;
+
+    .entrance-text {
+      p {
+        font-size: 1.5rem;
+        color: $text-secondary;
+        letter-spacing: 0.5em;
+        margin: 0.5rem 0;
+
+        &:first-child {
+          font-size: 2rem;
+          color: $text-primary;
+        }
+      }
+    }
+  }
+
+  // 标题屏幕
+  .title-screen {
+    text-align: center;
+
+    .title-content {
+      .chapter-index {
+        display: block;
+        font-size: 1rem;
+        color: $primary-color;
+        letter-spacing: 0.3em;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 0;
+        background: linear-gradient(135deg, $primary-color, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        font-size: 1.5rem;
+        color: $text-secondary;
+        margin-top: 1rem;
+        font-style: italic;
+      }
+    }
+  }
+
+  // 叙述屏幕
+  .narration-screen {
+    max-width: 800px;
+    text-align: center;
+
+    .narration-box {
+      background: rgba($background-medium, 0.8);
+      padding: 3rem;
+      border-radius: 1rem;
+      border: 1px solid rgba($primary-color, 0.3);
+
+      .narration-text {
+        font-size: 1.25rem;
+        line-height: 2;
+        color: $text-primary;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  // NPC对话屏幕
+  .npc-screen {
+    width: 100%;
+    max-width: 900px;
+
+    .npc-container {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+
+      .npc-avatar {
+        position: relative;
+        flex-shrink: 0;
+
+        .avatar-glow {
+          position: absolute;
+          width: 120px;
+          height: 120px;
+          background: radial-gradient(circle, rgba($primary-color, 0.3), transparent);
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+
+        .npc-icon {
+          position: relative;
+          font-size: 5rem;
+          display: block;
+        }
+      }
+
+      .dialogue-box {
+        flex: 1;
+        background: rgba($background-medium, 0.9);
+        padding: 2rem;
+        border-radius: 1rem;
+        border: 1px solid rgba($primary-color, 0.3);
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: -10px;
+          top: 30px;
+          border: 10px solid transparent;
+          border-right-color: rgba($background-medium, 0.9);
+        }
+
+        .npc-header {
+          margin-bottom: 1rem;
+
+          h3 {
+            font-size: 1.5rem;
+            color: $primary-color;
+            margin: 0;
+          }
+
+          .npc-title {
+            font-size: 0.9rem;
+            color: $text-secondary;
+          }
+        }
+
+        .dialogue-content {
+          p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: $text-primary;
+          }
+        }
+
+        .click-hint {
+          display: block;
+          margin-top: 1.5rem;
+          color: $text-secondary;
+          font-size: 0.9rem;
+          text-align: right;
+          animation: pulse 2s infinite;
+        }
+
+        .start-btn {
+          display: block;
+          margin-top: 1.5rem;
+          margin-left: auto;
+          background: linear-gradient(135deg, $primary-color, #06b6d4);
+          color: white;
+          border: none;
+          padding: 1rem 2rem;
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          font-weight: bold;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@media (max-width: 768px) {
+  .intro-section {
+    .title-screen .title-content h1 {
+      font-size: 2.5rem;
+    }
+
+    .npc-screen .npc-container {
+      flex-direction: column;
+      align-items: center;
+
+      .dialogue-box::before {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,601 @@
+@import '@/styles/variables';
+
+// Pixel Art Fonts (Assuming a pixel font is available globally, otherwise falling back to monospace)
+$font-pixel: 'Press Start 2P', 'Courier New', monospace;
+$color-pixel-border-dark: #1a1b26;
+$color-pixel-border-light: #4a4b5e;
+$color-pixel-cyan: #00f0ff;
+$color-pixel-purple: #bc13fe;
+$color-pixel-bg-top: #0f1016;
+$color-pixel-bg-bottom: #25263a;
+
+.era-explorer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+.era-explorer-modal {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  
+  &.wide-mode {
+    max-width: 1200px; // 宽屏模式
+    width: 95%;
+  }
+  
+  // 像素风外框：深色背景 + 渐变
+  background: linear-gradient(to bottom, $color-pixel-bg-top, $color-pixel-bg-bottom);
+  
+  // 像素化硬边框：使用 box-shadow 模拟双层边框
+  border: 4px solid $color-pixel-border-dark;
+  box-shadow: 
+    inset 0 0 0 2px $color-pixel-border-light, // 内发光/内边框
+    0 10px 20px rgba(0, 0, 0, 0.5); // 外部投影
+    
+  // 像素倒角 (2px)
+  border-radius: 4px; 
+  
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: pixelSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); // 弹入动画
+  position: relative;
+
+  // 噪点纹理叠加 (可选，使用伪元素模拟)
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // 确保内容在噪点之上
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid $color-pixel-border-light;
+    border-radius: 4px;
+    color: $color-text-muted;
+    cursor: pointer;
+    z-index: 10;
+    padding: 4px;
+    transition: all 0.2s;
+    
+    &:hover {
+      background: $color-pixel-border-light;
+      color: white;
+      transform: scale(1.1);
+    }
+  }
+
+  .explorer-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-bottom: 2px solid rgba($color-pixel-border-light, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+    
+    .era-icon {
+      font-size: 2.5rem;
+      filter: drop-shadow(0 0 5px $color-pixel-cyan); // 图标发光
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .era-title {
+      h2 {
+        font-family: $font-pixel;
+        font-size: 1.5rem; // 对应 12px-ish pixel font look
+        color: $color-pixel-cyan;
+        margin: 0;
+        text-shadow: 
+          2px 2px 0px #000,
+          0 0 10px rgba($color-pixel-cyan, 0.5); // 霓虹光晕
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      
+      p {
+        font-family: $font-pixel;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+        text-shadow: 1px 1px 0 #000;
+      }
+    }
+  }
+
+  // 阶段指示器
+  .phase-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba($color-pixel-border-light, 0.3);
+    
+    .phase-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px; // 像素方块感
+      border: 2px solid rgba($color-text-muted, 0.3);
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $color-text-muted;
+      transition: all 0.3s;
+      position: relative;
+      cursor: help;
+      
+      &.active {
+        background-color: $color-pixel-purple;
+        border-color: lighten($color-pixel-purple, 20%);
+        color: white;
+        box-shadow: 0 0 10px rgba($color-pixel-purple, 0.6);
+        transform: scale(1.1);
+        
+        // Pixel Underline
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 20px;
+          height: 3px;
+          background-color: $color-pixel-cyan;
+          box-shadow: 0 0 5px $color-pixel-cyan;
+        }
+      }
+      
+      &.completed {
+        background-color: $color-pixel-cyan;
+        border-color: lighten($color-pixel-cyan, 20%);
+        color: $color-bg-dark;
+      }
+
+      // Tooltip (using title attribute default is fine, but custom is better if needed, user said "hover tooltip")
+      // Since we added 'title' attribute, browser default will show.
+      // If we want custom style, we need to add data-tooltip and CSS.
+      // But user said "tooltip: e.g. ...", standard title is simplest implementation for now.
+      // Let's add a custom one for better visuals.
+      
+      &:hover::before {
+        content: attr(title);
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        border: 1px solid $color-pixel-border-light;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: 4px;
+        white-space: nowrap;
+        pointer-events: none;
+        font-family: monospace;
+        z-index: 20;
+      }
+    }
+    
+    .phase-line {
+      width: 40px;
+      height: 4px; // 加粗
+      background-color: rgba($color-text-muted, 0.2);
+      margin: 0 4px;
+    }
+  }
+
+  .explorer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2.5rem;
+
+    // 滚动条样式
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-pixel-border-light;
+      border-radius: 4px;
+    }
+
+    // 介绍阶段
+    .intro-phase {
+      text-align: center;
+      animation: fadeIn 0.5s ease-out;
+      
+      .era-description {
+        font-family: $font-pixel;
+        font-size: 1rem; // ~10px equivalent readability
+        color: #e0e0e0;
+        line-height: 1.8;
+        max-width: 650px;
+        margin: 0 auto 3rem;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.2);
+        padding: 1.5rem;
+        border-radius: 4px;
+        border: 1px dashed rgba($color-pixel-border-light, 0.5);
+      }
+      
+      .action-area {
+        .primary-btn {
+          font-family: $font-pixel;
+          padding: 1.2rem 3rem;
+          background: linear-gradient(to bottom, lighten($color-pixel-cyan, 10%), darken($color-pixel-cyan, 10%));
+          color: $color-bg-dark;
+          border: 2px solid white;
+          border-bottom-width: 4px; // 立体感
+          border-radius: 6px;
+          font-size: 1.1rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          text-transform: uppercase;
+          box-shadow: 0 5px 15px rgba($color-pixel-cyan, 0.3);
+          
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          
+          &:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 20px rgba($color-pixel-cyan, 0.5);
+            background: linear-gradient(to bottom, lighten($color-pixel-cyan, 20%), $color-pixel-cyan);
+            border-color: #fff;
+          }
+          
+          &:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+          }
+        }
+      }
+    }
+
+    // 历史事件阶段
+    .history-phase {
+      .event-card {
+        background-color: rgba(0, 0, 0, 0.3);
+        border: 2px solid $color-pixel-border-light;
+        border-radius: 4px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 1px dashed rgba($color-pixel-border-light, 0.3);
+            pointer-events: none;
+        }
+        
+        .event-header {
+          margin-bottom: 1.5rem;
+          
+          .event-year {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background-color: $color-pixel-purple;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            font-family: $font-pixel;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+          }
+          
+          h3 {
+            font-family: $font-pixel;
+            font-size: 1.4rem;
+            color: $color-pixel-cyan;
+            margin: 0;
+            text-shadow: 2px 2px 0 #000;
+          }
+        }
+        
+        .event-details {
+          p {
+            color: #ccc;
+            line-height: 1.8;
+            margin: 0.75rem 0;
+            font-family: monospace; // 正文用等宽字体增加复古感
+            font-size: 1rem;
+          }
+        }
+        
+        .event-keywords {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.8rem;
+          margin-top: 1.5rem;
+          padding-top: 1.5rem;
+          border-top: 2px solid rgba($color-pixel-border-light, 0.3);
+          
+          .keyword-chip {
+            padding: 0.4rem 0.8rem;
+            background-color: transparent;
+            border: 1px solid $color-pixel-cyan;
+            color: $color-pixel-cyan;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: $font-pixel;
+            transition: all 0.2s;
+            
+            &:hover {
+                background-color: rgba($color-pixel-cyan, 0.1);
+                box-shadow: 0 0 8px rgba($color-pixel-cyan, 0.4);
+            }
+          }
+        }
+      }
+      
+      .navigation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        .nav-btn {
+          padding: 0.8rem 1.5rem;
+          background-color: rgba(255, 255, 255, 0.1);
+          color: white;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          border-radius: 4px;
+          cursor: pointer;
+          font-family: $font-pixel;
+          font-size: 0.8rem;
+          transition: all 0.2s;
+          
+          &:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: transparent;
+          }
+          
+          &:not(:disabled):hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+          }
+          
+          &.primary {
+            background-color: $color-pixel-purple;
+            border-color: lighten($color-pixel-purple, 10%);
+            box-shadow: 0 4px 0 darken($color-pixel-purple, 20%);
+            
+            &:hover {
+              background-color: lighten($color-pixel-purple, 10%);
+              transform: translateY(-2px);
+              box-shadow: 0 6px 0 darken($color-pixel-purple, 20%);
+            }
+            
+            &:active {
+                transform: translateY(2px);
+                box-shadow: 0 2px 0 darken($color-pixel-purple, 20%);
+            }
+          }
+        }
+        
+        .event-counter {
+          color: $color-text-muted;
+          font-family: $font-pixel;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    // 小游戏阶段
+    .minigame-phase {
+      height: 100%; // 确保占满
+      display: flex;
+      flex-direction: column;
+
+      &.no-header {
+        .minigame-container {
+           // If header is removed, maybe we want less margin?
+           // Actually the container styles are fine, just ensuring no extra gap
+        }
+      }
+
+      .minigame-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        
+        h3 {
+          font-family: $font-pixel;
+          font-size: 1.5rem;
+          color: $color-pixel-cyan;
+          margin: 0 0 0.5rem;
+          text-shadow: 2px 2px 0 #000;
+        }
+        
+        p {
+          color: $color-text-muted;
+          font-family: monospace;
+        }
+      }
+      
+      .minigame-container {
+        min-height: 300px;
+        background: rgba(0,0,0,0.2);
+        border: 2px dashed $color-pixel-border-light;
+        border-radius: 4px;
+
+        // 特殊处理卡牌放置游戏
+        &.card_placement {
+          border: none;
+          background: transparent;
+          min-height: 600px; // 确保有足够高度
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0; // 移除内边距，让内部组件接管
+        }
+      }
+    }
+
+    // 奖励阶段
+    .reward-phase {
+      text-align: center;
+      
+      .reward-animation {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 2rem;
+        
+        .fragment-glow {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 150px;
+          height: 150px;
+          background: radial-gradient(circle, rgba($color-pixel-cyan, 0.4) 0%, transparent 70%);
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+        
+        .fragment-img-large {
+          position: relative;
+          width: 100px;
+          height: auto;
+          animation: float 2s ease-in-out infinite;
+          filter: drop-shadow(0 0 10px $color-pixel-cyan);
+        }
+      }
+      
+      h3 {
+        font-family: $font-pixel;
+        font-size: 1.5rem;
+        color: $color-pixel-cyan;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 0 #000;
+      }
+      
+      .fragment-card {
+        background-color: rgba(0, 0, 0, 0.4);
+        border: 2px solid $color-pixel-purple;
+        border-radius: 4px;
+        padding: 1.5rem;
+        max-width: 400px;
+        margin: 0 auto 2rem;
+        box-shadow: 0 0 15px rgba($color-pixel-purple, 0.2);
+        
+        h4 {
+          color: white;
+          margin: 0 0 0.5rem;
+          font-family: $font-pixel;
+        }
+        
+        p {
+          color: $color-text-muted;
+          font-size: 0.875rem;
+          margin: 0 0 1rem;
+          font-family: monospace;
+        }
+        
+        .fragment-keywords {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+          
+          .keyword-tag {
+            padding: 0.25rem 0.5rem;
+            background-color: rgba($color-pixel-purple, 0.2);
+            color: lighten($color-pixel-purple, 20%);
+            border: 1px solid $color-pixel-purple;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-family: $font-pixel;
+          }
+        }
+      }
+      
+      .primary-btn {
+        font-family: $font-pixel;
+        padding: 1rem 2rem;
+        background-color: $color-pixel-cyan;
+        color: $color-bg-dark;
+        border: 2px solid white;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 0 darken($color-pixel-cyan, 20%);
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 0 darken($color-pixel-cyan, 20%);
+          filter: brightness(1.1);
+        }
+        
+        &:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 darken($color-pixel-cyan, 20%);
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pixelSlideUp {
+  from { 
+    transform: translateY(20px) scale(0.95); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0) scale(1); 
+    opacity: 1; 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

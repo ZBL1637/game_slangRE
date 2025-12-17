@@ -1,0 +1,317 @@
+// ============================================================================
+// IntroSection - 入场动画样式
+// ============================================================================
+
+$primary-color: #dc2626;
+$secondary-color: #8b5cf6;
+$accent-color: #f59e0b;
+$background-dark: #0a0a0a;
+$background-medium: #1a1a1a;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes streamFlow {
+  0% { transform: scaleY(0); opacity: 0; }
+  50% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
+@keyframes faceGlitch {
+  0%, 100% { opacity: 1; }
+  10% { opacity: 0.8; transform: translateX(-2px); }
+  20% { opacity: 1; transform: translateX(0); }
+  30% { opacity: 0.9; transform: translateX(2px); }
+  40% { opacity: 1; transform: translateX(0); }
+}
+
+.intro-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 2rem;
+
+  // 入场屏幕
+  .entrance-screen {
+    text-align: center;
+
+    .entrance-text {
+      p {
+        font-size: 2rem;
+        color: $primary-color;
+        letter-spacing: 0.5em;
+        margin: 0.5rem 0;
+        text-shadow: 0 0 20px rgba($primary-color, 0.5);
+      }
+    }
+  }
+
+  // 标题屏幕
+  .title-screen {
+    text-align: center;
+
+    .title-content {
+      .chapter-index {
+        display: block;
+        font-size: 1rem;
+        color: $primary-color;
+        letter-spacing: 0.3em;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 5rem;
+        font-weight: bold;
+        margin: 0;
+        color: $text-primary;
+        text-shadow: 0 0 30px rgba($primary-color, 0.5);
+      }
+
+      .subtitle {
+        font-size: 1.5rem;
+        color: $text-secondary;
+        margin-top: 1rem;
+        font-style: italic;
+      }
+    }
+  }
+
+  // 叙述屏幕
+  .narration-screen {
+    max-width: 800px;
+    text-align: center;
+
+    .narration-box {
+      background: rgba($background-medium, 0.8);
+      padding: 3rem;
+      border-radius: 1rem;
+      border: 1px solid rgba($primary-color, 0.3);
+
+      .narration-text {
+        font-size: 1.25rem;
+        line-height: 2;
+        color: $text-primary;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  // Boss对话屏幕
+  .dialogue-screen {
+    width: 100%;
+    max-width: 900px;
+
+    .boss-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+
+      .boss-visual {
+        .boss-silhouette {
+          position: relative;
+          width: 200px;
+          height: 200px;
+
+          .data-streams {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+            .stream {
+              position: absolute;
+              width: 3px;
+              height: 60px;
+              background: linear-gradient(to bottom, transparent, $primary-color, transparent);
+              left: 50%;
+              top: 50%;
+              transform-origin: center bottom;
+              animation: streamFlow 2s ease-in-out infinite;
+            }
+          }
+
+          .boss-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: faceGlitch 3s infinite;
+
+            .face-code {
+              font-size: 4rem;
+              color: $primary-color;
+              font-family: monospace;
+              text-shadow: 0 0 20px $primary-color;
+            }
+          }
+        }
+      }
+
+      .dialogue-box {
+        width: 100%;
+        background: rgba($background-medium, 0.9);
+        padding: 2rem;
+        border-radius: 1rem;
+        border: 1px solid rgba($primary-color, 0.3);
+
+        .dialogue-header {
+          margin-bottom: 1rem;
+
+          .speaker {
+            font-size: 1.25rem;
+            font-weight: bold;
+
+            &.boss {
+              color: $primary-color;
+            }
+
+            &.system {
+              color: $accent-color;
+            }
+          }
+        }
+
+        .dialogue-text {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: $text-primary;
+        }
+
+        .click-hint {
+          display: block;
+          margin-top: 1.5rem;
+          color: $text-secondary;
+          font-size: 0.9rem;
+          text-align: right;
+          animation: pulse 2s infinite;
+        }
+      }
+    }
+  }
+
+  // 准备屏幕
+  .ready-screen {
+    width: 100%;
+    max-width: 600px;
+
+    .ready-content {
+      background: rgba($background-medium, 0.9);
+      padding: 3rem;
+      border-radius: 1.5rem;
+      border: 2px solid rgba($primary-color, 0.3);
+      text-align: center;
+
+      .boss-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        font-size: 2.5rem;
+        color: $primary-color;
+        margin-bottom: 1rem;
+      }
+
+      .battle-info {
+        font-size: 1.1rem;
+        color: $text-secondary;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+
+      .skills-preview {
+        margin-bottom: 2rem;
+
+        h3 {
+          font-size: 1rem;
+          color: $text-secondary;
+          margin-bottom: 1rem;
+        }
+
+        .skills-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+
+          .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba($secondary-color, 0.1);
+            border-radius: 0.5rem;
+            border: 1px solid rgba($secondary-color, 0.3);
+
+            .skill-icon {
+              font-size: 1.5rem;
+            }
+
+            .skill-name {
+              font-size: 0.9rem;
+              color: $text-primary;
+            }
+          }
+        }
+      }
+
+      .start-battle-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+        color: white;
+        border: none;
+        padding: 1.25rem 2rem;
+        border-radius: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        .btn-icon {
+          font-size: 1.5rem;
+        }
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba($primary-color, 0.4);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .intro-section {
+    .title-screen .title-content h1 {
+      font-size: 3rem;
+    }
+
+    .ready-screen .ready-content {
+      padding: 2rem;
+
+      .skills-preview .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

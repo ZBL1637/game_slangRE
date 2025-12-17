@@ -1,0 +1,403 @@
+// SkillUnlock 样式 - 像素艺术风格
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$pixel-border: #4a3f6b;
+$glow-purple: rgba(139, 92, 246, 0.5);
+$glow-cyan: rgba(6, 182, 212, 0.5);
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.2;
+  }
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    box-shadow: 0 0 30px $glow-purple, 0 0 60px $glow-cyan;
+  }
+  50% {
+    box-shadow: 0 0 60px $glow-purple, 0 0 100px $glow-cyan, 0 0 120px $primary-color;
+  }
+}
+
+@keyframes runeRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px $glow-purple, 0 0 20px $glow-cyan;
+  }
+  50% {
+    text-shadow: 0 0 20px $glow-purple, 0 0 40px $glow-cyan, 0 0 60px $primary-color;
+  }
+}
+
+.skill-unlock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($background-dark, 0.98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: $primary-color;
+      animation: particleFloat 4s linear infinite;
+      // 像素风格粒子
+      box-shadow: 
+        0 0 5px $glow-purple,
+        0 0 10px $glow-cyan;
+    }
+  }
+
+  .skill-unlock-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 650px;
+    padding: 2rem;
+
+    // 对话阶段
+    .dialogue-phase {
+      cursor: pointer;
+
+      .npc-dialogue {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+
+        .npc-avatar {
+          width: 100px;
+          height: 150px;
+          background-image: url('/src/assets/images/npc_translation_master.png');
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          font-size: 0; // 隐藏emoji
+          filter: drop-shadow(0 0 15px $glow-purple);
+        }
+
+        .dialogue-box {
+          flex: 1;
+          background: rgba($background-dark, 0.98);
+          padding: 2rem;
+          border: 4px solid $pixel-border;
+          box-shadow: 
+            inset 0 0 0 2px rgba($secondary-color, 0.3),
+            0 0 40px rgba($primary-color, 0.2);
+          position: relative;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 30px;
+            border: 10px solid transparent;
+            border-right-color: $pixel-border;
+          }
+
+          h3 {
+            font-family: 'Press Start 2P', cursive;
+            color: $secondary-color;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            text-shadow: 0 0 10px $glow-cyan;
+          }
+
+          p {
+            font-size: 1rem;
+            line-height: 2;
+            color: $text-primary;
+          }
+
+          .click-hint {
+            display: block;
+            margin-top: 1rem;
+            color: $secondary-color;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            text-align: right;
+            animation: textGlow 2s ease-in-out infinite;
+          }
+        }
+      }
+    }
+
+    // 揭示阶段
+    .reveal-phase {
+      text-align: center;
+
+      .skill-icon-container {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        margin: 0 auto 2rem;
+
+        .icon-glow {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle, rgba($primary-color, 0.5), transparent 70%);
+          border-radius: 50%;
+          animation: iconGlow 2s ease-in-out infinite;
+        }
+
+        .icon-ring {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 4px solid $primary-color;
+          border-radius: 50%;
+          animation: ringPulse 2s ease-in-out infinite, runeRotate 20s linear infinite;
+          border-style: dashed;
+        }
+
+        .skill-icon {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          // 使用技能图标图片
+          background-image: url('/src/assets/images/skill_logos_conversion.png');
+          background-size: 70%;
+          background-position: center;
+          background-repeat: no-repeat;
+          font-size: 0; // 隐藏emoji
+          filter: drop-shadow(0 0 20px $glow-purple);
+        }
+      }
+
+      .skill-name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        h2 {
+          font-family: 'Microsoft YaHei', sans-serif;
+          font-size: 2.5rem;
+          color: $text-primary;
+          text-shadow: 
+            0 0 20px $glow-purple,
+            0 0 40px $glow-cyan,
+            0 4px 0 darken($primary-color, 30%);
+        }
+
+        .sparkle-icon {
+          font-size: 1.5rem;
+          animation: textGlow 1.5s ease-in-out infinite;
+        }
+      }
+
+      .skill-english {
+        font-family: 'Press Start 2P', cursive;
+        color: $secondary-color;
+        font-size: 0.7rem;
+        text-shadow: 0 0 10px $glow-cyan;
+      }
+    }
+
+    // 详情阶段
+    .details-phase {
+      .skill-reveal {
+        text-align: center;
+        margin-bottom: 2rem;
+
+        .skill-icon-container.small {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 1rem;
+
+          .skill-icon {
+            background-size: 80%;
+          }
+        }
+
+        .skill-name h2 {
+          font-size: 1.5rem;
+        }
+
+        .skill-english {
+          font-size: 0.6rem;
+        }
+      }
+
+      .skill-details {
+        background: rgba($background-dark, 0.98);
+        padding: 2rem;
+        border: 4px solid $pixel-border;
+        box-shadow: 
+          inset 0 0 0 2px rgba($secondary-color, 0.3),
+          0 0 40px rgba($primary-color, 0.2);
+
+        .skill-desc {
+          font-size: 1rem;
+          color: $text-primary;
+          line-height: 1.8;
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid rgba($pixel-border, 0.5);
+        }
+
+        .skill-effect {
+          margin-bottom: 1.5rem;
+
+          h4 {
+            font-family: 'Press Start 2P', cursive;
+            color: $secondary-color;
+            margin-bottom: 1rem;
+            font-size: 0.7rem;
+            text-shadow: 0 0 10px $glow-cyan;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+              padding: 0.75rem 0;
+              padding-left: 2rem;
+              position: relative;
+              color: $text-primary;
+              border-bottom: 1px solid rgba($pixel-border, 0.3);
+
+              &:last-child {
+                border-bottom: none;
+              }
+
+              &::before {
+                content: '◆';
+                position: absolute;
+                left: 0;
+                color: $accent-color;
+                text-shadow: 0 0 10px rgba($accent-color, 0.5);
+              }
+            }
+          }
+        }
+
+        .skill-lore {
+          padding: 1rem;
+          background: rgba($primary-color, 0.1);
+          border: 2px solid $pixel-border;
+          margin-bottom: 1.5rem;
+
+          p {
+            font-style: italic;
+            color: $text-secondary;
+            margin: 0;
+            line-height: 1.8;
+          }
+        }
+
+        .confirm-btn {
+          width: 100%;
+          background: linear-gradient(180deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+          color: white;
+          border: 4px solid darken($primary-color, 20%);
+          padding: 1rem 2rem;
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.7rem;
+          box-shadow: 
+            inset 0 2px 0 rgba(255,255,255,0.2),
+            inset 0 -2px 0 rgba(0,0,0,0.2),
+            0 6px 0 darken($primary-color, 25%),
+            0 0 30px rgba($primary-color, 0.3);
+          position: relative;
+          top: 0;
+          transition: all 0.1s ease;
+
+          &:hover {
+            top: 3px;
+            box-shadow: 
+              inset 0 2px 0 rgba(255,255,255,0.2),
+              inset 0 -2px 0 rgba(0,0,0,0.2),
+              0 3px 0 darken($primary-color, 25%),
+              0 0 40px rgba($primary-color, 0.5);
+          }
+
+          &:active {
+            top: 6px;
+            box-shadow: 
+              inset 0 2px 0 rgba(0,0,0,0.2),
+              0 0 0 darken($primary-color, 25%);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .skill-unlock-overlay .skill-unlock-container {
+    padding: 1rem;
+
+    .dialogue-phase .npc-dialogue {
+      flex-direction: column;
+      align-items: center;
+
+      .npc-avatar {
+        width: 80px;
+        height: 120px;
+      }
+
+      .dialogue-box::before {
+        display: none;
+      }
+    }
+
+    .reveal-phase {
+      .skill-icon-container {
+        width: 120px;
+        height: 120px;
+      }
+
+      .skill-name h2 {
+        font-size: 1.8rem;
+      }
+    }
+  }
+}

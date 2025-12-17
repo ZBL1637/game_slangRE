@@ -1,0 +1,333 @@
+// ============================================================================
+// DefeatScreen - 失败画面样式
+// ============================================================================
+
+$primary-color: #dc2626;
+$secondary-color: #8b5cf6;
+$accent-color: #f59e0b;
+$background-dark: #0a0a0a;
+$background-medium: #1a1a1a;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+@keyframes surgePulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.5); opacity: 0.3; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes glitchLine {
+  0%, 100% { transform: translateX(0); opacity: 0; }
+  50% { transform: translateX(100%); opacity: 1; }
+}
+
+.defeat-screen-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  // Boss胜利屏幕
+  .boss-triumph-screen {
+    text-align: center;
+    cursor: pointer;
+
+    .triumph-animation {
+      .boss-empowered {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 2rem;
+
+        .power-surge {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+
+          .surge-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid $primary-color;
+            border-radius: 50%;
+            animation: surgePulse 2s ease-out infinite;
+          }
+        }
+
+        .boss-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 5rem;
+        }
+      }
+
+      .triumph-text {
+        h2 {
+          font-size: 2.5rem;
+          color: $primary-color;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          font-size: 1.25rem;
+          color: $text-secondary;
+          font-style: italic;
+        }
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+    }
+  }
+
+  // 叙述屏幕
+  .narration-screen {
+    position: relative;
+    max-width: 800px;
+    text-align: center;
+    cursor: pointer;
+
+    .collapsing-world {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+
+      .glitch-effect {
+        .glitch-line {
+          position: absolute;
+          width: 100%;
+          height: 5px;
+          background: linear-gradient(90deg, transparent, $primary-color, transparent);
+          animation: glitchLine 0.5s ease-in-out infinite;
+        }
+      }
+    }
+
+    .narration-box {
+      position: relative;
+      background: rgba($background-medium, 0.9);
+      padding: 3rem;
+      border-radius: 1rem;
+      border: 1px solid rgba($primary-color, 0.3);
+
+      .narration-text {
+        font-size: 1.25rem;
+        line-height: 2;
+        color: $text-primary;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+    }
+  }
+
+  // 结局屏幕
+  .ending-screen {
+    max-width: 800px;
+    text-align: center;
+    cursor: pointer;
+
+    .ending-content {
+      .ending-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 2rem;
+      }
+
+      .ending-text {
+        p {
+          font-size: 1.25rem;
+          line-height: 2;
+          color: $text-primary;
+          margin-bottom: 1.5rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+    }
+  }
+
+  // 重试屏幕
+  .retry-screen {
+    width: 100%;
+    max-width: 600px;
+
+    .retry-card {
+      background: rgba($background-medium, 0.95);
+      padding: 3rem;
+      border-radius: 1.5rem;
+      border: 2px solid rgba($primary-color, 0.3);
+
+      .defeat-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        margin: 0 auto 2rem;
+        width: fit-content;
+
+        .badge-icon {
+          font-size: 1.5rem;
+        }
+
+        .badge-text {
+          color: white;
+          font-weight: bold;
+        }
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 1.5rem;
+        color: $text-primary;
+        margin-bottom: 1.5rem;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+
+        .stat-item {
+          text-align: center;
+          padding: 1rem;
+          background: rgba($primary-color, 0.1);
+          border-radius: 0.5rem;
+
+          .stat-label {
+            display: block;
+            font-size: 0.85rem;
+            color: $text-secondary;
+            margin-bottom: 0.5rem;
+          }
+
+          .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: $primary-color;
+          }
+        }
+      }
+
+      .tips-section {
+        margin-bottom: 2rem;
+
+        h3 {
+          font-size: 1rem;
+          color: $text-secondary;
+          margin-bottom: 1rem;
+        }
+
+        .tips-list {
+          list-style: none;
+          padding: 0;
+
+          li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba($secondary-color, 0.1);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+
+            .tip-icon {
+              font-size: 1.25rem;
+              flex-shrink: 0;
+            }
+
+            span:last-child {
+              font-size: 0.9rem;
+              color: $text-primary;
+              line-height: 1.5;
+            }
+          }
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+
+        .retry-btn, .home-btn {
+          flex: 1;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .retry-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          background: linear-gradient(135deg, $accent-color, darken($accent-color, 10%));
+          color: white;
+          border: none;
+
+          .btn-icon {
+            font-size: 1.25rem;
+          }
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba($accent-color, 0.4);
+          }
+        }
+
+        .home-btn {
+          background: transparent;
+          color: $text-primary;
+          border: 2px solid rgba($text-primary, 0.3);
+
+          &:hover {
+            border-color: $text-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .defeat-screen-container {
+    .retry-screen .retry-card {
+      padding: 2rem;
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

@@ -1,0 +1,370 @@
+@import '@/styles/variables';
+
+.era-explorer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.era-explorer-modal {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  background-color: $color-bg-dark;
+  border: 1px solid rgba($color-text-muted, 0.3);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: scaleIn 0.3s ease-out;
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: $color-text-muted;
+    cursor: pointer;
+    z-index: 10;
+    
+    &:hover {
+      color: $color-text-main;
+    }
+  }
+
+  .explorer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, transparent 100%);
+    border-bottom: 1px solid rgba($color-text-muted, 0.2);
+    
+    .era-icon {
+      font-size: 2.5rem;
+    }
+    
+    .era-title {
+      h2 {
+        font-size: 1.5rem;
+        color: $color-text-highlight;
+        margin: 0;
+      }
+      
+      p {
+        color: $color-text-muted;
+        font-size: 0.875rem;
+        margin: 0;
+      }
+    }
+  }
+
+  // 阶段指示器
+  .phase-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba($color-bg-panel, 0.5);
+    
+    .phase-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: rgba($color-text-muted, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $color-text-muted;
+      transition: all 0.3s;
+      
+      &.active {
+        background-color: $color-primary;
+        color: white;
+        box-shadow: 0 0 15px rgba($color-primary, 0.5);
+      }
+      
+      &.completed {
+        background-color: $color-success;
+        color: white;
+      }
+    }
+    
+    .phase-line {
+      width: 40px;
+      height: 2px;
+      background-color: rgba($color-text-muted, 0.3);
+    }
+  }
+
+  .explorer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+
+    // 介绍阶段
+    .intro-phase {
+      text-align: center;
+      
+      .era-description {
+        font-size: 1.125rem;
+        color: $color-text-main;
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+      
+      .action-area {
+        .primary-btn {
+          padding: 1rem 2rem;
+          background-color: $color-primary;
+          color: white;
+          border: none;
+          border-radius: $border-radius-md;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.2s;
+          
+          &:hover {
+            background-color: lighten($color-primary, 10%);
+            transform: translateY(-2px);
+          }
+        }
+      }
+    }
+
+    // 历史事件阶段
+    .history-phase {
+      .event-card {
+        background-color: rgba($color-bg-panel, 0.5);
+        border: 1px solid rgba($color-text-muted, 0.2);
+        border-radius: $border-radius-lg;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        
+        .event-header {
+          margin-bottom: 1.5rem;
+          
+          .event-year {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba($color-primary, 0.2);
+            color: $color-primary;
+            border-radius: $border-radius-sm;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+          }
+          
+          h3 {
+            font-size: 1.5rem;
+            color: $color-text-highlight;
+            margin: 0;
+          }
+        }
+        
+        .event-details {
+          p {
+            color: $color-text-main;
+            line-height: 1.8;
+            margin: 0.75rem 0;
+          }
+        }
+        
+        .event-keywords {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-top: 1.5rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid rgba($color-text-muted, 0.2);
+          
+          .keyword-chip {
+            padding: 0.5rem 1rem;
+            background-color: rgba($color-warning, 0.2);
+            color: $color-warning;
+            border-radius: $border-radius-md;
+            font-size: 0.875rem;
+            font-weight: bold;
+          }
+        }
+      }
+      
+      .navigation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        .nav-btn {
+          padding: 0.75rem 1.5rem;
+          background-color: rgba($color-text-muted, 0.2);
+          color: $color-text-main;
+          border: none;
+          border-radius: $border-radius-sm;
+          cursor: pointer;
+          transition: all 0.2s;
+          
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+          
+          &:not(:disabled):hover {
+            background-color: rgba($color-text-muted, 0.3);
+          }
+          
+          &.primary {
+            background-color: $color-primary;
+            color: white;
+            
+            &:hover {
+              background-color: lighten($color-primary, 10%);
+            }
+          }
+        }
+        
+        .event-counter {
+          color: $color-text-muted;
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    // 小游戏阶段
+    .minigame-phase {
+      .minigame-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        
+        h3 {
+          font-size: 1.5rem;
+          color: $color-text-highlight;
+          margin: 0 0 0.5rem;
+        }
+        
+        p {
+          color: $color-text-muted;
+        }
+      }
+      
+      .minigame-container {
+        min-height: 300px;
+      }
+    }
+
+    // 奖励阶段
+    .reward-phase {
+      text-align: center;
+      
+      .reward-animation {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 2rem;
+        
+        .fragment-glow {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 150px;
+          height: 150px;
+          background: radial-gradient(circle, rgba($color-warning, 0.4) 0%, transparent 70%);
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+        
+        .fragment-icon {
+          position: relative;
+          font-size: 4rem;
+          animation: float 2s ease-in-out infinite;
+        }
+      }
+      
+      h3 {
+        font-size: 1.5rem;
+        color: $color-warning;
+        margin-bottom: 1.5rem;
+      }
+      
+      .fragment-card {
+        background-color: rgba($color-bg-panel, 0.5);
+        border: 1px solid rgba($color-warning, 0.3);
+        border-radius: $border-radius-lg;
+        padding: 1.5rem;
+        max-width: 400px;
+        margin: 0 auto 2rem;
+        
+        h4 {
+          color: $color-text-highlight;
+          margin: 0 0 0.5rem;
+        }
+        
+        p {
+          color: $color-text-muted;
+          font-size: 0.875rem;
+          margin: 0 0 1rem;
+        }
+        
+        .fragment-keywords {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+          
+          .keyword-tag {
+            padding: 0.25rem 0.5rem;
+            background-color: rgba($color-primary, 0.2);
+            color: $color-primary;
+            border-radius: $border-radius-sm;
+            font-size: 0.75rem;
+          }
+        }
+      }
+      
+      .primary-btn {
+        padding: 1rem 2rem;
+        background-color: $color-primary;
+        color: white;
+        border: none;
+        border-radius: $border-radius-md;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        &:hover {
+          background-color: lighten($color-primary, 10%);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

@@ -1,0 +1,185 @@
+// OutroSection 样式
+
+$primary-color: #7F0056;
+$secondary-color: #D946EF;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+
+.outro-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  // 叙述屏幕
+  .narration-screen {
+    max-width: 700px;
+
+    .narration-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem 3rem;
+
+      .narration-text {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        color: $text-primary;
+        text-align: center;
+      }
+    }
+  }
+
+  // 总结屏幕
+  .summary-screen {
+    width: 100%;
+    max-width: 500px;
+
+    .summary-card {
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      text-align: center;
+
+      .chapter-badge {
+        display: inline-block;
+        background: rgba(127, 0, 86, 0.2);
+        border: 1px solid $primary-color;
+        padding: 0.375rem 1rem;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+
+        span {
+          font-size: 0.75rem;
+          color: $secondary-color;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        color: #22c55e;
+        margin-bottom: 0.5rem;
+      }
+
+      h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 1.5rem;
+      }
+
+      .achievements {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+
+        .achievement-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.5rem 0;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          }
+
+          .icon {
+            font-size: 1.25rem;
+          }
+
+          .text {
+            font-size: 0.9375rem;
+            color: $text-primary;
+            text-align: left;
+          }
+        }
+      }
+
+      .skill-reminder {
+        background: rgba(127, 0, 86, 0.1);
+        border: 1px solid rgba(127, 0, 86, 0.3);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+
+        h4 {
+          font-size: 0.75rem;
+          color: $secondary-color;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 0.75rem;
+        }
+
+        .skill-card {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .skill-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, $primary-color, $secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+          }
+
+          .skill-info {
+            text-align: left;
+
+            .skill-name {
+              display: block;
+              font-size: 1rem;
+              font-weight: 700;
+              color: $text-primary;
+              margin-bottom: 0.25rem;
+            }
+
+            .skill-desc {
+              display: block;
+              font-size: 0.75rem;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+
+      .next-chapter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: $text-secondary;
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .continue-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        border: none;
+        color: $text-primary;
+        padding: 1rem 2rem;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(127, 0, 86, 0.4);
+        }
+      }
+    }
+  }
+}

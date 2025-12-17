@@ -1,0 +1,252 @@
+// DNATest 样式
+
+$primary-color: #7F0056;
+$secondary-color: #D946EF;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+
+.dna-test-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+
+  .dna-test-modal {
+    width: 100%;
+    max-width: 600px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    position: relative;
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: $text-secondary;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: $text-primary;
+      }
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      margin-bottom: 2rem;
+      position: relative;
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, $primary-color, $secondary-color);
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+
+      .progress-text {
+        position: absolute;
+        right: 0;
+        top: 10px;
+        font-size: 0.75rem;
+        color: $text-secondary;
+      }
+    }
+
+    // 介绍卡片
+    .intro-card {
+      text-align: center;
+      padding: 2rem 0;
+
+      .dna-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+        color: $text-secondary;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+
+        &.hint {
+          font-size: 0.875rem;
+          color: $text-secondary;
+          opacity: 0.7;
+        }
+      }
+
+      .start-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        color: $text-primary;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 0.75rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 2rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(127, 0, 86, 0.4);
+        }
+      }
+    }
+
+    // 问题卡片
+    .question-card {
+      padding: 1rem 0;
+
+      .question-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .question-subtitle {
+        font-size: 0.875rem;
+        color: $text-secondary;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .options-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+
+        .option-btn {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 0.75rem;
+          padding: 1rem 1.25rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-align: left;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+          }
+
+          &.selected {
+            background: rgba(127, 0, 86, 0.2);
+            border-color: $primary-color;
+
+            .option-check {
+              background: $primary-color;
+              border-color: $primary-color;
+
+              svg {
+                color: $text-primary;
+              }
+            }
+          }
+
+          .option-check {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+
+            .empty-check {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+            }
+          }
+
+          .option-label {
+            font-size: 1rem;
+            color: $text-primary;
+          }
+        }
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .nav-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &.prev {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: $text-secondary;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.15);
+              color: $text-primary;
+            }
+          }
+
+          &.next {
+            background: linear-gradient(135deg, $primary-color, $secondary-color);
+            border: none;
+            color: $text-primary;
+            margin-left: auto;
+
+            &:hover:not(:disabled) {
+              transform: translateY(-2px);
+              box-shadow: 0 5px 20px rgba(127, 0, 86, 0.4);
+            }
+
+            &:disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
+  }
+}

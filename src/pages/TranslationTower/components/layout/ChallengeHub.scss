@@ -1,0 +1,428 @@
+// ChallengeHub 样式 - 像素艺术风格
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$pixel-border: #4a3f6b;
+$glow-purple: rgba(139, 92, 246, 0.5);
+$glow-cyan: rgba(6, 182, 212, 0.5);
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@keyframes altarGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px $glow-purple);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px $glow-cyan) drop-shadow(0 0 25px $glow-purple);
+  }
+}
+
+@keyframes lockedPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes completedShine {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.challenge-hub-section {
+  width: 100%;
+  max-width: 1000px;
+  padding: 2rem;
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h2 {
+      font-family: 'Microsoft YaHei', sans-serif;
+      font-size: 2.5rem;
+      color: $text-primary;
+      text-shadow: 
+        0 0 20px $glow-purple,
+        0 0 40px $glow-cyan,
+        0 4px 0 darken($primary-color, 30%);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-family: 'Press Start 2P', cursive;
+      color: $secondary-color;
+      font-size: 0.7rem;
+      text-shadow: 0 0 10px $glow-cyan;
+    }
+  }
+
+  .challenges-container {
+    .tower-levels {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .challenge-level {
+        background: rgba($background-dark, 0.95);
+        padding: 1.5rem;
+        border: 4px solid $pixel-border;
+        box-shadow: 
+          inset 0 0 0 2px rgba($secondary-color, 0.2),
+          0 0 20px rgba($primary-color, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: -6px;
+          left: -6px;
+          right: -6px;
+          bottom: -6px;
+          border: 2px solid transparent;
+          pointer-events: none;
+          transition: border-color 0.3s ease;
+        }
+
+        &.available {
+          border-color: $primary-color;
+          
+          &::before {
+            border-color: rgba($secondary-color, 0.3);
+          }
+          
+          &:hover {
+            transform: translateX(8px);
+            box-shadow: 
+              inset 0 0 0 2px rgba($secondary-color, 0.4),
+              0 0 30px rgba($primary-color, 0.3),
+              0 0 60px rgba($secondary-color, 0.2);
+
+            .level-icon {
+              animation: altarGlow 1.5s ease-in-out infinite;
+            }
+          }
+        }
+
+        &.completed {
+          border-color: #10b981;
+          background: rgba(#10b981, 0.1);
+
+          &::before {
+            border-color: rgba(#10b981, 0.3);
+          }
+
+          .level-icon::after {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            border: 2px solid white;
+          }
+        }
+
+        &.locked {
+          opacity: 0.5;
+          cursor: not-allowed;
+          animation: lockedPulse 3s ease-in-out infinite;
+
+          .level-icon {
+            filter: grayscale(100%);
+          }
+        }
+
+        .level-connector {
+          width: 20px;
+          position: relative;
+
+          .connector-line {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 3px;
+            height: 1.5rem;
+            background: linear-gradient(180deg, $primary-color, transparent);
+          }
+        }
+
+        .level-content {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+
+          .level-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba($primary-color, 0.1);
+            border: 3px solid $pixel-border;
+            position: relative;
+            overflow: hidden;
+
+            // 使用圣坛图片
+            &::before {
+              content: '';
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              background-size: contain;
+              background-position: center;
+              background-repeat: no-repeat;
+            }
+
+            // 隐藏emoji
+            font-size: 0;
+          }
+
+          .level-info {
+            flex: 1;
+
+            h3 {
+              font-family: 'Press Start 2P', cursive;
+              font-size: 0.8rem;
+              color: $text-primary;
+              margin-bottom: 0.75rem;
+              text-shadow: 0 0 10px $glow-purple;
+            }
+
+            p {
+              font-size: 0.9rem;
+              color: $text-secondary;
+              margin-bottom: 0.75rem;
+              line-height: 1.6;
+            }
+
+            .level-reward {
+              font-family: 'Press Start 2P', cursive;
+              font-size: 0.6rem;
+
+              .reward-label {
+                color: $text-secondary;
+              }
+
+              .reward-value {
+                color: $accent-color;
+                margin-left: 0.5rem;
+                text-shadow: 0 0 10px rgba($accent-color, 0.5);
+              }
+            }
+          }
+
+          .level-status {
+            .status-badge {
+              font-family: 'Press Start 2P', cursive;
+              padding: 0.5rem 1rem;
+              font-size: 0.6rem;
+              border: 2px solid;
+
+              &.completed {
+                background: rgba(#10b981, 0.2);
+                color: #10b981;
+                border-color: #10b981;
+                background-image: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255,255,255,0.2),
+                  transparent
+                );
+                background-size: 200% 100%;
+                animation: completedShine 3s linear infinite;
+              }
+
+              &.locked {
+                background: rgba($text-secondary, 0.1);
+                color: $text-secondary;
+                border-color: $text-secondary;
+              }
+            }
+
+            .start-btn {
+              background: linear-gradient(180deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+              color: white;
+              border: 3px solid darken($primary-color, 20%);
+              padding: 0.75rem 1.5rem;
+              font-family: 'Press Start 2P', cursive;
+              font-size: 0.6rem;
+              box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.2),
+                inset 0 -2px 0 rgba(0,0,0,0.2),
+                0 4px 0 darken($primary-color, 25%);
+              position: relative;
+              top: 0;
+              transition: all 0.1s ease;
+
+              &:hover {
+                top: 2px;
+                box-shadow: 
+                  inset 0 2px 0 rgba(255,255,255,0.2),
+                  inset 0 -2px 0 rgba(0,0,0,0.2),
+                  0 2px 0 darken($primary-color, 25%);
+              }
+            }
+          }
+        }
+
+        // 为每个圣坛设置不同的图标图片
+        &.level-3 .level-icon::before {
+          background-image: url('/src/assets/images/altar_keyword.png');
+        }
+
+        &.level-2 .level-icon::before {
+          background-image: url('/src/assets/images/altar_style.png');
+        }
+
+        &.level-1 .level-icon::before {
+          background-image: url('/src/assets/images/altar_culture.png');
+        }
+      }
+    }
+
+    .progress-indicator {
+      margin-top: 2rem;
+      text-align: center;
+      background: rgba($background-dark, 0.8);
+      padding: 1rem;
+      border: 3px solid $pixel-border;
+
+      .progress-bar {
+        height: 12px;
+        background: rgba($primary-color, 0.2);
+        border: 2px solid $pixel-border;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, $primary-color, $secondary-color);
+          transition: width 0.5s ease;
+          box-shadow: 0 0 10px $glow-cyan;
+        }
+      }
+
+      .progress-text {
+        font-family: 'Press Start 2P', cursive;
+        color: $secondary-color;
+        font-size: 0.6rem;
+        text-shadow: 0 0 10px $glow-cyan;
+      }
+    }
+  }
+
+  .npc-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba($background-dark, 0.95);
+    border: 4px solid $pixel-border;
+    box-shadow: 
+      inset 0 0 0 2px rgba($secondary-color, 0.2),
+      0 0 20px rgba($primary-color, 0.1);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
+      border: 2px solid rgba($secondary-color, 0.2);
+      pointer-events: none;
+    }
+
+    .npc-avatar {
+      width: 60px;
+      height: 80px;
+      background-image: url('/src/assets/images/npc_translation_master.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-size: 0; // 隐藏emoji
+    }
+
+    .hint-bubble {
+      flex: 1;
+      background: rgba($pixel-border, 0.3);
+      padding: 1rem;
+      border: 2px solid $pixel-border;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 15px;
+        border: 8px solid transparent;
+        border-right-color: $pixel-border;
+      }
+
+      p {
+        margin: 0;
+        color: $text-primary;
+        font-size: 0.95rem;
+        line-height: 1.8;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .challenge-hub-section {
+    padding: 1rem;
+
+    .section-header h2 {
+      font-size: 1.8rem;
+    }
+
+    .challenges-container .tower-levels .challenge-level {
+      .level-content {
+        flex-direction: column;
+        text-align: center;
+
+        .level-icon {
+          width: 60px;
+          height: 60px;
+        }
+
+        .level-info {
+          text-align: center;
+
+          h3 {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+
+    .npc-hint {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .hint-bubble::before {
+        display: none;
+      }
+    }
+  }
+}

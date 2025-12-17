@@ -1,0 +1,200 @@
+.tutorial-dialog-wrapper {
+  position: absolute;
+  bottom: 8%; // Increased from 2% to 8% to lift it up
+  left: 2%;
+  right: 2%;
+  z-index: 10050; 
+  
+  @media (min-width: 768px) {
+    left: 10%; // More centered on larger screens
+    right: 10%;
+    bottom: 10%;
+  }
+
+  // Variant: Default (Side Portrait)
+  &.variant-default {
+    .character-portrait {
+      position: absolute;
+      bottom: 0; // Aligned to bottom of wrapper/dialog
+      left: -8%; // Moved further left
+      width: 35%; // Increased size
+      max-width: 350px; // Increased max width
+      height: auto;
+      z-index: 1; // Lower than dialog box (which will be 2)
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      
+      opacity: 0; 
+      animation: slideUp 0.3s ease-out forwards;
+
+      @media (min-width: 768px) {
+        width: 340px; // Increased from 280px
+        left: -40px; // Shift left relative to dialog box
+        bottom: 0; 
+      }
+      
+      img {
+          width: 100%;
+          height: auto;
+          display: block;
+      }
+    }
+  }
+
+  // Variant: Center (Center Large Portrait)
+  &.variant-center {
+    .character-portrait {
+      position: fixed; // Use fixed or absolute relative to a larger container if possible, but absolute to wrapper works if wrapper is bottom aligned
+      // Actually, if we want it centered on screen, fixed might be safer, but let's try absolute relative to wrapper first to keep context.
+      // Wrapper is bottom: 10%. 
+      // If we want it centered, we can use bottom: -10% and transform.
+      
+      left: 50%;
+      bottom: 0; // Align bottom of image with bottom of wrapper (which is bottom of screen roughly)
+      width: auto;
+      height: 85vh; // Take up most of vertical space
+      max-width: none;
+      z-index: 0; // Behind dialog box
+      
+      opacity: 0;
+      animation: slideUpCenter 0.5s ease-out forwards;
+      
+      // Override default filters/styles
+      filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+
+      img {
+        height: 100%;
+        width: auto;
+        display: block;
+        transform: translateX(-50%); // Center the image itself
+      }
+    }
+    
+    // Ensure dialog box stays on top
+    .tutorial-dialog-box {
+      z-index: 2;
+    }
+  }
+
+  .tutorial-dialog-box {
+    position: relative;
+    z-index: 2; // Higher than portrait
+    width: 100%;
+    min-height: 120px; // Minimum height
+    height: auto; // Allow growing if text is long, but usually fixed
+    aspect-ratio: 6 / 1; // Responsive aspect ratio
+    
+    // Glassmorphism background
+    background: rgba(28, 25, 23, 0.95); // stone-900 with opacity
+    backdrop-filter: blur(8px);
+    
+    // Elegant border
+    border: 2px solid #78716c; // stone-500
+    border-top: 2px solid #a8a29e; // lighter top border
+    border-radius: 0.75rem;
+    
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    box-shadow: 
+      0 10px 15px -3px rgba(0, 0, 0, 0.3), 
+      0 4px 6px -2px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1); // Inner highlight
+    
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.1s ease, border-color 0.2s ease;
+
+    @media (max-width: 768px) {
+        aspect-ratio: auto;
+    }
+
+    &:hover {
+      border-color: #d6d3d1; // stone-300
+    }
+
+    &:active {
+      transform: scale(0.995);
+    }
+
+    .speaker-container {
+      flex-shrink: 0;
+      margin-bottom: 0.75rem;
+      position: absolute;
+      top: -1.25rem;
+      left: 2rem;
+
+      .speaker-tag {
+        background: linear-gradient(135deg, #d97706, #b45309); // amber gradient
+        color: #fffbeb; // amber-50
+        padding: 0.35rem 1.25rem;
+        font-size: 0.95rem;
+        border-radius: 9999px; // Pill shape
+        font-weight: 800;
+        border: 2px solid #78350f; // amber-900
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        letter-spacing: 0.05em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .dialog-text {
+      flex-grow: 1;
+      color: #e7e5e4; // stone-200
+      font-size: 1.15rem;
+      line-height: 1.75;
+      user-select: none;
+      white-space: pre-wrap;
+      font-family: system-ui, -apple-system, sans-serif; // Cleaner font
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+      margin-top: 0.5rem;
+
+      .task-text-highlight {
+        color: #fbbf24; // amber-400
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(251, 191, 36, 0.3);
+      }
+    }
+
+    .next-arrow {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.5rem;
+      color: #fbbf24; // amber-400
+      font-size: 1.25rem;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+      animation: bounce 1s infinite;
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpCenter {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}

@@ -1,0 +1,277 @@
+// ============================================================================
+// BattleEffects - 战斗特效样式
+// ============================================================================
+
+$primary-color: #dc2626;
+$secondary-color: #8b5cf6;
+$accent-color: #f59e0b;
+$success-color: #10b981;
+$ice-color: #67e8f9;
+$background-dark: #0a0a0a;
+
+@keyframes slashAnimation {
+  0% {
+    transform: translateX(-100%) rotate(-45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes freezeOverlay {
+  0% { opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+@keyframes iceParticle {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes waveExpand {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes scanLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes circleRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes runeGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.battle-effects-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+
+  .effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  // 普通攻击效果
+  .attack-effect {
+    .slash-lines {
+      position: relative;
+      width: 300px;
+      height: 200px;
+
+      .slash {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, $primary-color, transparent);
+        animation: slashAnimation 0.5s ease-out forwards;
+
+        &:nth-child(1) { top: 30%; }
+        &:nth-child(2) { top: 50%; }
+        &:nth-child(3) { top: 70%; }
+      }
+    }
+  }
+
+  // 时之凝固效果
+  .time-freeze-effect {
+    width: 100%;
+    height: 100%;
+
+    .freeze-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: $ice-color;
+      animation: freezeOverlay 1.5s ease-out forwards;
+    }
+
+    .clock-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 8rem;
+      animation: runeGlow 0.5s infinite;
+    }
+
+    .freeze-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .ice-particle {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: $ice-color;
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        animation: iceParticle 1s ease-out forwards;
+      }
+    }
+  }
+
+  // 共鸣之声效果
+  .resonance-effect {
+    .sound-waves {
+      position: relative;
+      width: 200px;
+      height: 200px;
+
+      .wave {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid $secondary-color;
+        border-radius: 50%;
+        animation: waveExpand 1s ease-out forwards;
+      }
+    }
+
+    .resonance-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+    }
+  }
+
+  // 弱点分析效果
+  .weakness-effect {
+    width: 300px;
+    height: 300px;
+
+    .scan-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .scan-line {
+        position: absolute;
+        background: $accent-color;
+
+        &.horizontal {
+          width: 100%;
+          height: 2px;
+          top: 50%;
+          animation: scanLine 1s ease-in-out infinite;
+        }
+
+        &.vertical {
+          width: 2px;
+          height: 100%;
+          left: 50%;
+          animation: scanLine 1s ease-in-out infinite reverse;
+        }
+      }
+    }
+
+    .target-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+    }
+
+    .data-points {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .data-point {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: $accent-color;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        animation: runeGlow 0.5s infinite;
+      }
+    }
+  }
+
+  // 言灵·转化效果
+  .logos-effect {
+    .magic-circle {
+      position: relative;
+      width: 200px;
+      height: 200px;
+
+      .circle-outer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid $secondary-color;
+        border-radius: 50%;
+        animation: circleRotate 3s linear infinite;
+      }
+
+      .circle-inner {
+        position: absolute;
+        width: 70%;
+        height: 70%;
+        top: 15%;
+        left: 15%;
+        border: 2px solid rgba($secondary-color, 0.5);
+        border-radius: 50%;
+        animation: circleRotate 2s linear infinite reverse;
+      }
+
+      .runes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        .rune {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          font-size: 1.5rem;
+          color: $secondary-color;
+          animation: runeGlow 1s infinite;
+        }
+      }
+    }
+
+    .logos-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+    }
+  }
+}

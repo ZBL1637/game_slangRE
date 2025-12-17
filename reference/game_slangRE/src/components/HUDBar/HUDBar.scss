@@ -1,0 +1,114 @@
+@import '@/styles/variables';
+
+.hud-bar {
+  width: 100%;
+  margin-bottom: 1rem;
+  
+  .hud-panel {
+    padding: 0.5rem 1rem;
+    
+    .hud-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      @include pixel-text;
+      font-size: 0.8rem;
+    }
+
+    .hud-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      
+      .back-btn {
+        cursor: pointer;
+        color: $color-text-muted;
+        &:hover { color: $color-accent; }
+      }
+      
+      .hud-title {
+        color: $color-accent;
+        text-transform: uppercase;
+      }
+    }
+
+    .hud-center {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 2;
+      justify-content: center;
+
+      button {
+        font-family: inherit; // Use pixel font
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        
+        &:hover {
+           background-color: rgba($color-accent, 0.1);
+           color: $color-accent;
+        }
+      }
+    }
+
+    .hud-right {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 1;
+
+      .player-avatar {
+        width: 36px;
+        height: 36px;
+        background-color: #312e81; // indigo-900
+        border: 2px solid #fff;
+        border-radius: 4px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        &:hover {
+          transform: scale(1.1);
+          border-color: $color-accent;
+          box-shadow: 0 0 10px rgba($color-accent, 0.5);
+        }
+        
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      
+      .status-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        .label { color: $color-info; }
+        .value { color: #fff; }
+        
+        &.exp-group {
+          .exp-bar-container {
+            width: 100px;
+            height: 8px;
+            background: #333;
+            border: 1px solid #666;
+            position: relative;
+            
+            .exp-fill {
+              height: 100%;
+              background-color: $color-primary;
+              transition: width 0.3s ease-out;
+            }
+          }
+        }
+      }
+    }
+  }
+}

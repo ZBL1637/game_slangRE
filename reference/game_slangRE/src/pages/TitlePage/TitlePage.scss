@@ -1,0 +1,305 @@
+@import '@/styles/variables';
+
+.title-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  position: relative; // For absolute positioning
+
+  // 1. Player Profile (Top Left)
+  .player-profile-card {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: help;
+    z-index: 10;
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: $color-bg-panel;
+      border: 2px solid $color-accent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include pixel-text;
+      color: $color-accent;
+      font-size: 0.8rem;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .name {
+        @include pixel-text;
+        font-size: 0.8rem;
+        color: $color-primary;
+      }
+
+      .level {
+        font-size: 0.7rem;
+        color: #fff;
+        font-weight: bold;
+      }
+
+      .exp-bar-container {
+        width: 100px;
+        height: 6px;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid $color-text-muted;
+        border-radius: 2px;
+        overflow: hidden;
+
+        .exp-bar {
+          height: 100%;
+          background: $color-primary;
+          transition: width 0.3s;
+        }
+      }
+
+      .exp-text {
+        font-size: 0.6rem;
+        color: $color-text-muted;
+      }
+    }
+
+    .profile-tooltip {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 1rem;
+      background: rgba($color-bg-dark, 0.95);
+      border: 1px solid $color-accent;
+      padding: 0.8rem;
+      font-size: 0.8rem;
+      color: #fff;
+      width: 220px;
+      border-radius: $border-radius-sm;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 100;
+    }
+
+    &:hover .profile-tooltip {
+      opacity: 1;
+    }
+  }
+
+  // 2. Title Section
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .game-title {
+      font-size: 4rem;
+      color: $color-accent;
+      text-shadow: 4px 4px 0 #000;
+      font-family: $font-pixel;
+      text-align: center;
+      line-height: 1.1;
+      margin: 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .subtitle-carousel {
+      height: 1.5rem; // Fixed height to prevent layout shift
+      margin-top: 1rem;
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      .subtitle-item {
+        @include pixel-text;
+        font-size: 0.9rem;
+        color: $color-accent;
+        opacity: 0;
+        position: absolute;
+        transition: opacity 0.5s;
+        white-space: nowrap;
+        text-align: center;
+
+        &.active {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  // 3. Menu Section
+  .menu-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .menu-panel {
+      width: 300px;
+      padding: 1.5rem 2rem;
+      
+      .menu-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        // Ensure wrapper divs and buttons take full width
+        > div {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          
+          .rpg-btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .menu-hint {
+      height: 1.2rem;
+      font-family: monospace;
+      color: $color-text-muted;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      text-align: center;
+    }
+  }
+
+  // 5. Daily Slang Card (Right)
+  .daily-slang-card {
+    position: absolute;
+    right: max(2rem, calc(50% - 650px)); // Responsive positioning
+    left: auto; // Reset left
+    top: 50%;
+    transform: translateY(-50%);
+    width: 240px;
+    background: rgba($color-bg-panel, 0.8);
+    border: 1px solid $color-primary; // Use primary green
+    border-radius: $border-radius-sm;
+    padding: 1.2rem;
+    box-shadow: 0 0 15px rgba($color-primary, 0.2); // Add green glow
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba($color-bg-panel, 0.95);
+      border-color: $color-accent; // Gold on hover
+      box-shadow: 0 0 20px rgba($color-accent, 0.3);
+      transform: translateY(-50%) scale(1.05);
+      
+      .refresh-btn { opacity: 1; }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: $color-primary; // Green title
+      font-weight: bold;
+      margin-bottom: 0.8rem;
+      letter-spacing: 1px;
+      border-bottom: 1px dashed rgba($color-primary, 0.3);
+      padding-bottom: 0.5rem;
+
+      .refresh-btn {
+        cursor: pointer;
+        font-size: 1.2rem; 
+        opacity: 0.7; 
+        transition: all 0.2s;
+        padding: 0 0.5rem; 
+        color: $color-accent; // Gold icon
+        
+        &:hover { 
+          color: #fff; 
+          opacity: 1;
+          transform: rotate(180deg); 
+        }
+      }
+    }
+
+    .card-content {
+      .term-title {
+        @include pixel-text;
+        font-size: 1.2rem;
+        color: $color-accent; // Gold term
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+      }
+
+      .term-def {
+        font-size: 0.9rem;
+        color: #fff;
+        margin-bottom: 0.8rem;
+        line-height: 1.5;
+      }
+
+      .term-meta {
+        font-size: 0.7rem;
+        color: $color-text-muted;
+        text-align: right;
+        font-style: italic;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 0.5rem;
+      }
+    }
+  }
+
+  // 6. Terminal Log (Left)
+  .terminal-log {
+    position: absolute;
+    left: max(2rem, calc(50% - 650px)); // Responsive positioning
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: $color-primary; // Matrix green
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    pointer-events: none; 
+    text-shadow: 0 0 5px rgba($color-primary, 0.5);
+    opacity: 0.8;
+    border-left: 2px solid rgba($color-primary, 0.3);
+    padding-left: 1rem;
+  }
+
+  // 8. Bottom Controls
+  .bottom-controls {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+
+    .controls-hint {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 1px;
+    }
+
+    .copyright {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

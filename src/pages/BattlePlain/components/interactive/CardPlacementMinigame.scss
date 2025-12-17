@@ -1,0 +1,551 @@
+@import '../../../../styles/variables';
+
+.card-placement-minigame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background: rgba(0, 0, 0, 0.85); // Removed: handled by parent EraExplorer
+  // padding: 2rem; // Removed: padding handled by parent
+  font-family: 'Press Start 2P', monospace;
+
+  // 独立大卡片容器 - Modified to fill parent
+  .raid-prep-modal {
+    width: 100%;
+    height: 100%;
+    // aspect-ratio: 16/9; // Removed: let parent control dimensions
+    background: #1a1b26;
+    border: 4px solid #4a5568;
+    box-shadow: 0 0 0 4px #000, 0 20px 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+
+    // 顶部副标题条
+    .raid-header {
+      height: 48px;
+      flex-shrink: 0; // Prevent shrinking
+      background: #2d3748;
+      border-bottom: 4px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      color: #e2e8f0;
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #a0aec0;
+        
+        .dungeon-icon { color: #f6ad55; }
+      }
+
+      .header-center {
+        font-weight: bold;
+        color: #63b3ed;
+        text-shadow: 2px 2px 0 #000;
+      }
+
+      .header-right {
+        display: flex;
+        gap: 8px;
+
+        button {
+          background: #4a5568;
+          border: 2px solid #000;
+          color: #fff;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: transform 0.1s;
+
+          &:hover { transform: translateY(-2px); background: #718096; }
+          &:active { transform: translateY(0); }
+        }
+      }
+    }
+
+    // 主体内容区：两栏布局
+    .raid-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden; // Keep hidden but ensure children have height
+
+      // 左侧：战场板 (60%)
+      .raid-battlefield {
+        flex: 6;
+        background: #111;
+        border-right: 4px solid #000;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        position: relative;
+        overflow-y: auto; // Allow scrolling if height is too small
+
+        // Boss 房间 HUD
+        .boss-hud {
+          flex-shrink: 0; // Don't shrink boss area
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 24px;
+          position: relative;
+
+          .boss-hp-bar {
+            width: 300px;
+            height: 12px;
+            background: #2d3748;
+            border: 2px solid #000;
+            margin-bottom: 8px;
+            position: relative;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              top: 0; left: 0;
+              height: 100%;
+              width: 100%;
+              background: #e53e3e;
+            }
+          }
+
+          .boss-avatar-container {
+            position: relative;
+            
+            .boss-avatar {
+              font-size: 48px;
+              filter: drop-shadow(0 0 10px rgba(229, 62, 62, 0.5));
+              transition: transform 0.3s;
+              
+              &.combat {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 20px rgba(229, 62, 62, 0.8));
+              }
+            }
+
+            .aggro-text {
+              margin-top: 8px;
+              font-size: 12px;
+              color: #718096;
+              background: #000;
+              padding: 2px 6px;
+              border-radius: 4px;
+              
+              &.active {
+                color: #f6ad55;
+                border: 1px solid #f6ad55;
+              }
+            }
+          }
+
+          .pressure-aura {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 1px dashed rgba(229, 62, 62, 0.3);
+            animation: pulse-aura 2s infinite;
+            pointer-events: none;
+          }
+
+          .boss-separator {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e53e3e, transparent);
+            margin-top: 20px;
+            opacity: 0.5;
+          }
+        }
+
+        // 战线区域
+        .battle-lines {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          justify-content: center;
+          min-height: 260px; // Ensure minimum height for 3 lines
+
+          .battle-line {
+            height: 80px;
+            flex-shrink: 0; // Don't shrink individual lines
+            background: #1a202c;
+            border: 2px solid #2d3748;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            position: relative;
+            transition: all 0.2s;
+
+            // 地面纹理
+            &.front { background-image: repeating-linear-gradient(45deg, #1a202c 0, #1a202c 10px, #2d3748 10px, #2d3748 11px); }
+            &.middle { background-image: radial-gradient(#2d3748 1px, transparent 1px); background-size: 10px 10px; }
+            &.back { background: #1a202c; border-color: #4a5568; }
+
+            .line-icon {
+              font-size: 24px;
+              opacity: 0.3;
+            }
+
+            // 卡槽
+            .card-slot {
+              width: 140px;
+              height: 60px;
+              border: 2px solid #4a5568;
+              background: rgba(0,0,0,0.5);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 10; // Ensure clickable
+              cursor: pointer;
+              transition: all 0.2s;
+
+              .slot-label {
+                font-size: 10px;
+                color: #718096;
+                pointer-events: none; // Let clicks pass to slot
+              }
+
+              // 放置状态
+              &.droppable {
+                border-color: #63b3ed;
+                box-shadow: 0 0 10px rgba(99, 179, 237, 0.3);
+                
+                // 对焦角标
+                &::before, &::after {
+                  content: '';
+                  position: absolute;
+                  width: 10px;
+                  height: 10px;
+                  border: 2px solid #63b3ed;
+                  transition: all 0.2s;
+                  pointer-events: none;
+                }
+                &::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+                &::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+              }
+
+              &.drag-over {
+                background: rgba(99, 179, 237, 0.2);
+                transform: scale(1.05);
+                border-color: #fff;
+              }
+
+              &.filled {
+                border-color: #48bb78;
+                background: rgba(72, 187, 120, 0.1);
+
+                .placed-card-mini {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  font-size: 12px;
+                  color: #fff;
+                  
+                  .remove-hint {
+                    position: absolute;
+                    top: -10px;
+                    right: -10px;
+                    background: #e53e3e;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                  }
+
+                  &:hover .remove-hint { opacity: 1; }
+                }
+
+                .lock-icon {
+                  position: absolute;
+                  bottom: -8px;
+                  right: -8px;
+                  background: #1a202c;
+                  color: #48bb78;
+                  padding: 2px;
+                  border-radius: 50%;
+                }
+              }
+
+              &.error {
+                border-color: #e53e3e;
+                animation: shake 0.4s;
+              }
+            }
+
+            .ok-stamp {
+              position: absolute;
+              right: 16px;
+              color: #48bb78;
+              border: 2px solid #48bb78;
+              padding: 2px 4px;
+              font-size: 10px;
+              transform: rotate(-15deg);
+              opacity: 0;
+              &.visible { opacity: 1; transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+            }
+          }
+        }
+      }
+
+      // 右侧：战术简报 (40%)
+      .raid-briefing {
+        flex: 4;
+        background: #2d3748;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow-y: auto; // Allow scrolling
+
+        h3 {
+          color: #fff;
+          font-size: 16px;
+          border-bottom: 2px dashed #718096;
+          padding-bottom: 10px;
+          margin: 0;
+          flex-shrink: 0;
+        }
+
+        .rules-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          flex: 1; // Take available space
+
+          .rule-card {
+            background: #1a202c;
+            border: 2px solid #4a5568;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            opacity: 0.7;
+            flex-shrink: 0; // Don't shrink
+
+            &.met {
+              opacity: 1;
+              border-color: #f6ad55;
+              background: linear-gradient(90deg, #1a202c, #2c2d3c);
+              box-shadow: 0 0 15px rgba(246, 173, 85, 0.2);
+              
+              .rule-icon { color: #f6ad55; transform: scale(1.1); }
+              .check-mark { transform: scale(1); }
+            }
+
+            .rule-icon { font-size: 20px; transition: transform 0.3s; }
+            
+            .rule-content {
+              flex: 1;
+              .rule-title { color: #fff; font-size: 12px; display: block; margin-bottom: 4px; }
+              .rule-desc { color: #718096; font-size: 10px; }
+            }
+
+            .check-mark {
+              color: #48bb78;
+              transform: scale(0);
+              transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+          }
+        }
+
+        .start-btn {
+          margin-top: auto;
+          height: 56px;
+          flex-shrink: 0;
+          background: #4a5568;
+          border: 4px solid #1a202c;
+          color: #a0aec0;
+          font-family: inherit;
+          font-size: 16px;
+          cursor: not-allowed;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          transition: all 0.3s;
+
+          &.ready {
+            background: #2b6cb0;
+            border-color: #63b3ed;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(99, 179, 237, 0.4);
+            animation: pulse-btn 2s infinite;
+
+            &:hover {
+              transform: scale(1.02);
+              background: #3182ce;
+            }
+            
+            &:active {
+              transform: scale(0.98);
+            }
+          }
+        }
+      }
+    }
+
+    // 底部：可用角色卡 (120px)
+    .class-card-pool {
+      height: 140px;
+      flex-shrink: 0; // Fixed height
+      background: #1a1b26;
+      border-top: 4px solid #000;
+      padding: 10px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      z-index: 20; // Ensure cards are on top
+
+      .role-card-new {
+        width: 120px;
+        height: 100px;
+        background: #2d3748;
+        border: 2px solid #4a5568;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: grab;
+        transition: all 0.2s;
+        position: relative;
+        z-index: 21;
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        &:hover {
+          transform: translateY(-5px);
+          border-color: #a0aec0;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        &.selected {
+          border-color: #63b3ed;
+          box-shadow: 0 0 0 2px #63b3ed;
+        }
+        
+        &.hidden {
+          opacity: 0.3;
+          pointer-events: none;
+        }
+
+        .card-top {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          .card-icon { font-size: 16px; }
+          .card-title { font-size: 10px; color: #fff; font-weight: bold; }
+        }
+
+        .card-desc {
+          font-size: 8px;
+          color: #a0aec0;
+          line-height: 1.2;
+        }
+
+        .card-chip {
+          align-self: flex-end;
+          background: #1a202c;
+          color: #718096;
+          font-size: 8px;
+          padding: 2px 4px;
+          border-radius: 2px;
+        }
+      }
+    }
+    
+    // 结算层
+    .result-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      animation: fade-in 0.5s;
+
+      h2 {
+        color: #f6ad55;
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-shadow: 4px 4px 0 #000;
+      }
+      
+      .continue-btn {
+        padding: 12px 32px;
+        background: #48bb78;
+        border: 4px solid #fff;
+        color: #fff;
+        font-family: inherit;
+        font-size: 16px;
+        cursor: pointer;
+        
+        &:hover { background: #38a169; }
+      }
+    }
+  }
+}
+
+// 术语 Tooltip
+.term-tooltip {
+  position: fixed;
+  z-index: 1000;
+  background: rgba(26, 32, 44, 0.95);
+  border: 2px solid #63b3ed;
+  padding: 12px;
+  width: 240px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  pointer-events: none;
+  
+  h4 { color: #63b3ed; margin: 0 0 8px 0; font-size: 12px; border-bottom: 1px solid #4a5568; padding-bottom: 4px; }
+  p { color: #e2e8f0; font-size: 10px; margin: 4px 0; line-height: 1.4; }
+  .example { color: #a0aec0; font-style: italic; margin-top: 8px; }
+}
+
+@keyframes pulse-aura {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+}
+
+@keyframes pulse-btn {
+  0% { box-shadow: 0 0 0 0 rgba(99, 179, 237, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(99, 179, 237, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(99, 179, 237, 0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

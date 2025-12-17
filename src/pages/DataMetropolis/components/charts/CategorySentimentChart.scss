@@ -1,0 +1,97 @@
+// CategorySentimentChart 样式
+$primary-color: #7F0056;
+$secondary-color: #A6006B;
+$tertiary-color: #5A003D;
+
+.category-sentiment-chart {
+  width: 100%;
+
+  .chart-canvas {
+    width: 100%;
+    min-height: 400px;
+  }
+
+  .category-detail-panel {
+    padding: 16px;
+    background: rgba($primary-color, 0.1);
+    border-radius: 10px;
+    margin-top: 16px;
+
+    h4 {
+      font-size: 15px;
+      color: #ffffff;
+      margin: 0 0 16px;
+    }
+
+    .detail-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .bar-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .bar-label {
+          width: 50px;
+          font-size: 13px;
+          color: #9ca3af;
+        }
+
+        .bar-track {
+          flex: 1;
+          height: 8px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          overflow: hidden;
+
+          .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+
+            &.neutral {
+              background: $primary-color;
+            }
+
+            &.positive {
+              background: $secondary-color;
+            }
+
+            &.negative {
+              background: $tertiary-color;
+            }
+          }
+        }
+
+        .bar-value {
+          width: 50px;
+          text-align: right;
+          font-size: 13px;
+          color: #e5e7eb;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .chart-description {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border-left: 3px solid $primary-color;
+
+    p {
+      font-size: 13px;
+      color: #9ca3af;
+      margin: 0;
+      line-height: 1.6;
+
+      strong {
+        color: #e5e7eb;
+      }
+    }
+  }
+}

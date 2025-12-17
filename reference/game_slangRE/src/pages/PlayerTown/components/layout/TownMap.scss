@@ -1,0 +1,384 @@
+// TownMap 样式
+
+$primary-color: #7F0056;
+$secondary-color: #D946EF;
+$accent-color: #3B82F6;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+
+@keyframes neonFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes floatAd {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes chatBubblePop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+.town-map-section {
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  z-index: 60;
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $text-secondary;
+    }
+  }
+
+    .town-container {
+      position: relative;
+      width: 85vw;
+      max-width: 1400px;
+      margin: 2rem auto 0;
+      height: 500px;
+      border-radius: 1rem;
+      overflow: hidden;
+      background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+    // 赛博朋克背景
+    .cyberpunk-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+
+      .neon-grid {
+        position: absolute;
+        inset: 0;
+        background-image: 
+          linear-gradient(rgba(127, 0, 86, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(127, 0, 86, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 20s linear infinite;
+      }
+
+      .floating-ads {
+        position: absolute;
+        top: 10%;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-around;
+
+        .ad-text {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: $secondary-color;
+          text-shadow: 0 0 10px $secondary-color;
+          animation: floatAd 4s ease-in-out infinite;
+          opacity: 0.6;
+
+          &:nth-child(2) {
+            animation-delay: 1s;
+            color: $accent-color;
+            text-shadow: 0 0 10px $accent-color;
+          }
+
+          &:nth-child(3) {
+            animation-delay: 2s;
+            color: $primary-color;
+            text-shadow: 0 0 10px $primary-color;
+          }
+        }
+      }
+    }
+
+    // 建筑物容器
+    .buildings-container {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 0 5%;
+      z-index: 30;
+      pointer-events: none;
+
+        .building {
+          width: 280px;
+          width: 340px;
+          background: rgba(0, 0, 0, 0.95);
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1rem;
+          padding: 1.5rem;
+          position: relative;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          pointer-events: auto;
+
+        &.active {
+          border-color: $primary-color;
+
+          .building-glow {
+            opacity: 1;
+          }
+        }
+
+        &.completed {
+          border-color: #22c55e;
+          
+          .building-glow {
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.3), transparent);
+          }
+        }
+
+        &.locked {
+          opacity: 0.6;
+          cursor: not-allowed;
+
+          .building-icon .lock-icon {
+            color: $text-secondary;
+          }
+        }
+
+        &:hover:not(.locked) {
+          transform: translateY(-5px);
+          border-color: $secondary-color;
+        }
+
+        .building-glow {
+          position: absolute;
+          inset: -20px;
+          background: radial-gradient(circle, rgba(127, 0, 86, 0.2), transparent);
+          border-radius: 2rem;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .building-icon {
+          width: 64px;
+          height: 64px;
+          margin: 0 auto 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .icon-emoji {
+            font-size: 3rem;
+          }
+        }
+
+        .building-info {
+          text-align: center;
+
+          h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: $text-primary;
+            margin-bottom: 0.5rem;
+          }
+
+          p {
+            font-size: 0.875rem;
+            color: $text-secondary;
+            margin-bottom: 1rem;
+          }
+
+          .status {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+
+            &.completed {
+              background: rgba(34, 197, 94, 0.2);
+              color: #22c55e;
+            }
+
+            &.locked {
+              background: rgba(255, 255, 255, 0.1);
+              color: $text-secondary;
+            }
+          }
+
+          .enter-btn {
+            background: linear-gradient(135deg, $primary-color, $secondary-color);
+            color: $text-primary;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+              transform: scale(1.05);
+              box-shadow: 0 5px 20px rgba(127, 0, 86, 0.4);
+            }
+          }
+        }
+
+        .hologram-sign {
+          position: absolute;
+          top: -20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(127, 0, 86, 0.8);
+          padding: 0.35rem 1.5rem;
+          min-width: 140px;
+          border-radius: 0.25rem;
+          animation: neonFlicker 2s ease-in-out infinite;
+
+          span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: $text-primary;
+            letter-spacing: 0.1em;
+          }
+        }
+      }
+    }
+
+    // NPC群众
+    .npcs-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      pointer-events: none;
+
+      .npc {
+        position: absolute;
+
+        .npc-avatar {
+          font-size: 2rem;
+        }
+
+        .chat-bubble {
+          position: absolute;
+          top: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(255, 255, 255, 0.9);
+          color: #1a1a2e;
+          padding: 0.25rem 0.5rem;
+          border-radius: 0.5rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          white-space: nowrap;
+          animation: chatBubblePop 0.3s ease-out;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(255, 255, 255, 0.9);
+          }
+        }
+      }
+    }
+
+    // 任务提示
+    .quest-hint {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+
+      .quest-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid $primary-color;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1.25rem;
+
+        .quest-icon {
+          font-size: 1.5rem;
+        }
+
+        .quest-text {
+          h4 {
+            font-size: 0.75rem;
+            color: $primary-color;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+          }
+
+          p {
+            font-size: 0.875rem;
+            color: $text-primary;
+          }
+        }
+      }
+    }
+  }
+  // 容器外的任务提示
+  .quest-hint {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+
+    .quest-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid $primary-color;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.25rem;
+
+      .quest-icon { font-size: 1.5rem; }
+
+      .quest-text {
+        h4 {
+          font-size: 0.75rem;
+          color: $primary-color;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 0.25rem;
+        }
+        p { font-size: 0.875rem; color: $text-primary; }
+      }
+    }
+  }
+
+  .exploration-hint {
+    text-align: center;
+    margin-top: 1.5rem;
+
+    p {
+      font-size: 0.875rem;
+      color: $text-secondary;
+    }
+  }
+}

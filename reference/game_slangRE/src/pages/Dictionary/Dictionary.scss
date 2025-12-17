@@ -1,0 +1,285 @@
+@import '@/styles/variables';
+
+.dictionary-container {
+  height: 100%;
+  box-sizing: border-box; // 包含 padding 在 height 计算中
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1.5rem;
+  overflow: hidden; // 防止自身滚动
+
+  .dict-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .pixel-title {
+      @include pixel-text;
+      color: $color-text-main;
+      margin: 0;
+      
+      .count {
+        font-size: 0.8rem;
+        color: $color-text-muted;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .dict-content {
+    flex: 1;
+    display: flex;
+    gap: 2rem; // 增加面板间距
+    overflow: hidden;
+
+    .dict-sidebar {
+      width: 380px; 
+      display: flex;
+      flex-direction: column;
+      height: 100%; // 确保占满高度
+      overflow: hidden; // 防止自身出现双滚动条
+
+      // 让 Panel 内容区也占满高度并 flex 布局
+      .rpg-panel-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; 
+      }
+      
+      .search-section {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .search-input {
+          width: 100%;
+          box-sizing: border-box; // 修复输入框溢出问题
+          padding: 0.8rem;
+          background: rgba(0,0,0,0.3);
+          border: 1px solid $color-accent;
+          color: $color-text-main;
+          border-radius: $border-radius-sm;
+          font-family: $font-main;
+          
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba($color-accent, 0.3);
+          }
+        }
+
+        .filters-row {
+          display: flex;
+          gap: 0.5rem;
+
+          .filter-select {
+            flex: 1;
+            padding: 0.4rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba($color-accent, 0.5);
+            color: $color-text-muted;
+            border-radius: $border-radius-sm;
+            font-size: 0.8rem;
+            cursor: pointer;
+
+            option {
+              background: $color-bg-panel;
+              color: $color-text-main;
+            }
+          }
+        }
+      }
+
+      .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        
+        .filter-tag {
+          font-size: 0.75rem;
+          padding: 0.2rem 0.5rem;
+          background: rgba($color-primary, 0.1);
+          border: 1px solid rgba($color-primary, 0.3);
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s;
+          
+          &:hover { background: rgba($color-primary, 0.3); }
+          &.active {
+            background: $color-primary;
+            color: #fff;
+            border-color: $color-primary;
+          }
+        }
+      }
+
+      .term-list {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0; // 关键：允许 flex item 缩小并滚动
+        border-top: 1px solid rgba(255,255,255,0.1);
+        
+        .term-item {
+          padding: 0.8rem;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start; // 顶部对齐
+          transition: background 0.2s;
+          
+          .term-main {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+
+            .term-name { color: $color-text-main; font-weight: bold; font-size: 0.95rem; }
+            
+            .term-badges {
+              display: flex;
+              gap: 0.3rem;
+              
+              .mini-badge {
+                font-size: 0.6rem;
+                background: rgba(255,255,255,0.1);
+                padding: 0 0.3rem;
+                border-radius: 2px;
+                color: $color-text-muted;
+              }
+            }
+          }
+
+          .term-cat { 
+            font-size: 0.7rem; 
+            color: $color-text-muted; 
+            background: rgba($color-info, 0.1);
+            padding: 0.1rem 0.3rem;
+            border-radius: 2px;
+            white-space: nowrap;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          
+          &:hover {
+            background: rgba(255,255,255,0.05);
+            padding-left: 1.2rem;
+          }
+          
+          &.active {
+            background: rgba($color-accent, 0.1);
+            border-left: 3px solid $color-accent;
+            .term-main .term-name { color: $color-accent; }
+          }
+        }
+        
+        .empty-state {
+          padding: 2rem;
+          text-align: center;
+          color: $color-text-muted;
+          font-style: italic;
+        }
+      }
+    }
+
+    .dict-details {
+      flex: 1;
+      overflow: hidden; // 隐藏外层滚动条
+      display: flex;
+      flex-direction: column;
+
+      .rpg-panel-content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .details-placeholder {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: $color-text-muted;
+        overflow: hidden; // 确保占位符不滚动
+        
+        .book-icon {
+          font-size: 4rem;
+          margin-bottom: 1rem;
+          opacity: 0.5;
+        }
+      }
+      
+      .term-detail-view {
+        flex: 1;
+        overflow-y: auto; // 只有详情内容才滚动
+        padding-right: 0.5rem; // 防止滚动条遮挡内容
+        .detail-header {
+          border-bottom: 1px solid rgba($color-accent, 0.3);
+          padding-bottom: 1rem;
+          margin-bottom: 2rem;
+          
+          .term-title {
+            font-size: 2.5rem;
+            color: $color-accent;
+            margin-bottom: 1rem;
+            @include pixel-text;
+          }
+          
+          .term-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            
+            .badge {
+              font-size: 0.8rem;
+              padding: 0.2rem 0.6rem;
+              border-radius: 4px;
+              text-transform: uppercase;
+              font-weight: bold;
+              
+              &.game { background: #6c5ce7; color: #fff; }
+              &.category { background: #00b894; color: #fff; }
+              &.source { background: #e17055; color: #fff; }
+            }
+          }
+        }
+        
+        .detail-body {
+          h3 {
+            @include pixel-text;
+            font-size: 1rem;
+            color: $color-text-muted;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+          }
+          
+          .definition-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+          }
+          
+          .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            
+            .tag {
+              color: $color-info;
+              font-family: monospace;
+              cursor: pointer;
+              &:hover { text-decoration: underline; }
+            }
+          }
+        }
+      }
+    }
+  }
+}

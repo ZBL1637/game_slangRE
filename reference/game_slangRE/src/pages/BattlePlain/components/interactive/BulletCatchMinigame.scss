@@ -1,0 +1,384 @@
+@import '@/styles/variables';
+
+.bullet-catch-minigame {
+  min-height: 400px;
+
+  // 准备屏幕
+  .ready-screen {
+    text-align: center;
+    
+    .stream-preview {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 2px solid $color-danger;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      
+      .stream-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background-color: rgba(0, 0, 0, 0.3);
+        
+        .live-badge {
+          color: $color-danger;
+          font-weight: bold;
+          font-size: 0.875rem;
+        }
+        
+        .viewer-count {
+          color: $color-text-muted;
+          font-size: 0.875rem;
+        }
+      }
+      
+      .stream-content {
+        padding: 2rem;
+        
+        h3 {
+          font-size: 1.5rem;
+          color: $color-text-highlight;
+          margin: 0 0 0.5rem;
+        }
+        
+        p {
+          color: $color-text-muted;
+          margin: 0 0 1.5rem;
+        }
+        
+        .target-list {
+          background-color: rgba($color-bg-panel, 0.5);
+          border-radius: $border-radius-md;
+          padding: 1rem;
+          margin-bottom: 1rem;
+          
+          p {
+            color: $color-text-main;
+            margin: 0 0 0.75rem;
+            font-weight: bold;
+          }
+          
+          .targets {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            
+            .target-term {
+              padding: 0.5rem 1rem;
+              background-color: rgba($color-warning, 0.2);
+              color: $color-warning;
+              border: 1px solid rgba($color-warning, 0.5);
+              border-radius: $border-radius-md;
+              font-weight: bold;
+            }
+          }
+        }
+        
+        .warning {
+          font-size: 0.875rem;
+          color: $color-danger;
+        }
+      }
+    }
+    
+    .start-btn {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, $color-danger 0%, #ff6b6b 100%);
+      color: white;
+      border: none;
+      border-radius: $border-radius-md;
+      font-size: 1.125rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba($color-danger, 0.5);
+      }
+    }
+  }
+
+  // 游戏中
+  .playing-screen {
+    .game-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: $border-radius-md $border-radius-md 0 0;
+      
+      .hud-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        
+        .live-badge {
+          color: $color-danger;
+          font-weight: bold;
+          font-size: 0.875rem;
+          animation: pulse 1s infinite;
+        }
+        
+        .time {
+          color: $color-text-main;
+          font-weight: bold;
+        }
+      }
+      
+      .hud-center {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        
+        .score {
+          color: $color-warning;
+          font-weight: bold;
+          font-size: 1.125rem;
+        }
+        
+        .combo {
+          color: $color-danger;
+          font-weight: bold;
+          animation: pulse 0.5s infinite;
+        }
+      }
+      
+      .hud-right {
+        .progress {
+          color: $color-text-muted;
+          font-size: 0.875rem;
+        }
+      }
+    }
+    
+    .game-area {
+      position: relative;
+      height: 300px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 2px solid rgba($color-text-muted, 0.3);
+      border-top: none;
+      border-radius: 0 0 $border-radius-md $border-radius-md;
+      overflow: hidden;
+      
+      .stream-bg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        opacity: 0.3;
+        
+        .streamer-avatar {
+          font-size: 4rem;
+        }
+        
+        .chat-overlay {
+          p {
+            color: $color-text-muted;
+            font-size: 0.875rem;
+          }
+        }
+      }
+      
+      .bullet {
+        position: absolute;
+        padding: 0.25rem 0.75rem;
+        border-radius: $border-radius-sm;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: transform 0.1s, opacity 0.2s;
+        user-select: none;
+        
+        &.normal {
+          background-color: rgba($color-text-muted, 0.3);
+          color: $color-text-muted;
+          
+          &:hover {
+            background-color: rgba($color-text-muted, 0.5);
+          }
+        }
+        
+        &.target {
+          background-color: rgba($color-warning, 0.3);
+          color: $color-warning;
+          border: 1px solid rgba($color-warning, 0.5);
+          font-weight: bold;
+          animation: targetGlow 1s infinite;
+          
+          &:hover {
+            background-color: rgba($color-warning, 0.5);
+            transform: scale(1.1);
+          }
+        }
+        
+        &.caught {
+          opacity: 0;
+          transform: scale(1.5);
+        }
+      }
+    }
+    
+    .caught-targets {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+      
+      span {
+        font-size: 0.875rem;
+        color: $color-text-muted;
+      }
+      
+      .target-chip {
+        padding: 0.25rem 0.75rem;
+        background-color: rgba($color-text-muted, 0.2);
+        color: $color-text-muted;
+        border-radius: $border-radius-sm;
+        font-size: 0.75rem;
+        
+        &.caught {
+          background-color: rgba($color-success, 0.2);
+          color: $color-success;
+        }
+      }
+    }
+  }
+
+  // 结束屏幕
+  .ended-screen {
+    text-align: center;
+    padding: 2rem;
+    
+    .result-header {
+      margin-bottom: 2rem;
+      
+      .result-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      
+      h3 {
+        font-size: 1.5rem;
+        color: $color-text-highlight;
+        margin: 0;
+      }
+    }
+    
+    .result-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 2rem;
+      
+      .stat-item {
+        text-align: center;
+        
+        .label {
+          display: block;
+          font-size: 0.75rem;
+          color: $color-text-muted;
+          margin-bottom: 0.25rem;
+        }
+        
+        .value {
+          display: block;
+          font-size: 2rem;
+          font-weight: bold;
+          color: $color-warning;
+        }
+      }
+    }
+    
+    .caught-summary {
+      margin-bottom: 2rem;
+      
+      p {
+        color: $color-text-muted;
+        margin-bottom: 0.75rem;
+      }
+      
+      .caught-list {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        
+        .caught-term {
+          padding: 0.5rem 1rem;
+          background-color: rgba($color-success, 0.2);
+          color: $color-success;
+          border-radius: $border-radius-md;
+          font-weight: bold;
+        }
+      }
+    }
+    
+    .unlocked-terms {
+      margin: 1.5rem 0;
+      
+      p {
+        color: $color-text-muted;
+        margin-bottom: 0.75rem;
+      }
+      
+      .term-list {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        
+        .term {
+          padding: 0.5rem 1rem;
+          background-color: rgba($color-warning, 0.2);
+          color: $color-warning;
+          border-radius: $border-radius-md;
+          font-weight: bold;
+        }
+      }
+    }
+    
+    .continue-btn, .retry-btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: $border-radius-md;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .continue-btn {
+      background-color: $color-primary;
+      color: white;
+      
+      &:hover {
+        background-color: lighten($color-primary, 10%);
+      }
+    }
+    
+    .retry-btn {
+      background-color: rgba($color-text-muted, 0.2);
+      color: $color-text-main;
+      
+      &:hover {
+        background-color: rgba($color-text-muted, 0.3);
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes targetGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba($color-warning, 0.3); }
+  50% { box-shadow: 0 0 15px rgba($color-warning, 0.6); }
+}

@@ -1,0 +1,510 @@
+@import '@/styles/variables';
+
+// Colors specific to this minigame
+$color-neon-cyan: #00f0ff;
+$color-neon-purple: #bc13fe;
+$color-neon-red: #ff003c;
+$color-dark-bg: #0f1016;
+$color-panel-bg: #1a1b26;
+
+.qte-minigame-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  animation: fadeIn 0.3s ease-out;
+
+  // 2) Challenge Description Bar
+  .challenge-desc-bar {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba($color-text-muted, 0.2);
+    border-left: 4px solid $color-neon-cyan;
+    padding: 1rem;
+    border-radius: 0 4px 4px 0;
+    
+    .desc-content {
+      h3 {
+        color: $color-neon-cyan;
+        margin: 0 0 0.5rem;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      p {
+        color: $color-text-muted;
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        
+        .konami-trigger {
+          position: relative;
+          color: white;
+          font-weight: bold;
+          text-decoration: underline;
+          text-decoration-color: $color-neon-purple;
+          text-decoration-thickness: 2px;
+          cursor: help;
+          margin: 0 0.2rem;
+          transition: all 0.2s;
+          
+          &:hover {
+            color: $color-neon-purple;
+            text-shadow: 0 0 8px rgba($color-neon-purple, 0.5);
+          }
+        }
+        
+        .code-preview {
+          font-family: monospace;
+          background: rgba(0,0,0,0.3);
+          padding: 2px 6px;
+          border-radius: 4px;
+          color: $color-neon-cyan;
+          margin-left: 0.5rem;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+
+  // 3) Core Challenge Area
+  .core-challenge-area {
+    background: linear-gradient(to bottom, #1a1a2e, #16213e);
+    border: 4px solid $color-panel-bg;
+    box-shadow: 
+      inset 0 0 0 2px $color-neon-cyan, // Inner glow
+      0 0 20px rgba($color-neon-cyan, 0.1); // Outer glow
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    
+    &.active-mode {
+      border-color: darken($color-neon-cyan, 30%);
+      box-shadow: 
+        inset 0 0 0 2px $color-neon-cyan,
+        0 0 30px rgba($color-neon-cyan, 0.2);
+    }
+
+    // HUD
+    .game-hud {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      .timer-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        
+        .timer-bar-bg {
+          flex: 1;
+          height: 12px;
+          background-color: rgba(0,0,0,0.4);
+          border: 1px solid rgba($color-text-muted, 0.3);
+          border-radius: 6px;
+          overflow: hidden;
+          
+          .timer-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, $color-neon-cyan, $color-neon-purple);
+            box-shadow: 0 0 10px rgba($color-neon-cyan, 0.5);
+            transition: width 0.1s linear;
+            
+            &.flash-red {
+              background: $color-neon-red;
+              animation: flashRed 0.2s infinite;
+            }
+          }
+        }
+        
+        .timer-text {
+          font-family: monospace;
+          color: $color-neon-cyan;
+          font-weight: bold;
+          min-width: 80px;
+          text-align: right;
+        }
+      }
+      
+      .progress-text {
+        text-align: center;
+        font-size: 0.8rem;
+        color: $color-text-muted;
+        letter-spacing: 1px;
+      }
+    }
+
+    // Sequence Stage
+    .sequence-stage {
+      margin-bottom: 2rem;
+      
+      .key-sequence-display {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        
+        .keycap {
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(to bottom, #3a3b4c, #25263a);
+          border: 1px solid #4a4b5e;
+          border-bottom: 4px solid #1a1b26; // 3D effect
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+          transition: all 0.1s;
+          
+          .key-char {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #a0a0a0;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+          }
+          
+          .checkmark {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            background: $color-neon-cyan;
+            color: $color-dark-bg;
+            font-size: 0.7rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          }
+          
+          // States
+          &.active {
+            background: linear-gradient(to bottom, lighten($color-neon-cyan, 10%), darken($color-neon-cyan, 10%));
+            border-color: white;
+            border-bottom-color: darken($color-neon-cyan, 20%);
+            transform: translateY(1px);
+            box-shadow: 0 0 15px rgba($color-neon-cyan, 0.4);
+            animation: breathe 1.5s infinite;
+            
+            .key-char {
+              color: $color-dark-bg;
+              text-shadow: none;
+            }
+          }
+          
+          &.completed {
+            background: #1a1b26;
+            border-color: #2a2b3c;
+            border-bottom-width: 2px;
+            transform: translateY(2px);
+            opacity: 0.7;
+            
+            .key-char {
+              color: #555;
+            }
+          }
+          
+          &.shake {
+            animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+            border-color: $color-neon-red;
+            background: rgba($color-neon-red, 0.2);
+            
+            .key-char {
+              color: $color-neon-red;
+            }
+          }
+        }
+      }
+    }
+
+    // Feedback
+    .combo-feedback {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      text-align: center;
+      z-index: 10;
+      
+      .count {
+        display: block;
+        font-size: 4rem;
+        font-weight: 900;
+        color: $color-neon-purple;
+        text-shadow: 
+          3px 3px 0 #fff,
+          0 0 20px $color-neon-purple;
+        line-height: 1;
+        animation: comboPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .label {
+        font-size: 1.5rem;
+        color: white;
+        text-transform: uppercase;
+        font-style: italic;
+        text-shadow: 2px 2px 0 $color-neon-purple;
+      }
+    }
+    
+    // Controls
+    .controls-area {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      
+      .start-actions {
+        text-align: center;
+        
+        .coin-btn {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem 3rem;
+          background: linear-gradient(to bottom, #ff4d4d, #cc0000);
+          border: 3px solid #ffcccc;
+          border-bottom-width: 6px;
+          border-radius: 50px; // Pill shape
+          color: white;
+          font-size: 1.2rem;
+          font-weight: 900;
+          cursor: pointer;
+          transition: all 0.1s;
+          box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+          
+          .coin-slot {
+            width: 32px;
+            height: 32px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: gold;
+          }
+          
+          &:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+          }
+          
+          &:active {
+            transform: translateY(4px);
+            border-bottom-width: 2px;
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.4);
+          }
+        }
+        
+        .control-hint {
+          margin-top: 1rem;
+          color: rgba(255,255,255,0.4);
+          font-size: 0.8rem;
+          font-family: monospace;
+        }
+      }
+      
+      .playing-actions {
+        .reset-btn {
+          background: none;
+          border: 1px solid rgba(255,255,255,0.2);
+          color: rgba(255,255,255,0.5);
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.8rem;
+          transition: all 0.2s;
+          
+          &:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+          }
+        }
+      }
+      
+      .success-feedback {
+        text-align: center;
+        animation: slideUp 0.3s ease-out;
+        
+        .success-text {
+          font-size: 2rem;
+          color: $color-neon-cyan;
+          text-shadow: 0 0 10px $color-neon-cyan;
+          margin-bottom: 1rem;
+          font-weight: bold;
+        }
+        
+        .drop-notification {
+          background: linear-gradient(90deg, transparent, rgba($color-neon-purple, 0.3), transparent);
+          padding: 0.5rem 2rem;
+          margin-bottom: 1.5rem;
+          border-top: 1px solid rgba($color-neon-purple, 0.5);
+          border-bottom: 1px solid rgba($color-neon-purple, 0.5);
+          
+          span {
+            color: white;
+            font-weight: bold;
+          }
+        }
+        
+        .continue-btn {
+          padding: 0.8rem 2rem;
+          background: $color-neon-cyan;
+          color: $color-dark-bg;
+          border: none;
+          border-radius: 4px;
+          font-weight: bold;
+          cursor: pointer;
+          
+          &:hover {
+            filter: brightness(1.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes tooltipPop {
+  from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 10px rgba($color-neon-cyan, 0.4); }
+  50% { box-shadow: 0 0 20px rgba($color-neon-cyan, 0.7); }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+@keyframes flashRed {
+  0%, 100% { background: $color-neon-red; }
+  50% { background: white; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes comboPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+// Portal styles
+.pixel-tooltip-portal {
+  position: fixed;
+  z-index: 9999;
+  transform: translate(-50%, -100%); // Center horizontally, place above
+  pointer-events: none; // Prevent blocking interactions
+
+  .pixel-tooltip {
+    width: 280px;
+    background-color: $color-dark-bg;
+    border: 2px solid $color-neon-purple;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    padding: 0;
+    border-radius: 4px;
+    animation: tooltipPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    &::after { // Arrow
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: $color-neon-purple transparent transparent transparent;
+    }
+    
+    .tooltip-header {
+      background-color: rgba($color-neon-purple, 0.15);
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid rgba($color-neon-purple, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .title {
+        color: $color-neon-purple;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      
+      .tag {
+        background-color: $color-neon-purple;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 2px;
+      }
+    }
+    
+    .tooltip-body {
+      padding: 0.8rem;
+      
+      .def {
+        color: #e0e0e0;
+        font-size: 0.8rem;
+        margin: 0 0 0.5rem;
+        line-height: 1.4;
+      }
+      
+      .input {
+        color: $color-neon-cyan;
+        font-size: 0.75rem;
+        font-family: monospace;
+        margin: 0 0 0.5rem;
+        background: rgba(0,0,0,0.3);
+        padding: 4px;
+        border-radius: 2px;
+      }
+      
+      .tags {
+        display: flex;
+        gap: 4px;
+        
+        span {
+          font-size: 0.7rem;
+          color: $color-text-muted;
+          border: 1px solid rgba($color-text-muted, 0.3);
+          padding: 1px 4px;
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+}

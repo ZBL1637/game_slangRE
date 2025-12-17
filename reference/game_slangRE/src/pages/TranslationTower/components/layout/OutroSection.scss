@@ -1,0 +1,191 @@
+// OutroSection 样式
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+.outro-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  // 叙述屏幕
+  .narration-screen {
+    max-width: 800px;
+    text-align: center;
+    cursor: pointer;
+
+    .narration-box {
+      background: rgba($background-medium, 0.8);
+      padding: 3rem;
+      border-radius: 1rem;
+      border: 1px solid rgba($primary-color, 0.3);
+
+      .narration-text {
+        font-size: 1.25rem;
+        line-height: 2;
+        color: $text-primary;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  // 总结屏幕
+  .summary-screen {
+    width: 100%;
+    max-width: 600px;
+
+    .summary-card {
+      background: rgba($background-medium, 0.9);
+      padding: 3rem;
+      border-radius: 1.5rem;
+      border: 2px solid rgba($primary-color, 0.3);
+      text-align: center;
+
+      .chapter-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        padding: 0.5rem 1.5rem;
+        border-radius: 2rem;
+        margin-bottom: 1.5rem;
+
+        span {
+          color: white;
+          font-weight: bold;
+          font-size: 0.9rem;
+        }
+      }
+
+      h2 {
+        font-size: 2rem;
+        color: $text-primary;
+        margin-bottom: 0.25rem;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        color: $text-secondary;
+        font-style: italic;
+        margin-bottom: 2rem;
+      }
+
+      .achievements {
+        text-align: left;
+        margin-bottom: 2rem;
+
+        .achievement-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.75rem;
+          background: rgba(#10b981, 0.1);
+          border-radius: 0.5rem;
+          margin-bottom: 0.5rem;
+
+          .icon {
+            font-size: 1.25rem;
+          }
+
+          .text {
+            color: $text-primary;
+            font-size: 0.95rem;
+          }
+        }
+      }
+
+      .skill-reminder {
+        margin-bottom: 2rem;
+
+        h4 {
+          color: $text-secondary;
+          font-size: 0.9rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .skill-card {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          background: rgba($primary-color, 0.1);
+          border: 1px solid rgba($primary-color, 0.3);
+          border-radius: 0.75rem;
+
+          .skill-icon {
+            font-size: 2rem;
+          }
+
+          .skill-info {
+            text-align: left;
+
+            .skill-name {
+              display: block;
+              font-weight: bold;
+              color: $primary-color;
+              margin-bottom: 0.25rem;
+            }
+
+            .skill-desc {
+              font-size: 0.85rem;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+
+      .next-chapter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: rgba($accent-color, 0.1);
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+
+        span {
+          color: $accent-color;
+          font-weight: bold;
+
+          &:first-child {
+            font-size: 1.5rem;
+          }
+        }
+      }
+
+      .continue-btn {
+        width: 100%;
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

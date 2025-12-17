@@ -1,0 +1,250 @@
+@import '@/styles/variables';
+
+.timeline-map-section {
+  padding: 2rem;
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    
+    h2 {
+      font-size: 2rem;
+      color: $color-text-highlight;
+      margin: 0;
+    }
+    
+    p {
+      color: $color-text-muted;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .timeline-path {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    
+    // 主时间线
+    .path-line {
+      position: absolute;
+      left: 40px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(
+        to bottom,
+        $color-primary 0%,
+        rgba($color-primary, 0.3) 100%
+      );
+      border-radius: 2px;
+    }
+
+    .era-node {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      padding-left: 80px;
+      
+      // 连接线动画
+      .connector {
+        position: absolute;
+        left: 38px;
+        top: -2rem;
+        width: 8px;
+        height: 2rem;
+        background-color: rgba($color-text-muted, 0.3);
+        
+        &.active {
+          background-color: $color-success;
+        }
+      }
+
+      .node-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        
+        .node-icon {
+          position: absolute;
+          left: 20px;
+          width: 44px;
+          height: 44px;
+          background-color: $color-bg-panel;
+          border: 3px solid $color-text-muted;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s;
+          z-index: 1;
+          
+          .era-emoji {
+            font-size: 1.5rem;
+          }
+          
+          svg {
+            color: $color-text-muted;
+          }
+        }
+        
+        .node-info {
+          h3 {
+            font-size: 1.25rem;
+            color: $color-text-main;
+            margin: 0;
+          }
+          
+          .period {
+            font-size: 0.875rem;
+            color: $color-text-muted;
+            margin-top: 0.25rem;
+          }
+          
+          .enter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: $color-primary;
+            color: white;
+            border: none;
+            border-radius: $border-radius-sm;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            
+            &:hover {
+              background-color: lighten($color-primary, 10%);
+            }
+          }
+          
+          .completed-badge {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba($color-success, 0.2);
+            color: $color-success;
+            border-radius: $border-radius-sm;
+            font-size: 0.75rem;
+          }
+          
+          .locked-hint {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: $color-text-muted;
+          }
+        }
+      }
+
+      // 时代卡片
+      .era-card {
+        flex: 1;
+        background-color: rgba($color-bg-panel, 0.5);
+        border: 1px solid rgba($color-text-muted, 0.2);
+        border-radius: $border-radius-md;
+        padding: 1rem;
+        margin-left: 1rem;
+        
+        .description {
+          font-size: 0.875rem;
+          color: $color-text-muted;
+          line-height: 1.6;
+          margin: 0;
+        }
+        
+        .keywords {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-top: 1rem;
+          
+          .keyword-tag {
+            padding: 0.25rem 0.5rem;
+            background-color: rgba($color-primary, 0.2);
+            color: $color-primary;
+            border-radius: $border-radius-sm;
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      // 状态样式
+      &.unlocked {
+        .node-content {
+          .node-icon {
+            border-color: $color-primary;
+            background-color: rgba($color-primary, 0.1);
+          }
+          
+          &:hover {
+            .node-icon {
+              transform: scale(1.1);
+              box-shadow: 0 0 20px rgba($color-primary, 0.5);
+            }
+          }
+        }
+      }
+
+      &.completed {
+        .node-content {
+          .node-icon {
+            border-color: $color-success;
+            background-color: $color-success;
+            
+            svg {
+              color: white;
+            }
+          }
+        }
+      }
+
+      &.locked {
+        opacity: 0.5;
+        
+        .node-content {
+          cursor: not-allowed;
+        }
+        
+        .era-card {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // 进度指示
+  .progress-indicator {
+    max-width: 400px;
+    margin: 3rem auto 0;
+    text-align: center;
+    
+    .progress-bar {
+      height: 8px;
+      background-color: rgba($color-text-muted, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, $color-primary, $color-success);
+        border-radius: 4px;
+        transition: width 0.5s ease-out;
+      }
+    }
+    
+    .progress-text {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: $color-text-muted;
+    }
+  }
+}

@@ -1,0 +1,304 @@
+// OutroSection 样式 - 像素艺术风格
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$pixel-border: #4a3f6b;
+$glow-purple: rgba(139, 92, 246, 0.5);
+$glow-cyan: rgba(6, 182, 212, 0.5);
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes achievementGlow {
+  0%, 100% {
+    box-shadow: inset 0 0 0 2px rgba(#10b981, 0.3);
+  }
+  50% {
+    box-shadow: inset 0 0 0 2px rgba(#10b981, 0.6), 0 0 15px rgba(#10b981, 0.3);
+  }
+}
+
+@keyframes skillPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px $glow-purple);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px $glow-cyan) drop-shadow(0 0 25px $glow-purple);
+  }
+}
+
+.outro-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  // 叙述屏幕
+  .narration-screen {
+    max-width: 800px;
+    text-align: center;
+    cursor: pointer;
+
+    .narration-box {
+      background: rgba($background-dark, 0.98);
+      padding: 3rem;
+      border: 4px solid $pixel-border;
+      box-shadow: 
+        inset 0 0 0 2px rgba($secondary-color, 0.3),
+        0 0 40px rgba($primary-color, 0.2);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border: 2px solid rgba($secondary-color, 0.2);
+        pointer-events: none;
+      }
+
+      .narration-text {
+        font-size: 1.1rem;
+        line-height: 2.2;
+        color: $text-primary;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 2rem;
+      color: $secondary-color;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.6rem;
+      animation: pulse 2s infinite;
+      text-shadow: 0 0 10px $glow-cyan;
+    }
+  }
+
+  // 总结屏幕
+  .summary-screen {
+    width: 100%;
+    max-width: 650px;
+
+    .summary-card {
+      background: rgba($background-dark, 0.98);
+      padding: 3rem;
+      border: 4px solid $pixel-border;
+      box-shadow: 
+        inset 0 0 0 2px rgba($secondary-color, 0.3),
+        0 0 40px rgba($primary-color, 0.2);
+      text-align: center;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border: 2px solid rgba($secondary-color, 0.2);
+        pointer-events: none;
+      }
+
+      .chapter-badge {
+        display: inline-block;
+        background: linear-gradient(180deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+        padding: 0.5rem 1.5rem;
+        border: 3px solid darken($primary-color, 20%);
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 0 darken($primary-color, 25%);
+
+        span {
+          font-family: 'Press Start 2P', cursive;
+          color: white;
+          font-size: 0.6rem;
+        }
+      }
+
+      h2 {
+        font-family: 'Microsoft YaHei', sans-serif;
+        font-size: 2rem;
+        color: $text-primary;
+        margin-bottom: 0.5rem;
+        text-shadow: 
+          0 0 15px $glow-purple,
+          0 4px 0 darken($primary-color, 30%);
+      }
+
+      h3 {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.7rem;
+        color: $secondary-color;
+        margin-bottom: 2rem;
+        text-shadow: 0 0 10px $glow-cyan;
+      }
+
+      .achievements {
+        text-align: left;
+        margin-bottom: 2rem;
+
+        .achievement-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.75rem;
+          background: rgba(#10b981, 0.1);
+          border: 2px solid #10b981;
+          margin-bottom: 0.5rem;
+          animation: achievementGlow 3s ease-in-out infinite;
+
+          .icon {
+            font-size: 1.25rem;
+            filter: drop-shadow(0 0 5px rgba(#10b981, 0.5));
+          }
+
+          .text {
+            font-family: 'Press Start 2P', cursive;
+            color: $text-primary;
+            font-size: 0.6rem;
+          }
+        }
+      }
+
+      .skill-reminder {
+        margin-bottom: 2rem;
+
+        h4 {
+          font-family: 'Press Start 2P', cursive;
+          color: $text-secondary;
+          font-size: 0.6rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .skill-card {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          background: rgba($primary-color, 0.1);
+          border: 3px solid $pixel-border;
+          animation: skillPulse 3s ease-in-out infinite;
+
+          .skill-icon {
+            width: 50px;
+            height: 50px;
+            background-image: url('/src/assets/images/skill_logos_conversion.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-size: 0; // 隐藏emoji
+          }
+
+          .skill-info {
+            text-align: left;
+
+            .skill-name {
+              display: block;
+              font-family: 'Press Start 2P', cursive;
+              font-size: 0.7rem;
+              color: $secondary-color;
+              margin-bottom: 0.5rem;
+              text-shadow: 0 0 10px $glow-cyan;
+            }
+
+            .skill-desc {
+              font-size: 0.85rem;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+
+      .next-chapter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: rgba($accent-color, 0.1);
+        border: 2px solid $accent-color;
+        margin-bottom: 1.5rem;
+
+        span {
+          font-family: 'Press Start 2P', cursive;
+          color: $accent-color;
+          font-size: 0.6rem;
+          text-shadow: 0 0 10px rgba($accent-color, 0.5);
+
+          &:first-child {
+            font-size: 1.2rem;
+          }
+        }
+      }
+
+      .continue-btn {
+        width: 100%;
+        background: linear-gradient(180deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+        color: white;
+        border: 4px solid darken($primary-color, 20%);
+        padding: 1rem 2rem;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.7rem;
+        box-shadow: 
+          inset 0 2px 0 rgba(255,255,255,0.2),
+          inset 0 -2px 0 rgba(0,0,0,0.2),
+          0 6px 0 darken($primary-color, 25%),
+          0 0 30px rgba($primary-color, 0.3);
+        position: relative;
+        top: 0;
+        transition: all 0.1s ease;
+
+        &:hover {
+          top: 3px;
+          box-shadow: 
+            inset 0 2px 0 rgba(255,255,255,0.2),
+            inset 0 -2px 0 rgba(0,0,0,0.2),
+            0 3px 0 darken($primary-color, 25%),
+            0 0 40px rgba($primary-color, 0.5);
+        }
+
+        &:active {
+          top: 6px;
+          box-shadow: 
+            inset 0 2px 0 rgba(0,0,0,0.2),
+            0 0 0 darken($primary-color, 25%);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .outro-section {
+    padding: 1rem;
+
+    .narration-screen .narration-box {
+      padding: 1.5rem;
+    }
+
+    .summary-screen .summary-card {
+      padding: 1.5rem;
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .achievements .achievement-item .text {
+        font-size: 0.5rem;
+      }
+    }
+  }
+}

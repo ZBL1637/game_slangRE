@@ -1,0 +1,270 @@
+// ============================================================================
+// 第三章：玩家生态城镇 - 主样式
+// ============================================================================
+
+// 变量
+$primary-color: #7F0056;
+$secondary-color: #D946EF;
+$accent-color: #3B82F6;
+$bg-dark: #0a0a0f;
+$bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+$text-muted: rgba(255, 255, 255, 0.5);
+
+// 动画
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(127, 0, 86, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(127, 0, 86, 0.8); }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 通用动画类
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+// 主容器
+.player-town-page {
+  min-height: 100vh;
+  background: $bg-gradient;
+  color: $text-primary;
+  position: relative;
+  overflow: hidden;
+
+  .main-content {
+    min-height: 100vh;
+    position: relative;
+  }
+}
+
+// 跳过选项
+.skip-option {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  text-align: right;
+  z-index: 100;
+
+  p {
+    font-size: 0.875rem;
+    color: $text-muted;
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: $text-secondary;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: $text-primary;
+    }
+  }
+}
+
+// 进度提示
+.progress-hint {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 100;
+
+  span {
+    font-size: 0.875rem;
+    color: $text-secondary;
+  }
+
+  .complete-hint {
+    color: #22c55e;
+    font-weight: 600;
+  }
+}
+
+// 成就通知
+.achievement-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: scaleIn 0.3s ease-out;
+
+  .toast-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 2px solid #fbbf24;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1a1a2e;
+    }
+
+    .text-box {
+      h4 {
+        font-size: 0.75rem;
+        color: #fbbf24;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.25rem;
+      }
+
+      .title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 0.25rem;
+      }
+
+      .reward {
+        font-size: 0.875rem;
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+// 技能获得通知
+.skill-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideInFromBottom 0.5s ease-out;
+
+  .toast-content {
+    background: linear-gradient(135deg, rgba(127, 0, 86, 0.9), rgba(217, 70, 239, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 40px rgba(127, 0, 86, 0.4);
+
+    .icon-box {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .text-box {
+      h4 {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.25rem;
+      }
+
+      .title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: 0.125rem;
+      }
+
+      .desc {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+}
+
+// 结尾覆盖层
+.outro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 200;
+}

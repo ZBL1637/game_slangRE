@@ -1,0 +1,313 @@
+// StyleChallenge 样式
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$success-color: #10b981;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+.style-challenge {
+  .original-section {
+    background: rgba($background-dark, 0.5);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+
+    .chinese-text, .context-text {
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        display: block;
+        font-size: 0.85rem;
+        color: $text-secondary;
+        margin-bottom: 0.5rem;
+      }
+
+      .text {
+        font-size: 1.1rem;
+        color: $text-primary;
+        line-height: 1.6;
+      }
+    }
+
+    .chinese-text .text {
+      font-size: 1.5rem;
+      color: $primary-color;
+      font-weight: bold;
+    }
+  }
+
+  .style-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .style-btn {
+      padding: 1.5rem;
+      background: rgba($background-dark, 0.5);
+      border: 2px solid rgba($primary-color, 0.3);
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+
+      .style-icon {
+        display: block;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .style-name {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: $text-primary;
+        margin-bottom: 0.25rem;
+      }
+
+      .style-desc {
+        font-size: 0.85rem;
+        color: $text-secondary;
+      }
+
+      &.foreignization {
+        &:hover:not(:disabled), &.selected {
+          border-color: $secondary-color;
+          background: rgba($secondary-color, 0.1);
+        }
+      }
+
+      &.domestication {
+        &:hover:not(:disabled), &.selected {
+          border-color: $accent-color;
+          background: rgba($accent-color, 0.1);
+        }
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: default;
+      }
+    }
+  }
+
+  .comparison-section {
+    .merchant-reaction {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba($background-dark, 0.5);
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+
+      .merchant-emoji {
+        font-size: 2.5rem;
+      }
+
+      .reaction-text {
+        font-size: 1rem;
+        color: $text-primary;
+      }
+    }
+
+    .translation-result {
+      margin-bottom: 1.5rem;
+
+      .result-card {
+        padding: 1.5rem;
+        background: rgba($primary-color, 0.1);
+        border: 1px solid rgba($primary-color, 0.3);
+        border-radius: 1rem;
+
+        h4 {
+          color: $primary-color;
+          font-size: 0.9rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .translation-text {
+          font-size: 1.1rem;
+          color: $text-primary;
+          margin-bottom: 0.75rem;
+          font-style: italic;
+        }
+
+        .explanation {
+          font-size: 0.9rem;
+          color: $text-secondary;
+          line-height: 1.6;
+        }
+      }
+    }
+
+    .comparison-bars {
+      background: rgba($background-dark, 0.5);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+
+      .bar-group {
+        margin-bottom: 1.5rem;
+
+        &:last-of-type {
+          margin-bottom: 1rem;
+        }
+
+        .bar-label {
+          display: block;
+          font-size: 0.9rem;
+          color: $text-secondary;
+          margin-bottom: 0.5rem;
+        }
+
+        .bars {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          .bar {
+            height: 24px;
+            background: rgba($text-secondary, 0.2);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+
+            .bar-fill {
+              height: 100%;
+              border-radius: 12px;
+              transition: width 0.5s ease;
+            }
+
+            .bar-value {
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+              font-size: 0.8rem;
+              font-weight: bold;
+              color: $text-primary;
+            }
+
+            &.foreignization .bar-fill {
+              background: linear-gradient(90deg, $secondary-color, lighten($secondary-color, 10%));
+            }
+
+            &.domestication .bar-fill {
+              background: linear-gradient(90deg, $accent-color, lighten($accent-color, 10%));
+            }
+          }
+        }
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+
+        .legend-item {
+          font-size: 0.85rem;
+          color: $text-secondary;
+
+          &.foreignization {
+            color: $secondary-color;
+          }
+
+          &.domestication {
+            color: $accent-color;
+          }
+        }
+      }
+    }
+
+    .next-btn {
+      width: 100%;
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+      }
+    }
+  }
+
+  .complete-area {
+    text-align: center;
+
+    .complete-content {
+      margin-bottom: 2rem;
+
+      .complete-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        color: $text-primary;
+        margin-bottom: 0.5rem;
+      }
+
+      .complete-text {
+        color: $text-secondary;
+        margin-bottom: 1.5rem;
+      }
+
+      .insight-box {
+        text-align: left;
+        padding: 1.5rem;
+        background: rgba($primary-color, 0.1);
+        border-radius: 1rem;
+        border-left: 3px solid $primary-color;
+
+        h4 {
+          color: $primary-color;
+          margin-bottom: 0.75rem;
+        }
+
+        p {
+          color: $text-primary;
+          line-height: 1.8;
+
+          strong {
+            color: $secondary-color;
+
+            &:last-of-type {
+              color: $accent-color;
+            }
+          }
+        }
+      }
+    }
+
+    .finish-btn {
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+      }
+    }
+  }
+}

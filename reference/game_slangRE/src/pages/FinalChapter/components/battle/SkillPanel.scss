@@ -1,0 +1,366 @@
+// ============================================================================
+// SkillPanel - 技能面板样式（统一开场动画配色）
+// ============================================================================
+@import '../../../../styles/variables';
+
+$primary-color: $color-primary;
+$secondary-color: $color-info;
+$accent-color: $color-accent;
+$success-color: $color-success;
+$background-dark: $color-bg-dark;
+$background-medium: rgba($color-bg-panel, 1);
+$text-primary: $color-text-main;
+$text-secondary: $color-text-muted;
+
+@keyframes pulseReady {
+  0%, 100% { box-shadow: 0 0 0 rgba($success-color, 0); }
+  50% { box-shadow: 0 0 15px rgba($success-color, 0.5); }
+}
+
+.skill-panel {
+  grid-column: 1;
+  background: rgba($background-medium, 0.9);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba($secondary-color, 0.3);
+
+  .action-prompt {
+    text-align: center;
+    margin-bottom: 1rem;
+
+    .prompt-text {
+      font-size: 1.1rem;
+      color: $success-color;
+      font-weight: bold;
+
+      &.waiting {
+        color: $text-secondary;
+      }
+    }
+  }
+
+  .attack-section {
+    margin-bottom: 1.5rem;
+
+    .attack-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.active {
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+        }
+      }
+
+      &.inactive {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .attack-icon {
+        font-size: 1.5rem;
+      }
+
+      .attack-name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+      }
+
+      .attack-damage {
+        font-size: 0.9rem;
+        color: rgba(white, 0.8);
+      }
+    }
+  }
+
+  .skills-section {
+    .skills-label {
+      font-size: 0.9rem;
+      color: $text-secondary;
+      margin-bottom: 0.75rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+
+      .skill-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: rgba($secondary-color, 0.1);
+        border: 2px solid rgba($secondary-color, 0.3);
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &.ready {
+          animation: pulseReady 2s infinite;
+
+          &:hover {
+            background: rgba($secondary-color, 0.2);
+            border-color: $secondary-color;
+            transform: translateY(-2px);
+          }
+        }
+
+        &.cooldown {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        &.disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+          background: rgba($primary-color, 0.1);
+          border-color: rgba($primary-color, 0.3);
+        }
+
+        &.selected {
+          border-color: $accent-color;
+          box-shadow: 0 0 15px rgba($accent-color, 0.3);
+        }
+
+        .skill-icon-wrapper {
+          position: relative;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .skill-icon {
+            font-size: 2rem;
+          }
+
+          .cooldown-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba($background-dark, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: $text-secondary;
+          }
+
+          .disabled-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba($primary-color, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+          }
+        }
+
+        .skill-name {
+          font-size: 0.85rem;
+          color: $text-primary;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  // 技能详情弹窗
+  .skill-info-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($background-dark, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .modal-content {
+      background: $background-medium;
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 2px solid rgba($secondary-color, 0.3);
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+
+      .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: $text-secondary;
+        font-size: 1.5rem;
+        cursor: pointer;
+
+        &:hover {
+          color: $text-primary;
+        }
+      }
+
+      .skill-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        .skill-icon-large {
+          font-size: 3rem;
+        }
+
+        .skill-titles {
+          h3 {
+            font-size: 1.5rem;
+            color: $text-primary;
+            margin: 0;
+          }
+
+          .skill-english {
+            font-size: 0.9rem;
+            color: $text-secondary;
+          }
+        }
+      }
+
+      .skill-body {
+        .skill-desc {
+          font-size: 1rem;
+          line-height: 1.6;
+          color: $text-primary;
+          margin-bottom: 1.5rem;
+        }
+
+        .skill-stats {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+          margin-bottom: 1.5rem;
+
+          .stat-item {
+            padding: 0.75rem;
+            background: rgba($secondary-color, 0.1);
+            border-radius: 0.5rem;
+
+            &.cooldown {
+              background: rgba($accent-color, 0.1);
+            }
+
+            &.disabled {
+              background: rgba($primary-color, 0.1);
+            }
+
+            .stat-label {
+              display: block;
+              font-size: 0.75rem;
+              color: $text-secondary;
+              margin-bottom: 0.25rem;
+            }
+
+            .stat-value {
+              font-size: 0.9rem;
+              font-weight: bold;
+              color: $text-primary;
+            }
+          }
+        }
+
+        .special-note {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          background: rgba($accent-color, 0.1);
+          border-radius: 0.5rem;
+          margin-bottom: 1.5rem;
+
+          .note-icon {
+            font-size: 1.25rem;
+          }
+
+          .note-text {
+            font-size: 0.9rem;
+            color: $accent-color;
+          }
+        }
+      }
+
+      .skill-actions {
+        .use-skill-btn {
+          width: 100%;
+          padding: 1rem;
+          background: linear-gradient(135deg, $secondary-color, darken($secondary-color, 10%));
+          color: white;
+          border: none;
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba($secondary-color, 0.4);
+          }
+
+          &.disabled {
+            background: $text-secondary;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .skill-panel {
+    padding: 1rem;
+
+    .skills-section .skills-grid {
+      grid-template-columns: repeat(4, 1fr);
+
+      .skill-btn {
+        padding: 0.75rem;
+
+        .skill-icon-wrapper {
+          width: 40px;
+          height: 40px;
+
+          .skill-icon {
+            font-size: 1.5rem;
+          }
+        }
+
+        .skill-name {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+}

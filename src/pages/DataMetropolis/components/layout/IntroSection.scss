@@ -1,0 +1,347 @@
+// IntroSection 样式 - 像素艺术风格
+$pixel-primary: #D946EF;
+$pixel-secondary: #A855F7;
+$pixel-accent-cyan: #00d4ff;
+$pixel-accent-pink: #ff00ff;
+$pixel-bg-dark: #0a0a1a;
+$pixel-bg-panel: #1a1a2e;
+$pixel-border: #6b5b95;
+
+.intro-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  transition: opacity 0.5s ease;
+  background: 
+    radial-gradient(ellipse at center, rgba($pixel-accent-pink, 0.05) 0%, transparent 50%),
+    linear-gradient(180deg, $pixel-bg-dark 0%, darken($pixel-bg-dark, 5%) 100%);
+
+  &.fade-out {
+    opacity: 0;
+    filter: brightness(2);
+  }
+
+  &.npc-phase {
+    background: 
+      radial-gradient(ellipse at center, rgba($pixel-primary, 0.15) 0%, transparent 70%),
+      linear-gradient(180deg, $pixel-bg-dark 0%, darken($pixel-bg-dark, 5%) 100%);
+  }
+}
+
+// 入场屏幕
+.entrance-screen {
+  text-align: center;
+
+  .entrance-text {
+    p {
+      font-size: 24px;
+      color: rgba($pixel-accent-cyan, 0.8);
+      margin: 8px 0;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba($pixel-accent-cyan, 0.5);
+      animation: pixelTextGlow 2s ease-in-out infinite;
+
+      &:first-child {
+        font-size: 18px;
+        letter-spacing: 12px;
+        color: rgba($pixel-accent-pink, 0.8);
+        text-shadow: 0 0 20px rgba($pixel-accent-pink, 0.5);
+      }
+    }
+  }
+}
+
+// 标题屏幕
+.title-screen {
+  text-align: center;
+
+  .title-content {
+    .chapter-index {
+      display: block;
+      font-size: 14px;
+      color: $pixel-accent-cyan;
+      letter-spacing: 6px;
+      margin-bottom: 16px;
+      text-shadow: 0 0 15px rgba($pixel-accent-cyan, 0.8);
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 16px;
+      text-shadow: 
+        0 0 20px rgba($pixel-primary, 0.8),
+        0 0 40px rgba($pixel-accent-pink, 0.5),
+        2px 2px 0 rgba($pixel-primary, 0.5);
+      animation: pixelTitleGlow 3s ease-in-out infinite;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: rgba($pixel-accent-cyan, 0.7);
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px rgba($pixel-accent-cyan, 0.5);
+    }
+  }
+}
+
+// 叙述屏幕
+.narration-screen {
+  max-width: 700px;
+  text-align: center;
+
+  .narration-box {
+    padding: 40px;
+    background: rgba($pixel-bg-panel, 0.95);
+    border: 3px solid $pixel-border;
+    box-shadow: 
+      0 0 0 1px $pixel-bg-dark,
+      0 0 30px rgba($pixel-accent-pink, 0.2),
+      inset 0 0 30px rgba(0, 0, 0, 0.5);
+
+    .narration-text {
+      font-size: 20px;
+      line-height: 1.8;
+      color: #e5e7eb;
+      text-shadow: 0 0 10px rgba($pixel-accent-cyan, 0.3);
+    }
+  }
+}
+
+// NPC屏幕
+.npc-screen {
+  width: 100%;
+  max-width: 800px;
+  cursor: pointer;
+
+  .npc-container {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .npc-avatar {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, $pixel-primary, $pixel-secondary);
+    border: 3px solid $pixel-border;
+    box-shadow: 
+      0 0 20px rgba($pixel-primary, 0.5),
+      inset 0 0 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+
+    .avatar-glow {
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle, rgba($pixel-accent-pink, 0.4), transparent);
+      animation: pixelPulse 2s ease-in-out infinite;
+    }
+
+    .npc-icon {
+      color: #ffffff;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 10px rgba($pixel-accent-cyan, 0.8));
+    }
+
+    // NPC图片样式
+    .npc-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+      image-rendering: pixelated;
+    }
+
+    .npc-icon {
+      color: #ffffff;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 10px rgba($pixel-accent-cyan, 0.8));
+    }
+  }
+
+  .dialogue-box {
+    flex: 1;
+    background: rgba($pixel-bg-panel, 0.95);
+    border: 3px solid $pixel-border;
+    box-shadow: 
+      0 0 0 1px $pixel-bg-dark,
+      0 0 25px rgba($pixel-accent-cyan, 0.2),
+      inset 0 0 30px rgba(0, 0, 0, 0.5);
+    padding: 24px;
+    position: relative;
+
+    // 像素风格箭头
+    &::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 30px;
+      width: 0;
+      height: 0;
+      border: 12px solid transparent;
+      border-right-color: $pixel-border;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 34px;
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-right-color: $pixel-bg-panel;
+    }
+
+    .npc-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba($pixel-border, 0.5);
+
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: $pixel-accent-cyan;
+        margin: 0 0 4px;
+        text-shadow: 0 0 15px rgba($pixel-accent-cyan, 0.8);
+      }
+
+      .npc-title {
+        font-size: 12px;
+        color: rgba($pixel-accent-pink, 0.8);
+        text-shadow: 0 0 10px rgba($pixel-accent-pink, 0.5);
+      }
+    }
+
+    .dialogue-content {
+      p {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #e5e7eb;
+        margin: 0;
+      }
+    }
+
+    .click-hint {
+      display: block;
+      margin-top: 16px;
+      font-size: 12px;
+      color: rgba($pixel-accent-cyan, 0.6);
+      animation: pixelBlink 1.5s ease-in-out infinite;
+    }
+
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, $pixel-primary, $pixel-secondary);
+      border: 3px solid lighten($pixel-primary, 20%);
+      box-shadow: 
+        0 4px 0 darken($pixel-primary, 20%),
+        0 0 20px rgba($pixel-primary, 0.4);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 0 darken($pixel-primary, 20%),
+          0 0 30px rgba($pixel-primary, 0.6);
+      }
+
+      &:active {
+        transform: translateY(2px);
+        box-shadow: 
+          0 2px 0 darken($pixel-primary, 20%),
+          0 0 15px rgba($pixel-primary, 0.4);
+      }
+    }
+  }
+}
+
+// 像素风格动画
+@keyframes pixelPulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pixelTextGlow {
+  0%, 100% { 
+    text-shadow: 0 0 20px currentColor;
+  }
+  50% { 
+    text-shadow: 0 0 40px currentColor, 0 0 60px currentColor;
+  }
+}
+
+@keyframes pixelTitleGlow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 20px rgba($pixel-primary, 0.8),
+      0 0 40px rgba($pixel-accent-pink, 0.5),
+      2px 2px 0 rgba($pixel-primary, 0.5);
+  }
+  50% { 
+    text-shadow: 
+      0 0 40px rgba($pixel-primary, 1),
+      0 0 80px rgba($pixel-accent-pink, 0.8),
+      2px 2px 0 rgba($pixel-primary, 0.8);
+  }
+}
+
+@keyframes pixelBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+// 响应式
+@media (max-width: 768px) {
+  .title-screen .title-content h1 {
+    font-size: 32px;
+  }
+
+  .narration-screen .narration-box {
+    padding: 24px;
+
+    .narration-text {
+      font-size: 16px;
+    }
+  }
+
+  .npc-screen {
+    .npc-container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dialogue-box {
+      &::before, &::after {
+        display: none;
+      }
+    }
+  }
+}

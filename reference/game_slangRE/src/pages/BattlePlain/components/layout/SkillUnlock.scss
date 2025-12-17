@@ -1,0 +1,306 @@
+@import '@/styles/variables';
+
+.skill-unlock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.skill-unlock-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+
+  // 罗盘合成阶段
+  .compass-phase {
+    .compass-animation {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 2rem;
+      
+      .fragment {
+        position: absolute;
+        font-size: 2rem;
+        animation: fragmentMerge 2.5s ease-in-out forwards;
+        
+        &.fragment-1 {
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        
+        &.fragment-2 {
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+          animation-delay: 0.2s;
+        }
+        
+        &.fragment-3 {
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          animation-delay: 0.4s;
+        }
+        
+        &.fragment-4 {
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          animation-delay: 0.6s;
+        }
+      }
+      
+      .compass-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        .compass-glow {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 150px;
+          height: 150px;
+          background: radial-gradient(circle, rgba($color-info, 0.4) 0%, transparent 70%);
+          border-radius: 50%;
+          animation: compassGlow 2s ease-in-out forwards;
+          opacity: 0;
+        }
+        
+        .compass-icon {
+          font-size: 4rem;
+          opacity: 0;
+          animation: compassAppear 1s ease-out 1.5s forwards;
+        }
+      }
+    }
+    
+    h2 {
+      color: $color-info;
+      font-size: 1.5rem;
+      animation: pulse 1s infinite;
+    }
+  }
+
+  // NPC对话阶段
+  .npc-phase {
+    animation: fadeIn 0.5s ease-out;
+    
+    .npc-avatar {
+      position: relative;
+      margin-bottom: 2rem;
+      
+      .avatar-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba($color-info, 0.3) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      
+      .npc-icon {
+        position: relative;
+        color: $color-info;
+        z-index: 1;
+      }
+    }
+    
+    .npc-dialogue {
+      background-color: rgba($color-bg-panel, 0.9);
+      border: 1px solid rgba($color-info, 0.3);
+      border-radius: $border-radius-lg;
+      padding: 2rem;
+      
+      h3 {
+        color: $color-info;
+        margin: 0 0 1rem;
+      }
+      
+      .dialogue-text {
+        color: $color-text-main;
+        line-height: 1.8;
+        margin: 0;
+      }
+    }
+  }
+
+  // 技能获得阶段
+  .skill-phase {
+    animation: fadeIn 0.5s ease-out;
+    
+    .skill-animation {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 2rem;
+      
+      .skill-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, rgba($color-info, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: skillGlow 2s infinite;
+      }
+      
+      .skill-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, $color-info 0%, lighten($color-info, 20%) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 0 30px rgba($color-info, 0.5);
+        animation: skillPulse 2s infinite;
+        
+        svg {
+          width: 48px;
+          height: 48px;
+        }
+      }
+    }
+    
+    .skill-info {
+      margin-bottom: 2rem;
+      
+      .skill-label {
+        display: inline-block;
+        padding: 0.25rem 1rem;
+        background-color: rgba($color-info, 0.2);
+        color: $color-info;
+        border-radius: $border-radius-sm;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+      }
+      
+      .skill-name {
+        font-size: 2rem;
+        color: $color-text-highlight;
+        margin: 0 0 0.5rem;
+        text-shadow: 0 0 20px rgba($color-info, 0.5);
+      }
+      
+      .skill-desc {
+        color: $color-text-muted;
+        margin: 0 0 1.5rem;
+      }
+      
+      .skill-effect {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background-color: rgba($color-bg-panel, 0.5);
+        border: 1px solid rgba($color-info, 0.3);
+        border-radius: $border-radius-md;
+        padding: 1rem 1.5rem;
+        
+        .effect-icon {
+          font-size: 2rem;
+        }
+        
+        .effect-text {
+          text-align: left;
+          
+          .effect-label {
+            display: block;
+            font-size: 0.75rem;
+            color: $color-text-muted;
+          }
+          
+          .effect-value {
+            display: block;
+            font-size: 1rem;
+            color: $color-info;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+    
+    .unlock-btn {
+      padding: 1rem 3rem;
+      background: linear-gradient(135deg, $color-info 0%, lighten($color-info, 20%) 100%);
+      color: white;
+      border: none;
+      border-radius: $border-radius-md;
+      font-size: 1.125rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px rgba($color-info, 0.3);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba($color-info, 0.5);
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fragmentMerge {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { 
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes compassGlow {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes compassAppear {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes skillGlow {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes skillPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}

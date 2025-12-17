@@ -1,0 +1,287 @@
+// ============================================================================
+// IntroSection - 入场动画样式（像素艺术风格）
+// ============================================================================
+$pixel-primary: #8B0000;
+$pixel-secondary: #4B0082;
+$pixel-accent-cyan: #00FFFF;
+$pixel-accent-red: #FF4444;
+$pixel-bg-dark: #0a0a12;
+$pixel-text: #FFFFFF;
+$pixel-border: #333344;
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes streamFlow {
+  0% { transform: scaleY(0); opacity: 0; }
+  50% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
+@keyframes bossFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pixelGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px $pixel-accent-cyan); }
+  50% { filter: drop-shadow(0 0 15px $pixel-accent-cyan) drop-shadow(0 0 25px $pixel-primary); }
+}
+
+.intro-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 2rem;
+
+  .entrance-screen {
+    text-align: center;
+    .entrance-text {
+      p {
+        font-size: 2rem;
+        color: $pixel-accent-red;
+        letter-spacing: 0.5em;
+        margin: 0.5rem 0;
+        text-shadow: 0 0 10px $pixel-accent-red, 0 0 20px $pixel-primary;
+        animation: pulse 2s ease-in-out infinite;
+      }
+    }
+  }
+
+  .title-screen {
+    text-align: center;
+    .title-content {
+      .chapter-index {
+        display: block;
+        font-size: 1rem;
+        color: $pixel-accent-cyan;
+        letter-spacing: 0.3em;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px $pixel-accent-cyan;
+      }
+      h1 {
+        font-size: 4rem;
+        color: $pixel-text;
+        margin: 0;
+        text-shadow: 0 0 20px $pixel-accent-red, 0 0 40px $pixel-primary;
+        animation: pixelGlow 3s ease-in-out infinite;
+      }
+      .subtitle {
+        font-size: 1.2rem;
+        color: $pixel-accent-cyan;
+        margin-top: 1rem;
+        letter-spacing: 0.2em;
+        text-shadow: 0 0 10px $pixel-accent-cyan;
+      }
+    }
+  }
+
+  .narration-screen {
+    max-width: 800px;
+    text-align: center;
+    .narration-box {
+      background: rgba($pixel-bg-dark, 0.9);
+      border: 4px solid $pixel-border;
+      padding: 2rem;
+      box-shadow: 
+        inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+        inset 4px 4px 0 rgba(255, 255, 255, 0.1),
+        0 0 30px rgba($pixel-primary, 0.5);
+      .narration-text {
+        font-size: 1.1rem;
+        color: $pixel-text;
+        line-height: 2;
+        text-shadow: 0 0 5px rgba($pixel-accent-cyan, 0.5);
+      }
+    }
+    .click-hint {
+      display: block;
+      margin-top: 1.5rem;
+      color: $pixel-accent-cyan;
+      animation: pulse 1.5s ease-in-out infinite;
+      text-shadow: 0 0 10px $pixel-accent-cyan;
+    }
+  }
+
+  .dialogue-screen {
+    width: 100%;
+    max-width: 900px;
+    .boss-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      
+      .boss-visual {
+        .boss-silhouette {
+          width: 200px;
+          height: 250px;
+          position: relative;
+          background: url('@/assets/images/boss_algorithm_overlord.png') center center / contain no-repeat;
+          animation: bossFloat 3s ease-in-out infinite;
+          filter: drop-shadow(0 0 20px $pixel-accent-red);
+          
+          .data-streams, .boss-face {
+            display: none;
+          }
+        }
+      }
+      
+      .dialogue-box {
+        background: rgba($pixel-bg-dark, 0.95);
+        border: 4px solid $pixel-border;
+        padding: 1.5rem 2rem;
+        width: 100%;
+        box-shadow: 
+          inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+          inset 4px 4px 0 rgba(255, 255, 255, 0.1),
+          0 0 30px rgba($pixel-primary, 0.5);
+        
+        .dialogue-header {
+          margin-bottom: 1rem;
+          .speaker {
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 4px 12px;
+            border: 2px solid $pixel-border;
+            
+            &.boss {
+              color: $pixel-accent-red;
+              background: rgba($pixel-primary, 0.3);
+              border-color: $pixel-accent-red;
+              text-shadow: 0 0 10px $pixel-accent-red;
+            }
+            &.system {
+              color: $pixel-accent-cyan;
+              background: rgba($pixel-secondary, 0.3);
+              border-color: $pixel-accent-cyan;
+              text-shadow: 0 0 10px $pixel-accent-cyan;
+            }
+          }
+        }
+        
+        .dialogue-text {
+          font-size: 1.1rem;
+          color: $pixel-text;
+          line-height: 1.8;
+          margin-bottom: 1rem;
+        }
+        
+        .click-hint {
+          display: block;
+          text-align: right;
+          color: $pixel-accent-cyan;
+          font-size: 0.9rem;
+          animation: pulse 1.5s ease-in-out infinite;
+          text-shadow: 0 0 10px $pixel-accent-cyan;
+        }
+      }
+    }
+  }
+
+  .ready-screen {
+    text-align: center;
+    max-width: 700px;
+    
+    .ready-content {
+      background: rgba($pixel-bg-dark, 0.95);
+      border: 4px solid $pixel-border;
+      padding: 2rem;
+      box-shadow: 
+        inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+        inset 4px 4px 0 rgba(255, 255, 255, 0.1),
+        0 0 30px rgba($pixel-primary, 0.5);
+      
+      .boss-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: pixelGlow 2s ease-in-out infinite;
+      }
+      
+      h2 {
+        font-size: 2rem;
+        color: $pixel-accent-red;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 15px $pixel-accent-red;
+      }
+      
+      .battle-info {
+        color: $pixel-text;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+      
+      .skills-preview {
+        background: rgba($pixel-secondary, 0.2);
+        border: 2px solid $pixel-border;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        
+        h3 {
+          color: $pixel-accent-cyan;
+          font-size: 1rem;
+          margin-bottom: 1rem;
+          text-shadow: 0 0 10px $pixel-accent-cyan;
+        }
+        
+        .skills-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+          
+          .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba($pixel-bg-dark, 0.5);
+            border: 2px solid $pixel-border;
+            
+            .skill-icon {
+              font-size: 1.5rem;
+            }
+            .skill-name {
+              color: $pixel-text;
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+      
+      .start-battle-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(180deg, $pixel-primary 0%, darken($pixel-primary, 20%) 100%);
+        border: 4px solid $pixel-border;
+        color: $pixel-text;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 
+          inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+          inset 4px 4px 0 rgba(255, 255, 255, 0.2);
+        
+        &:hover {
+          background: linear-gradient(180deg, lighten($pixel-primary, 10%) 0%, $pixel-primary 100%);
+          transform: translateY(-2px);
+          box-shadow: 
+            inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+            inset 4px 4px 0 rgba(255, 255, 255, 0.2),
+            0 4px 0 darken($pixel-primary, 30%),
+            0 0 20px rgba($pixel-accent-red, 0.5);
+        }
+        
+        .btn-icon {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,361 @@
+// TowerOverview 样式 - 像素艺术风格
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$pixel-border: #4a3f6b;
+$glow-purple: rgba(139, 92, 246, 0.5);
+$glow-cyan: rgba(6, 182, 212, 0.5);
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes towerGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px $glow-purple);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px $glow-cyan) drop-shadow(0 0 40px $glow-purple);
+  }
+}
+
+@keyframes floorPulse {
+  0%, 100% {
+    box-shadow: inset 0 0 0 2px rgba($secondary-color, 0.2);
+  }
+  50% {
+    box-shadow: inset 0 0 0 2px rgba($secondary-color, 0.5), 0 0 15px $glow-cyan;
+  }
+}
+
+.tower-overview-section {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  padding: 2rem;
+
+  // 塔的视觉效果
+  .tower-visual {
+    flex: 1;
+    position: relative;
+    min-height: 500px;
+
+    .tower-structure {
+      position: relative;
+      width: 220px;
+      margin: 0 auto;
+      animation: towerGlow 4s ease-in-out infinite;
+
+      .tower-top {
+        text-align: center;
+        margin-bottom: 1rem;
+
+        .tower-spire {
+          font-size: 3rem;
+          animation: float 3s ease-in-out infinite;
+          filter: drop-shadow(0 0 15px $glow-cyan);
+        }
+      }
+
+      .tower-body {
+        .tower-floor {
+          background: rgba($background-dark, 0.95);
+          border: 3px solid $pixel-border;
+          padding: 1rem;
+          margin-bottom: 0.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          transition: all 0.2s ease;
+          animation: floorPulse 3s ease-in-out infinite;
+          position: relative;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid transparent;
+            pointer-events: none;
+            transition: border-color 0.3s ease;
+          }
+
+          &:hover {
+            transform: scale(1.05);
+            border-color: $secondary-color;
+
+            &::before {
+              border-color: rgba($secondary-color, 0.3);
+            }
+          }
+
+          .floor-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba($primary-color, 0.2);
+            border: 2px solid $pixel-border;
+          }
+
+          .floor-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: $text-primary;
+            text-shadow: 0 0 5px $glow-purple;
+          }
+
+          &.floor-3 { 
+            border-color: $accent-color;
+            .floor-icon { border-color: $accent-color; }
+          }
+          &.floor-2 { 
+            border-color: #10b981;
+            .floor-icon { border-color: #10b981; }
+          }
+          &.floor-1 { 
+            border-color: $secondary-color;
+            .floor-icon { border-color: $secondary-color; }
+          }
+        }
+      }
+
+      .tower-base {
+        background: rgba($background-dark, 0.9);
+        border: 3px solid $pixel-border;
+        border-top: none;
+        padding: 2rem 1rem;
+        text-align: center;
+
+        .base-text {
+          font-family: 'Press Start 2P', cursive;
+          color: $text-secondary;
+          font-size: 0.5rem;
+          text-shadow: 0 0 5px $glow-purple;
+        }
+      }
+    }
+
+    .flowing-texts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+
+      .flowing-text {
+        position: absolute;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.8rem;
+        color: rgba($secondary-color, 0.4);
+        animation: floatUp 8s linear infinite;
+        text-shadow: 0 0 10px $glow-cyan;
+      }
+    }
+  }
+
+  // 内容区域
+  .content-area {
+    flex: 1.5;
+
+    .description-card {
+      background: rgba($background-dark, 0.95);
+      padding: 2rem;
+      border: 4px solid $pixel-border;
+      box-shadow: 
+        inset 0 0 0 2px rgba($secondary-color, 0.2),
+        0 0 30px rgba($primary-color, 0.1);
+      margin-bottom: 2rem;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border: 2px solid rgba($secondary-color, 0.2);
+        pointer-events: none;
+      }
+
+      p {
+        font-size: 1rem;
+        line-height: 2;
+        color: $text-primary;
+      }
+    }
+
+    .market-scene {
+      background: rgba($background-dark, 0.9);
+      padding: 1.5rem;
+      border: 3px solid $pixel-border;
+      margin-bottom: 2rem;
+
+      h3 {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.7rem;
+        color: $secondary-color;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px $glow-cyan;
+      }
+
+      .merchants-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .merchant-bubble, .local-player {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+
+          .merchant-avatar, .player-avatar {
+            font-size: 2rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 5px $glow-purple);
+          }
+
+          .speech-bubble {
+            background: rgba($pixel-border, 0.5);
+            padding: 0.75rem 1rem;
+            border: 2px solid $pixel-border;
+            position: relative;
+
+            &::before {
+              content: '';
+              position: absolute;
+              left: -10px;
+              top: 10px;
+              border: 8px solid transparent;
+              border-right-color: $pixel-border;
+            }
+
+            p {
+              margin: 0;
+              font-size: 0.9rem;
+              color: $text-primary;
+            }
+
+            &.confused {
+              background: rgba($accent-color, 0.2);
+              border-color: $accent-color;
+              &::before { border-right-color: $accent-color; }
+            }
+          }
+        }
+
+        .local-player {
+          justify-content: flex-end;
+
+          .speech-bubble {
+            background: rgba($secondary-color, 0.2);
+            border-color: $secondary-color;
+            &::before {
+              left: auto;
+              right: -10px;
+              border-right-color: transparent;
+              border-left-color: $secondary-color;
+            }
+          }
+        }
+      }
+    }
+
+    .enter-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      background: linear-gradient(180deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+      color: white;
+      border: 4px solid darken($primary-color, 20%);
+      padding: 1.25rem 2rem;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      box-shadow: 
+        inset 0 2px 0 rgba(255,255,255,0.2),
+        inset 0 -2px 0 rgba(0,0,0,0.2),
+        0 6px 0 darken($primary-color, 25%),
+        0 0 30px rgba($primary-color, 0.3);
+      position: relative;
+      top: 0;
+      transition: all 0.1s ease;
+
+      .btn-icon {
+        font-size: 1.5rem;
+      }
+
+      &:hover {
+        top: 3px;
+        box-shadow: 
+          inset 0 2px 0 rgba(255,255,255,0.2),
+          inset 0 -2px 0 rgba(0,0,0,0.2),
+          0 3px 0 darken($primary-color, 25%),
+          0 0 40px rgba($primary-color, 0.5);
+      }
+
+      &:active {
+        top: 6px;
+        box-shadow: 
+          inset 0 2px 0 rgba(0,0,0,0.2),
+          0 0 0 darken($primary-color, 25%);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tower-overview-section {
+    flex-direction: column;
+    padding: 1rem;
+
+    .tower-visual {
+      min-height: 300px;
+
+      .tower-structure {
+        width: 180px;
+      }
+    }
+
+    .content-area {
+      .description-card {
+        padding: 1.5rem;
+      }
+
+      .enter-btn {
+        font-size: 0.6rem;
+        padding: 1rem 1.5rem;
+      }
+    }
+  }
+}

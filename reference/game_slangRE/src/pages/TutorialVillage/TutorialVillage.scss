@@ -1,0 +1,433 @@
+@import '@/styles/variables';
+
+.tutorial-village-page {
+  // Center horizontally
+  margin: 0 auto;
+  // Match World Map viewport width (85%)
+  width: 85%;
+  // Maintain 16:9 aspect ratio based on width
+  aspect-ratio: 16 / 9;
+  // Reset height to auto since aspect-ratio handles it
+  height: auto; 
+  
+  position: relative;
+  background-color: #5c7a4c;
+  overflow: hidden;
+  
+  border-radius: $border-radius-md;
+  border: $border-gold;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  // Background Layer
+  .bg-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    background-image: url('../../assets/images/Tutorial-Village.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+  
+  // Slang Demo Box
+  .slang-demo-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    background-color: #1c1917; // stone-900
+    border: 4px solid #78716c; // stone-500
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 91.666667%; // 11/12
+    max-width: 32rem; // lg
+
+    h3 {
+      color: #a8a29e; // stone-400
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid #44403c; // stone-700
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1.125rem;
+      color: #e7e5e4; // stone-200
+      line-height: 2;
+    }
+
+    .hint {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #f59e0b; // amber-500
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  }
+
+  // NPC
+  .npc-container {
+    display: none; // Removed from map
+  }
+  
+  // Floating Quest Marker
+  .quest-marker-floating {
+    position: absolute;
+    bottom: 25%; // Position relative to height
+    right: 5%;
+    z-index: 60;
+    
+    // Container for size and interaction
+    width: 12%; // Responsive size
+    aspect-ratio: 1; // Keep circular
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    font-size: 3vw; // Responsive font size
+    font-weight: 900;
+    font-family: 'Press Start 2P', monospace; // Pixel font
+    color: #facc15; // yellow-400
+    
+    // Stronger visual effects
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.5));
+    
+    // Combine bounce with fade-in
+    opacity: 0;
+    animation: float-bounce 2s ease-in-out infinite, fadeIn 0.5s ease-out forwards;
+    
+    // Circular background to make it pop against any map color
+    background: rgba(0, 0, 0, 0.4);
+    border: 3px solid #fbbf24; // amber-400
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+
+    @media (min-width: 768px) {
+      right: 5%;
+    }
+    
+    &:hover {
+      transform: scale(1.1);
+      background: rgba(0, 0, 0, 0.6);
+      color: #fde047; // yellow-300
+      border-color: #fde047;
+    }
+  }
+
+  @keyframes float-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  // Leave Button
+  .leave-btn-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    
+    // Prevent flash
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+
+    button {
+      padding: 1rem 2rem;
+      background-color: #047857; // emerald-700
+      border: 4px solid #34d399; // emerald-400
+      color: white;
+      font-size: 1.25rem;
+      font-weight: bold;
+      border-radius: 0.25rem;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+      transition: all 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #059669; // emerald-600
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  // System Message Bar
+  .system-message-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2rem;
+    background-color: black;
+    border-top: 1px solid #44403c; // stone-700
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 50;
+
+    .prefix {
+      color: #22c55e; // green-500
+      margin-right: 0.5rem;
+    }
+
+    .message {
+      color: #a8a29e; // stone-400
+      font-size: 0.75rem;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+      @media (min-width: 768px) {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // Entrance
+  .entrance-screen {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .entrance-text {
+      color: #d6d3d1; // stone-300
+      font-size: 1.25rem;
+      font-family: monospace;
+      text-align: center;
+      transition: opacity 1s;
+      
+      p {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .village-title {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.95); // Darker background
+      z-index: 20;
+      transition: opacity 1s;
+
+      h1 {
+        font-size: 3rem;
+        color: #e5e5e5; // Light gray text
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        text-shadow: 0 4px 4px rgba(0,0,0,0.5);
+        position: relative;
+        margin: 0.5rem 0;
+
+        // Yellow underline
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -0.5rem;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 4rem;
+          height: 0.25rem;
+          background-color: #d97706; // amber-600
+        }
+
+        @media (min-width: 768px) {
+          font-size: 4.5rem;
+        }
+      }
+
+      .subtitle {
+        color: #d97706; // amber-600
+        font-size: 0.875rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+      }
+
+      .desc {
+        color: #737373; // neutral-500
+        font-size: 0.875rem;
+        margin-top: 2rem;
+        font-weight: 300;
+      }
+    }
+  }
+
+  // Quiz Modal
+  .quiz-modal {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+
+    .quiz-content {
+      background-color: #2a231d;
+      border: 4px solid #8b7355;
+      width: 100%;
+      max-width: 32rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+
+      .header {
+        background-color: #8b7355;
+        padding: 0.75rem;
+        text-align: center;
+        border-bottom: 4px solid #5c4033;
+        
+        h2 {
+          color: #2a231d;
+          font-weight: bold;
+          font-size: 1.25rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin: 0;
+        }
+      }
+
+      .body {
+        padding: 1.5rem;
+        
+        .intro-text {
+          color: #a8a29e;
+          margin-bottom: 1.5rem;
+          font-size: 0.875rem;
+          text-align: center;
+        }
+
+        .question {
+          font-size: 1.25rem;
+          color: #f59e0b;
+          margin-bottom: 1.5rem;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            button {
+                width: 100%;
+                text-align: left;
+                padding: 1rem;
+                background-color: #292524;
+                border: 2px solid #57534e;
+                color: #e7e5e4;
+                border-radius: 0.25rem;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &:hover {
+                    background-color: #44403c;
+                    border-color: #f59e0b;
+                    color: #fbbf24;
+                }
+
+                .opt-id {
+                    display: inline-block;
+                    width: 1.5rem;
+                    font-weight: bold;
+                    color: #78716c;
+                }
+            }
+        }
+
+        .result {
+            text-align: center;
+            animation: fadeIn 0.5s;
+
+            .emoji {
+                font-size: 3.75rem;
+                margin-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+                
+                &.correct { color: #22c55e; }
+                &.incorrect { color: #ef4444; }
+            }
+
+            p {
+                color: #d6d3d1;
+                margin-bottom: 1.5rem;
+                line-height: 1.625;
+            }
+
+            button {
+                padding: 0.5rem 1.5rem;
+                background-color: #d97706;
+                color: white;
+                font-weight: bold;
+                border-radius: 0.25rem;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: #f59e0b;
+                }
+            }
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+// Utility classes for animation
+.opacity-0 {
+  opacity: 0 !important;
+}
+
+.opacity-100 {
+  opacity: 1 !important;
+}

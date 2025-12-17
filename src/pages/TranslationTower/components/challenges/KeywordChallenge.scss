@@ -1,0 +1,292 @@
+// KeywordChallenge 样式
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$success-color: #10b981;
+$error-color: #ef4444;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+.challenge-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($background-dark, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.challenge-modal {
+  background: rgba($background-medium, 0.95);
+  border-radius: 1.5rem;
+  border: 2px solid rgba($primary-color, 0.3);
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba($text-secondary, 0.2);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: $text-secondary;
+    font-size: 1.25rem;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba($error-color, 0.2);
+      color: $error-color;
+    }
+  }
+
+  .challenge-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    .challenge-icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      color: $text-primary;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: $text-secondary;
+    }
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba($primary-color, 0.2);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    position: relative;
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, $primary-color, $secondary-color);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      position: absolute;
+      right: 0;
+      top: -1.5rem;
+      font-size: 0.85rem;
+      color: $text-secondary;
+    }
+  }
+}
+
+.keyword-challenge {
+  .question-area {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    .chinese-term {
+      margin-bottom: 1.5rem;
+
+      .term-text {
+        display: block;
+        font-size: 3rem;
+        font-weight: bold;
+        color: $primary-color;
+        margin-bottom: 0.5rem;
+      }
+
+      .pinyin {
+        font-size: 1.25rem;
+        color: $text-secondary;
+        font-style: italic;
+      }
+    }
+
+    .arrow-indicator {
+      font-size: 2rem;
+      color: $accent-color;
+      margin-bottom: 1.5rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+
+      .option-btn {
+        padding: 1rem 1.5rem;
+        background: rgba($background-dark, 0.5);
+        border: 2px solid rgba($primary-color, 0.3);
+        border-radius: 0.75rem;
+        color: $text-primary;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover:not(:disabled) {
+          border-color: $primary-color;
+          background: rgba($primary-color, 0.1);
+        }
+
+        &.selected {
+          border-color: $primary-color;
+          background: rgba($primary-color, 0.2);
+        }
+
+        &.correct {
+          border-color: $success-color;
+          background: rgba($success-color, 0.2);
+        }
+
+        &.incorrect {
+          border-color: $error-color;
+          background: rgba($error-color, 0.2);
+        }
+      }
+    }
+  }
+
+  .result-area {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+
+    &.correct {
+      background: rgba($success-color, 0.1);
+      border: 1px solid rgba($success-color, 0.3);
+    }
+
+    &.incorrect {
+      background: rgba($error-color, 0.1);
+      border: 1px solid rgba($error-color, 0.3);
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+
+      .result-icon {
+        font-size: 1.5rem;
+      }
+
+      .result-text {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: $text-primary;
+      }
+    }
+
+    .explanation, .cultural-note {
+      margin-bottom: 1rem;
+
+      h4 {
+        color: $primary-color;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        color: $text-primary;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .action-buttons {
+    text-align: center;
+
+    .submit-btn, .next-btn {
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+      }
+    }
+  }
+
+  .complete-area {
+    text-align: center;
+
+    .score-display {
+      padding: 2rem;
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+
+      &.pass {
+        background: rgba($success-color, 0.1);
+        border: 2px solid $success-color;
+      }
+
+      &.fail {
+        background: rgba($error-color, 0.1);
+        border: 2px solid $error-color;
+      }
+
+      .score-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        color: $text-primary;
+        margin-bottom: 0.5rem;
+      }
+
+      .score-text {
+        font-size: 1.25rem;
+        color: $text-secondary;
+        margin-bottom: 0.5rem;
+      }
+
+      .pass-hint {
+        font-size: 0.9rem;
+        color: $text-secondary;
+      }
+    }
+
+    .finish-btn {
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+// ============================================================================
+// FinalChapter - 主样式文件（配色与开场动画保持一致）
+// ============================================================================
+@import '../../styles/variables';
+
+$primary-color: $color-primary;
+$secondary-color: $color-info;
+$accent-color: $color-accent;
+$background-dark: $color-bg-dark;
+$background-medium: rgba($color-bg-panel, 1);
+$text-primary: $color-text-main;
+$text-secondary: $color-text-muted;
+
+@keyframes dataFloat {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes codeRain {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.final-chapter {
+  width: 100%;
+  min-height: 100vh;
+  background: $background-dark;
+  position: relative;
+  overflow: hidden;
+
+  // 背景效果
+  .chapter-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+
+    .data-storm {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .data-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: $primary-color;
+        border-radius: 50%;
+        animation: dataFloat 8s linear infinite;
+        box-shadow: 0 0 10px $primary-color;
+      }
+    }
+
+    .code-rain {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+
+      .code-column {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        animation: codeRain 10s linear infinite;
+
+        span {
+          color: $primary-color;
+          font-family: monospace;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  // 内容区域
+  .chapter-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

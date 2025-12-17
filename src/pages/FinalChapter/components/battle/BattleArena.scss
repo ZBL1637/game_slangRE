@@ -1,0 +1,326 @@
+// ============================================================================
+// BattleArena - 战斗界面样式（像素艺术风格）
+// ============================================================================
+$pixel-primary: #8B0000;
+$pixel-secondary: #4B0082;
+$pixel-accent-cyan: #00FFFF;
+$pixel-accent-red: #FF4444;
+$pixel-accent-green: #00FF00;
+$pixel-bg-dark: #0a0a12;
+$pixel-text: #FFFFFF;
+$pixel-border: #333344;
+
+@keyframes bossIdle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.02); }
+}
+
+@keyframes playerIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes damageFlash {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(2) saturate(0); }
+}
+
+@keyframes healGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.5) hue-rotate(90deg); }
+}
+
+.battle-arena {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+
+  // 战斗区域
+  .battle-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    background: rgba($pixel-bg-dark, 0.8);
+    border: 4px solid $pixel-border;
+    box-shadow: 
+      inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+      inset 4px 4px 0 rgba(255, 255, 255, 0.1),
+      0 0 30px rgba($pixel-primary, 0.5);
+    
+    // Boss区域
+    .boss-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      .boss-sprite {
+        width: 180px;
+        height: 220px;
+        background: url('@/assets/images/boss_algorithm_overlord.png') center center / contain no-repeat;
+        animation: bossIdle 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 20px $pixel-accent-red);
+        
+        &.damaged {
+          animation: damageFlash 0.3s ease-in-out;
+        }
+        
+        &.stunned {
+          filter: grayscale(0.5) drop-shadow(0 0 20px $pixel-accent-cyan);
+        }
+      }
+      
+      .boss-info {
+        margin-top: 1rem;
+        text-align: center;
+        
+        .boss-name {
+          font-size: 1.5rem;
+          color: $pixel-accent-red;
+          text-shadow: 0 0 10px $pixel-accent-red;
+          margin-bottom: 0.5rem;
+        }
+        
+        .hp-bar {
+          width: 200px;
+          height: 20px;
+          background: rgba($pixel-bg-dark, 0.8);
+          border: 3px solid $pixel-border;
+          position: relative;
+          
+          .hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, $pixel-accent-red, darken($pixel-accent-red, 20%));
+            transition: width 0.3s ease;
+            box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+          }
+          
+          .hp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: $pixel-text;
+            font-size: 0.8rem;
+            text-shadow: 1px 1px 0 #000;
+          }
+        }
+        
+        .shield-bar {
+          width: 200px;
+          height: 12px;
+          background: rgba($pixel-bg-dark, 0.8);
+          border: 2px solid $pixel-border;
+          margin-top: 4px;
+          
+          .shield-fill {
+            height: 100%;
+            background: linear-gradient(90deg, $pixel-accent-cyan, darken($pixel-accent-cyan, 20%));
+            transition: width 0.3s ease;
+          }
+        }
+      }
+    }
+    
+    // VS标志
+    .vs-indicator {
+      font-size: 3rem;
+      color: $pixel-accent-red;
+      text-shadow: 0 0 20px $pixel-accent-red, 0 0 40px $pixel-primary;
+      padding: 0 2rem;
+    }
+    
+    // 玩家区域
+    .player-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      .player-sprite {
+        width: 120px;
+        height: 150px;
+        background: linear-gradient(180deg, $pixel-accent-cyan 0%, $pixel-secondary 100%);
+        border: 4px solid $pixel-border;
+        animation: playerIdle 2s ease-in-out infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        
+        &.damaged {
+          animation: damageFlash 0.3s ease-in-out;
+        }
+        
+        &.healed {
+          animation: healGlow 0.5s ease-in-out;
+        }
+      }
+      
+      .player-info {
+        margin-top: 1rem;
+        text-align: center;
+        
+        .player-name {
+          font-size: 1.2rem;
+          color: $pixel-accent-cyan;
+          text-shadow: 0 0 10px $pixel-accent-cyan;
+          margin-bottom: 0.5rem;
+        }
+        
+        .hp-bar {
+          width: 150px;
+          height: 16px;
+          background: rgba($pixel-bg-dark, 0.8);
+          border: 3px solid $pixel-border;
+          position: relative;
+          
+          .hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, $pixel-accent-green, darken($pixel-accent-green, 20%));
+            transition: width 0.3s ease;
+            box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+          }
+          
+          .hp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: $pixel-text;
+            font-size: 0.7rem;
+            text-shadow: 1px 1px 0 #000;
+          }
+        }
+      }
+    }
+  }
+
+  // 技能面板
+  .skills-panel {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba($pixel-bg-dark, 0.9);
+    border: 4px solid $pixel-border;
+    box-shadow: 
+      inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+      inset 4px 4px 0 rgba(255, 255, 255, 0.1);
+    
+    .skill-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      background: linear-gradient(180deg, rgba($pixel-secondary, 0.5) 0%, rgba($pixel-bg-dark, 0.8) 100%);
+      border: 3px solid $pixel-border;
+      color: $pixel-text;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(180deg, rgba($pixel-primary, 0.5) 0%, rgba($pixel-bg-dark, 0.8) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 0 darken($pixel-border, 20%), 0 0 15px rgba($pixel-accent-cyan, 0.3);
+      }
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        filter: grayscale(0.5);
+      }
+      
+      &.on-cooldown {
+        background: linear-gradient(180deg, rgba(50, 50, 50, 0.5) 0%, rgba($pixel-bg-dark, 0.8) 100%);
+      }
+      
+      .skill-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .skill-name {
+        font-size: 0.9rem;
+        text-align: center;
+      }
+      
+      .cooldown {
+        font-size: 0.8rem;
+        color: $pixel-accent-red;
+        margin-top: 0.25rem;
+      }
+    }
+    
+    .attack-btn {
+      background: linear-gradient(180deg, $pixel-primary 0%, darken($pixel-primary, 20%) 100%);
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(180deg, lighten($pixel-primary, 10%) 0%, $pixel-primary 100%);
+      }
+    }
+  }
+
+  // 回合信息
+  .turn-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba($pixel-bg-dark, 0.9);
+    border: 3px solid $pixel-border;
+    
+    .turn-counter {
+      color: $pixel-accent-cyan;
+      font-size: 1rem;
+      text-shadow: 0 0 10px $pixel-accent-cyan;
+    }
+    
+    .current-turn {
+      color: $pixel-text;
+      font-size: 1.1rem;
+      
+      &.player-turn {
+        color: $pixel-accent-green;
+        text-shadow: 0 0 10px $pixel-accent-green;
+      }
+      
+      &.boss-turn {
+        color: $pixel-accent-red;
+        text-shadow: 0 0 10px $pixel-accent-red;
+      }
+    }
+  }
+
+  // 战斗日志
+  .battle-log {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: rgba($pixel-bg-dark, 0.9);
+    border: 3px solid $pixel-border;
+    
+    .log-entry {
+      padding: 0.25rem 0;
+      font-size: 0.9rem;
+      color: $pixel-text;
+      border-bottom: 1px solid rgba($pixel-border, 0.5);
+      
+      &.player-action {
+        color: $pixel-accent-cyan;
+      }
+      
+      &.boss-action {
+        color: $pixel-accent-red;
+      }
+      
+      &.system-message {
+        color: #FFD700;
+      }
+    }
+  }
+}

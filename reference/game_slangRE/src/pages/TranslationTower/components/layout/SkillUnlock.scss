@@ -1,0 +1,284 @@
+// SkillUnlock 样式
+$primary-color: #8b5cf6;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+$background-dark: #0f172a;
+$background-medium: #1e293b;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.2;
+  }
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba($primary-color, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba($primary-color, 0.8);
+  }
+}
+
+.skill-unlock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($background-dark, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: $primary-color;
+      border-radius: 50%;
+      animation: particleFloat 4s linear infinite;
+    }
+  }
+
+  .skill-unlock-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+
+    // 对话阶段
+    .dialogue-phase {
+      cursor: pointer;
+
+      .npc-dialogue {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+
+        .npc-avatar {
+          font-size: 4rem;
+        }
+
+        .dialogue-box {
+          flex: 1;
+          background: rgba($background-medium, 0.9);
+          padding: 2rem;
+          border-radius: 1rem;
+          border: 1px solid rgba($primary-color, 0.3);
+
+          h3 {
+            color: $primary-color;
+            margin-bottom: 1rem;
+          }
+
+          p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: $text-primary;
+          }
+
+          .click-hint {
+            display: block;
+            margin-top: 1rem;
+            color: $text-secondary;
+            font-size: 0.9rem;
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    // 揭示阶段
+    .reveal-phase {
+      text-align: center;
+
+      .skill-icon-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 2rem;
+
+        .icon-glow {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle, rgba($primary-color, 0.4), transparent);
+          border-radius: 50%;
+          animation: iconGlow 2s ease-in-out infinite;
+        }
+
+        .icon-ring {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 3px solid $primary-color;
+          border-radius: 50%;
+          animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        .skill-icon {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 4rem;
+        }
+      }
+
+      .skill-name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        h2 {
+          font-size: 2.5rem;
+          background: linear-gradient(135deg, $primary-color, $secondary-color);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .sparkle-icon {
+          font-size: 1.5rem;
+        }
+      }
+
+      .skill-english {
+        color: $text-secondary;
+        font-size: 1.2rem;
+        font-style: italic;
+      }
+    }
+
+    // 详情阶段
+    .details-phase {
+      .skill-reveal {
+        text-align: center;
+        margin-bottom: 2rem;
+
+        .skill-icon-container.small {
+          width: 80px;
+          height: 80px;
+          margin-bottom: 1rem;
+
+          .skill-icon {
+            font-size: 2.5rem;
+          }
+        }
+
+        .skill-name h2 {
+          font-size: 1.8rem;
+        }
+
+        .skill-english {
+          font-size: 1rem;
+        }
+      }
+
+      .skill-details {
+        background: rgba($background-medium, 0.8);
+        padding: 2rem;
+        border-radius: 1rem;
+        border: 1px solid rgba($primary-color, 0.3);
+
+        .skill-desc {
+          font-size: 1.1rem;
+          color: $text-primary;
+          line-height: 1.8;
+          margin-bottom: 1.5rem;
+        }
+
+        .skill-effect {
+          margin-bottom: 1.5rem;
+
+          h4 {
+            color: $primary-color;
+            margin-bottom: 0.75rem;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+              padding: 0.5rem 0;
+              padding-left: 1.5rem;
+              position: relative;
+              color: $text-primary;
+
+              &::before {
+                content: '✦';
+                position: absolute;
+                left: 0;
+                color: $accent-color;
+              }
+            }
+          }
+        }
+
+        .skill-lore {
+          padding: 1rem;
+          background: rgba($primary-color, 0.1);
+          border-radius: 0.5rem;
+          border-left: 3px solid $primary-color;
+          margin-bottom: 1.5rem;
+
+          p {
+            font-style: italic;
+            color: $text-secondary;
+            margin: 0;
+          }
+        }
+
+        .confirm-btn {
+          width: 100%;
+          background: linear-gradient(135deg, $primary-color, $secondary-color);
+          color: white;
+          border: none;
+          padding: 1rem 2rem;
+          border-radius: 0.5rem;
+          font-size: 1.1rem;
+          font-weight: bold;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba($primary-color, 0.4);
+          }
+        }
+      }
+    }
+  }
+}

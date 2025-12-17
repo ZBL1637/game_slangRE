@@ -1,0 +1,234 @@
+// SkillUnlock 样式
+
+$primary-color: #7F0056;
+$secondary-color: #D946EF;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+
+@keyframes particleRise {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0);
+  }
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(217, 70, 239, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(217, 70, 239, 0.8);
+  }
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.skill-unlock-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(127, 0, 86, 0.3), rgba(0, 0, 0, 0.95));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 2rem;
+
+  .skill-unlock-container {
+    position: relative;
+    text-align: center;
+    max-width: 500px;
+
+    // 粒子效果
+    .particles {
+      position: absolute;
+      inset: -100px;
+      pointer-events: none;
+
+      .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: $secondary-color;
+        border-radius: 50%;
+        animation: particleRise 2s ease-out forwards;
+      }
+    }
+
+    // 介绍文字
+    .intro-text {
+      p {
+        font-size: 1.25rem;
+        color: $text-primary;
+        line-height: 1.8;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+
+    // 技能揭示
+    .skill-reveal {
+      .skill-icon-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 2rem;
+
+        .icon-glow {
+          position: absolute;
+          inset: -20px;
+          background: radial-gradient(circle, rgba(217, 70, 239, 0.4), transparent);
+          border-radius: 50%;
+          animation: iconGlow 2s ease-in-out infinite;
+        }
+
+        .icon-ring {
+          position: absolute;
+          inset: -10px;
+          border: 2px solid $secondary-color;
+          border-radius: 50%;
+          animation: ringPulse 2s ease-out infinite;
+        }
+
+        .skill-icon {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, $primary-color, $secondary-color);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $text-primary;
+          z-index: 1;
+        }
+      }
+
+      .skill-name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        h2 {
+          font-size: 2.5rem;
+          font-weight: 700;
+          background: linear-gradient(135deg, $text-primary, $secondary-color);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .sparkle-icon {
+          color: $secondary-color;
+          animation: sparkle 1s ease-in-out infinite;
+
+          &:last-child {
+            animation-delay: 0.5s;
+          }
+        }
+      }
+
+      .skill-details {
+        .skill-desc {
+          font-size: 1.125rem;
+          color: $text-secondary;
+          margin-bottom: 1.5rem;
+        }
+
+        .skill-effect {
+          background: rgba(0, 0, 0, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1rem;
+          padding: 1.25rem;
+          margin-bottom: 1.5rem;
+          text-align: left;
+
+          h4 {
+            font-size: 0.875rem;
+            color: $secondary-color;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+              font-size: 0.9375rem;
+              color: $text-primary;
+              padding: 0.375rem 0;
+              padding-left: 1.5rem;
+              position: relative;
+
+              &::before {
+                content: '•';
+                position: absolute;
+                left: 0;
+                color: $secondary-color;
+              }
+            }
+          }
+        }
+
+        .skill-lore {
+          margin-bottom: 2rem;
+
+          p {
+            font-size: 0.9375rem;
+            color: $text-secondary;
+            font-style: italic;
+            line-height: 1.7;
+          }
+        }
+
+        .confirm-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: linear-gradient(135deg, $primary-color, $secondary-color);
+          border: none;
+          color: $text-primary;
+          padding: 1rem 2.5rem;
+          border-radius: 0.75rem;
+          font-size: 1.125rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(127, 0, 86, 0.5);
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,317 @@
+// SkillUnlock 样式 - 像素艺术风格
+$pixel-primary: #D946EF;
+$pixel-secondary: #A855F7;
+$pixel-accent-cyan: #00d4ff;
+$pixel-accent-pink: #ff00ff;
+$pixel-bg-dark: #0a0a1a;
+$pixel-bg-panel: #1a1a2e;
+$pixel-border: #6b5b95;
+
+.skill-unlock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: radial-gradient(ellipse at center, rgba($pixel-primary, 0.2) 0%, rgba($pixel-bg-dark, 0.98) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: pixelFadeIn 0.5s ease-out;
+
+  // 扫描线效果
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.1) 2px,
+      rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.2;
+  }
+}
+
+.skill-unlock-container {
+  text-align: center;
+  position: relative;
+}
+
+// 粒子效果
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: $pixel-accent-cyan;
+    box-shadow: 0 0 10px $pixel-accent-cyan;
+    animation: pixelParticleRise 2s ease-out forwards;
+    bottom: 0;
+
+    &:nth-child(odd) {
+      background: $pixel-accent-pink;
+      box-shadow: 0 0 10px $pixel-accent-pink;
+    }
+  }
+}
+
+@keyframes pixelParticleRise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0);
+    opacity: 0;
+  }
+}
+
+// 介绍文字
+.intro-text {
+  max-width: 600px;
+
+  p {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #e5e7eb;
+    text-shadow: 0 0 20px rgba($pixel-accent-cyan, 0.5);
+  }
+}
+
+// 技能揭示
+.skill-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.skill-icon-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon-glow {
+    position: absolute;
+    inset: -30px;
+    background: radial-gradient(circle, rgba($pixel-accent-cyan, 0.4), transparent);
+    animation: pixelPulse 2s ease-in-out infinite;
+  }
+
+  .icon-ring {
+    position: absolute;
+    inset: -15px;
+    border: 4px solid $pixel-accent-cyan;
+    box-shadow: 
+      0 0 20px rgba($pixel-accent-cyan, 0.5),
+      inset 0 0 20px rgba($pixel-accent-cyan, 0.2);
+    animation: pixelSpin 10s linear infinite;
+  }
+
+  .skill-icon {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, $pixel-primary, $pixel-secondary);
+    border: 4px solid lighten($pixel-primary, 20%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    box-shadow: 
+      0 0 40px rgba($pixel-primary, 0.6),
+      inset 0 0 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+@keyframes pixelSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pixelPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.skill-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 
+      0 0 20px rgba($pixel-accent-cyan, 0.8),
+      0 0 40px rgba($pixel-accent-pink, 0.5),
+      2px 2px 0 rgba($pixel-primary, 0.5);
+  }
+
+  .sparkle-icon {
+    color: $pixel-accent-cyan;
+    animation: pixelSparkle 1s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px $pixel-accent-cyan);
+  }
+}
+
+@keyframes pixelSparkle {
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.5; transform: scale(0.8) rotate(180deg); }
+}
+
+.skill-english {
+  font-size: 16px;
+  color: rgba($pixel-accent-pink, 0.8);
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 0 0 10px rgba($pixel-accent-pink, 0.5);
+}
+
+.skill-details {
+  max-width: 500px;
+
+  .skill-desc {
+    font-size: 16px;
+    color: #e5e7eb;
+    margin-bottom: 24px;
+  }
+
+  .skill-effect {
+    background: rgba($pixel-bg-panel, 0.8);
+    border: 3px solid $pixel-border;
+    box-shadow: 
+      0 0 20px rgba($pixel-accent-cyan, 0.2),
+      inset 0 0 20px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: left;
+
+    h4 {
+      font-size: 14px;
+      color: $pixel-accent-cyan;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba($pixel-accent-cyan, 0.5);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+
+      li {
+        font-size: 14px;
+        color: #e5e7eb;
+        margin-bottom: 8px;
+        line-height: 1.5;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        &::marker {
+          color: $pixel-accent-pink;
+        }
+      }
+    }
+  }
+
+  .skill-lore {
+    padding: 16px;
+    border-left: 4px solid $pixel-primary;
+    background: rgba(0, 0, 0, 0.4);
+    margin-bottom: 24px;
+    box-shadow: 0 0 15px rgba($pixel-primary, 0.2);
+
+    p {
+      font-size: 14px;
+      font-style: italic;
+      color: rgba($pixel-accent-pink, 0.8);
+      margin: 0;
+      line-height: 1.6;
+      text-shadow: 0 0 10px rgba($pixel-accent-pink, 0.3);
+    }
+  }
+
+  .confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, $pixel-primary, $pixel-accent-cyan);
+    border: 4px solid lighten($pixel-accent-cyan, 20%);
+    box-shadow: 
+      0 6px 0 darken($pixel-primary, 20%),
+      0 0 30px rgba($pixel-accent-cyan, 0.4);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 9px 0 darken($pixel-primary, 20%),
+        0 0 40px rgba($pixel-accent-cyan, 0.6);
+    }
+
+    &:active {
+      transform: translateY(3px);
+      box-shadow: 
+        0 3px 0 darken($pixel-primary, 20%),
+        0 0 20px rgba($pixel-accent-cyan, 0.4);
+    }
+  }
+}
+
+// 像素动画
+@keyframes pixelFadeIn {
+  from { 
+    opacity: 0;
+    filter: brightness(2);
+  }
+  to { 
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+// 响应式
+@media (max-width: 768px) {
+  .skill-name h2 {
+    font-size: 24px;
+  }
+
+  .skill-icon-container {
+    width: 100px;
+    height: 100px;
+
+    .skill-icon {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}
